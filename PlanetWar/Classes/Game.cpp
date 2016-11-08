@@ -7,8 +7,12 @@
 //
 
 #include "Game.h"
+#include "BaseBall.h"
 USING_NS_CC;
 
+/**
+ * 创建游戏场景
+ */
 Scene* Game::createScene() {
     auto scene = Scene::create();
     auto layer = Game::create();
@@ -20,4 +24,15 @@ Scene* Game::createScene() {
  * 游戏初始化
  */
 bool Game::init() {
+
+    if (!Layer::init()) {
+        return false;
+    }
+    
+    for (int i; i<100; i++) {
+        auto ball = BaseBall::create();
+        this->addChild(ball);
+    }
+    
+    return true;
 }

@@ -7,10 +7,14 @@
 //
 
 #include "MenuScene.h"
+#include "Game.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
+/**
+ * 创建菜单场景
+ */
 Scene* MenuScene::createScene() {
     auto scene = Scene::create();
     auto layer = MenuScene::create();
@@ -18,6 +22,9 @@ Scene* MenuScene::createScene() {
     return scene;
 }
 
+/**
+ * 菜单初始化
+ */
 bool MenuScene::init() {
     if (!Layer::init()) {
         return false;
@@ -35,7 +42,25 @@ bool MenuScene::init() {
     auto menu_bg = Sprite::create("HelloWorld.png");
     menu_bg->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
     
-    this->addChild(menu_bg);
+    //this->addChild(menu_bg);
+    
+    // 3.按钮菜单
+    // 开始游戏按钮
+    auto item_startgame = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", CC_CALLBACK_1(MenuScene::startGame, this));
+    item_startgame->setPosition(Vec2::ZERO);
+    
+    // 按钮菜单
+    auto menu = Menu::create(item_startgame, NULL);
+    menu->setPosition(Vec2(VisiableSize.width/2, VisiableSize.height/2));
+    this->addChild(menu,1);
+    
     
     return true;
+}
+
+/**
+ * 跳转到游戏场景
+ */
+void MenuScene::startGame(cocos2d::Ref* pSender) {
+    Director::getInstance()->replaceScene(Game::createScene());
 }

@@ -16,6 +16,9 @@ public:
     // 对象初始化
     virtual bool init();
     CREATE_FUNC(MenuScene);
+    
+    // 开始游戏
+    void startGame(cocos2d::Ref* pSender);
 };
 
 #endif /* defined(__PlanetWar__MenuScene__) */

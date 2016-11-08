@@ -10,6 +10,8 @@
 #define __PlanetWar__Game__
 
 class Game : public cocos2d::Layer {
+    
+public:
 	// 创建类对象
 	static cocos2d::Scene* createScene();
 	// 对象初始化
