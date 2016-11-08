@@ -9,4 +9,17 @@
 
 #ifdef __cplusplus
 	#include "cocos2d.h"
+    #include <iostream>
 #endif
+
+// 屏幕尺寸
+#define ScreenSize Director::getInstance()->getWinSize()
+#define ScreenHeight Director::getInstance()->getWinSize().height
+#define ScreenWidth Director::getInstance()->getWinSize().width
+
+// 可见区域尺寸
+#define VisiableSize Director::getInstance()->getVisibleSize()
+
+// 设计分辨率
+#define designW 1136
+#define designH 640
