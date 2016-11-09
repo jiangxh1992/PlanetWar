@@ -29,7 +29,7 @@ bool Game::init() {
         return false;
     }
     
-    for (int i; i<100; i++) {
+    for (int i; i<30; i++) {
         auto ball = BaseBall::create();
         this->addChild(ball);
     }
