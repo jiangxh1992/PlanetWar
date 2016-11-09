@@ -39,10 +39,10 @@ bool MenuScene::init() {
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("menu_bg.mp3", true);
     
     // 2.菜单页面背景图片
-    auto menu_bg = Sprite::create("HelloWorld.png");
+    auto menu_bg = Sprite::create("menu_bg.png");
     menu_bg->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
     
-    //this->addChild(menu_bg);
+    this->addChild(menu_bg);
     
     // 3.按钮菜单
     // 开始游戏按钮

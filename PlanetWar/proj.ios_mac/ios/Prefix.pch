@@ -28,3 +28,6 @@
 // 设计分辨率
 #define designW 568
 #define designH 320
+
+// 移动间隔时间
+#define Interval 0.01

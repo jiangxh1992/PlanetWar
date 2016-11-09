@@ -29,7 +29,12 @@ bool Game::init() {
         return false;
     }
     
-    for (int i; i<40; i++) {
+    // 背景图片
+    auto game_bg = Sprite::create("game_bg.png");
+    game_bg->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
+    this->addChild(game_bg);
+    
+    for (int i = 0; i<40; i++) {
         auto ball = BaseBall::create();
         this->addChild(ball);
     }
