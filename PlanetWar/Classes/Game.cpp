@@ -8,6 +8,7 @@
 
 #include "Game.h"
 #include "BaseBall.h"
+#include "AIBall.h"
 USING_NS_CC;
 
 /**
@@ -30,13 +31,20 @@ bool Game::init() {
     }
     
     // 背景图片
-    auto game_bg = Sprite::create("game_bg.png");
+    auto game_bg = Sprite::create("game_bg.jpg");
     game_bg->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
     this->addChild(game_bg);
     
-    for (int i = 0; i<40; i++) {
+    // 静态baseball
+    for (int i = 0; i<100; i++) {
         auto ball = BaseBall::create();
         this->addChild(ball);
+    }
+    
+    // 动态AIBall
+    for (int i = 0 ; i<20 ; i++) {
+        auto aiball = AIBall::create();
+        this->addChild(aiball);
     }
     
     return true;

@@ -15,6 +15,8 @@ class AIBall : public BaseBall {
 
 /** 重写函数 **/
 public:
+    // 创建类对象
+    static AIBall* create();
 	// 对象初始化
 	virtual bool init();
 
@@ -27,7 +29,6 @@ protected:
     
     // 定时更新
     void fixedUpdate(float delta);
-
     
 /** 对外接口 **/
 public:

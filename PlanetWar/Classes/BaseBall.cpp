@@ -28,11 +28,13 @@ BaseBall* BaseBall::create() {
  * 初始化
  */
 bool BaseBall::init() {
+    if (!Sprite::init()) {
+        return false;
+    }
     // 随机位置
-    x = CCRANDOM_0_1() * maxW;
-    y = CCRANDOM_0_1() * maxH;
+    position = Vec2(CCRANDOM_0_1() * maxW, CCRANDOM_0_1() * maxH);
     // 半径
-    radius = 3;
+    radius = 2;
     // 随机颜色
     color = Color4F(255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 1.0);
     // drawnode
@@ -43,7 +45,7 @@ bool BaseBall::init() {
     //initWithFile("CloseNormal.png");
     
     // 设置位置
-    setPosition(Vec2(x, y));
+    setPosition(position);
     
     // 开启安帧更新
     //this->scheduleUpdate();

@@ -25,8 +25,7 @@ public:
 /** 内部变量和函数 **/
 protected:
     // 坐标
-    int x = 0;
-    int y = 0;
+    cocos2d::Vec2 position = cocos2d::Vec2::ZERO;
     // 半径
     float radius = 0;
     // 颜色
@@ -40,8 +39,7 @@ protected:
 /** 对外接口 **/
 public:
     // getter
-    int getX(){return x;}
-    int getY(){return y;}
+    cocos2d::Vec2 getPos(){return position;}
     float getR(){return radius;}
     int getWeight(){return weight;}
     
