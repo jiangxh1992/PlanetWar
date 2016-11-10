@@ -329,10 +329,12 @@
 		46880B8319C43A87006E1F66 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				D22CDAF91DD1D7B5004AAADC /* Game */,
-				D22CDAF81DD1D7AA004AAADC /* Menu */,
 				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
+				46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */,
+				46880B8719C43A87006E1F66 /* HelloWorldScene.h */,
+				D22CDAF91DD1D7B5004AAADC /* Game */,
+				D22CDAF81DD1D7AA004AAADC /* Menu */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -388,8 +390,6 @@
 		D22CDAF81DD1D7AA004AAADC /* Menu */ = {
 			isa = PBXGroup;
 			children = (
-				46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */,
-				46880B8719C43A87006E1F66 /* HelloWorldScene.h */,
 				D22CDAF41DD1D721004AAADC /* MenuScene.cpp */,
 				D22CDAF51DD1D721004AAADC /* MenuScene.h */,
 			);

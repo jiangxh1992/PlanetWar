@@ -7,6 +7,7 @@
 //
 
 #include "AIBall.h"
+#include <math.h>
 USING_NS_CC;
 
 /**
@@ -33,12 +34,19 @@ bool AIBall::init() {
     }
     // 随机位置
     position = Vec2(CCRANDOM_0_1() * maxW, CCRANDOM_0_1() * maxH);
-    // 随机半径
-    radius = CCRANDOM_0_1()*20;
+    
+    // 随机重量
+    weight = minWeight + CCRANDOM_0_1()*(maxWeight-minWeight);
+    // 速度(>=1)
+    speed = sqrt(Energy/weight);
+    // 半径
+    radius = sqrt(weight*5/PI);
+    
     // 随机颜色
     color = Color4F(255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 1.0);
     // 随机方向
-    direction = Vec2((CCRANDOM_0_1()*2-1), (CCRANDOM_0_1()*2-1));
+    direction = Vec2(1,0);//Vec2((CCRANDOM_0_1()*2-1), (CCRANDOM_0_1()*2-1));
+    direction.normalize();
     // 随机图片
     //initWithFile("CloseNormal.png");
     
@@ -60,6 +68,6 @@ bool AIBall::init() {
  * 定时器
  */
 void AIBall::fixedUpdate(float delta) {
-    position += direction;
+    position += direction*speed;
     setPosition(position);
 }

@@ -31,3 +31,11 @@
 
 // 移动间隔时间
 #define Interval 0.01
+// PI
+#define PI 3.1415926
+// 能量常量
+#define Energy 1000
+// 重量下限
+#define minWeight 30
+// 重量上限
+#define maxWeight 1000
