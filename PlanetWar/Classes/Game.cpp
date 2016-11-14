@@ -62,14 +62,7 @@ bool Game::init() {
     this->addChild(player);
     
     // 开启玩家触屏交互
-    this->setTouchEnabled(true);
-    EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
-    auto listen = EventListenerTouchAllAtOnce::create();
-    listen->onTouchesBegan = CC_CALLBACK_2(Game::onTouchesBegan,this);
-    //listen->onTouchesMoved = CC_CALLBACK_2(Game::onTouchesMoved,this);
-    //listen->onTouchesEnded = CC_CALLBACK_2(Game::onTouchesEnded,this);
-    //listen->onTouchesCancelled = CC_CALLBACK_2(Game::onTouchesCancelled,this);
-    eventDispatcher->addEventListenerWithSceneGraphPriority(listen,this);
+    addTouchListener();
     
     return true;
 }
@@ -105,11 +98,43 @@ void Game::back(cocos2d::Ref* pSender) {
 /**
  * 注册屏幕触摸事件
  */
+void Game::addTouchListener() {
+    // 开启交互
+    this->setTouchEnabled(true);
+    // 定义事件分发
+    EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
+    // 单点触控
+    this->setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
+    
+    auto oneTouch = EventListenerTouchOneByOne::create();
+    // 触摸开始
+    oneTouch->onTouchBegan = CC_CALLBACK_2(Game::onTouchBegan,this);
+    // 触摸拖动
+    //oneTouch->onTouchMoved = CC_CALLBACK_2(Game::onTouchMoved,this);
+    // 触摸结束
+    oneTouch->onTouchEnded = CC_CALLBACK_2(Game::onTouchEnded,this);
+    // 触摸取消
+    //oneTouch->onTouchCancelled = CC_CALLBACK_2(Game::onTouchCancelled,this);
+    
+    eventDispatcher->addEventListenerWithSceneGraphPriority(oneTouch,this);
+
+}
 
 /**
  * 触摸开始事件
  */
 bool Game::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
-    std::cout<<" ";
+    startPoint = touch->getLocation();
+    return true;
 }
-
+/**
+ * 触摸结束事件
+ */
+void Game::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
+    endPoint = touch->getLocation();
+    // 更新玩家移动方向
+    Vec2 newDir = endPoint - startPoint;
+    newDir.normalize();
+    player->setDir(newDir);
+    
+}

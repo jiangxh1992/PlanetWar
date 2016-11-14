@@ -26,7 +26,7 @@ protected:
     
 /** 对外接口 **/
 public:
-
+    void setDir(cocos2d::Vec2 newDir) {direction = newDir;};
 	
 };
 

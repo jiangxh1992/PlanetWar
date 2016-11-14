@@ -24,13 +24,18 @@ public:
 private:
     // 玩家
     PlayerBall *player;
+    // 触摸起始点和结束点
+    cocos2d::Vec2 startPoint = cocos2d::Vec2::ZERO;
+    cocos2d::Vec2 endPoint = cocos2d::Vec2::ZERO;
     
     // 添加UI
     void addUI();
     // 返回到菜单页面
     void back(cocos2d::Ref* pSender);
     // 注册屏幕触摸事件
+    void addTouchListener();
     bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *unused_event);
+    void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event);
 
 /** 对外接口 **/
 public:
