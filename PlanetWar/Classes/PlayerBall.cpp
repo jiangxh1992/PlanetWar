@@ -28,7 +28,7 @@ bool PlayerBall::init() {
     position = Vec2(VisiableSize.width/2, VisiableSize.height/2);
     
     // 初始重量
-    weight = minWeight*2;
+    weight = minWeight*4;
     // 速度(>=1)
     speed = sqrt(Energy/weight);
     // 半径
@@ -64,7 +64,8 @@ void PlayerBall::fixedUpdate(float delta) {
     
     // 检测边界
     if(position.x >= VisiableSize.width-radius || position.x <= radius || position.y >= VisiableSize.height-radius || position.y <= radius) {
-        position -= direction*speed;
+        position -= direction*speed*2;
         setPosition(position);
+        direction = Vec2::ZERO;
     }
 }

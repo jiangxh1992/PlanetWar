@@ -39,3 +39,5 @@
 #define minWeight 30
 // 重量上限
 #define maxWeight 1000
+// 屏幕小球的数量上限
+#define maxBaseBallNum 1000

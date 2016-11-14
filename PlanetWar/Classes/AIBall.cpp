@@ -67,6 +67,7 @@ void AIBall::updateWeight(int addedWeight) {
     weight += addedWeight;
     // 速度(>=1)
     speed = sqrt(Energy/weight);
+    if (speed<1) speed = 1;
     // 半径
     radius = sqrt(weight*10/PI);
 }
@@ -76,7 +77,7 @@ void AIBall::updateWeight(int addedWeight) {
  */
 void AIBall::update(float time) {
     // 检测吃小球
-    for (Vector<BaseBall*>::const_iterator it = Game::sharedGame()->baseBallArray.begin(); it != Game::sharedGame()->baseBallArray.end(); ++it) {
+    for (Vector<BaseBall*>::const_iterator it = Game::sharedGame()->baseBallArray.begin(); it != Game::sharedGame()->baseBallArray.end(); it++) {
         BaseBall *baseball = *it;
         if (!baseball) return;
         double distance = pow(baseball->getPos().x -  position.x, 2) + pow(baseball->getPos().y - position.y, 2);
@@ -90,10 +91,10 @@ void AIBall::update(float time) {
     }
     
     // 检测吞并
-    for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); ++it) {
+    for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
         AIBall *aiball = *it;
-        if (!aiball) return;
-        if (radius > aiball->radius) {
+        if (!aiball || !aiball->weight) return;
+        if (weight > aiball->weight) {
             double distance = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
             if (distance <= pow(radius - aiball->radius, 2)) {
                 // 吃掉baseball，获得其体重
@@ -112,18 +113,43 @@ void AIBall::update(float time) {
  */
 void AIBall::fixedUpdate(float delta) {
     
-    // 移动
+    // 1.移动
     position += direction * speed;
     setPosition(position);
     
-    // 检测边界
+    // 2.检测边界
     if(position.x >= maxW-radius || position.x <= -(maxW-radius)) {
+        position -= direction * speed * 2;
         direction.x = -direction.x;
         direction.y = CCRANDOM_0_1();
         direction.normalize();
     }else if(position.y >= maxH-radius || position.y <= -(maxH-radius)) {
+        position = direction * speed * 2;
         direction.y = -direction.y;
         direction.x = CCRANDOM_0_1();
         direction.normalize();
     }
+    
+    // 3.简单AI（躲大追小）
+//    // 搜索最近的球
+//    AIBall *nearestball = *Game::sharedGame()->AIBallArray.begin();
+//    if (!nearestball) return;
+//    for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin()+1; it != Game::sharedGame()->AIBallArray.end(); it++) {
+//        AIBall *nextball = *it;
+//        if(!nextball) return;
+//        double nearestDis = pow(nearestball->getPos().x-position.x, 2) + pow(nearestball->getPos().y-position.y, 2);
+//        double newDis = pow(nextball->getPos().x-position.x, 2) + pow(nextball->getPos().y-position.y, 2);
+//        if (newDis < nearestDis) {
+//            nearestball = nextball;
+//        }
+//    }
+//    // 躲大追小
+//    Vec2 dir = nearestball->position - position;
+//    dir.normalize();
+//    if (weight > nearestball->weight) {
+//        direction = dir;
+//    }else {
+//        direction = -dir;
+//    }
+
 }

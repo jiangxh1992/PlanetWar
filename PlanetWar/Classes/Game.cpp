@@ -48,7 +48,7 @@ bool Game::init() {
     addUI();
     
     // 静态baseball
-    createBaseBalls(1000);
+    createBaseBalls(maxBaseBallNum);
     // 动态AIBall
     createAIBAlls();
     
@@ -80,7 +80,7 @@ void Game::addUI() {
     // 背景图片
     auto game_bg = Sprite::create("game_bg.jpg");
     game_bg->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
-    this->addChild(game_bg);
+    //this->addChild(game_bg);
     
     // 按钮菜单
     // 返回按钮
@@ -120,6 +120,7 @@ void Game::createAIBAlls() {
  * 定时生成小球
  */
 void Game::createBaseBallTimer(float delta) {
+    if (baseBallArray.size() > maxBaseBallNum) return;
     createBaseBalls(200*CCRANDOM_0_1());
 }
 
