@@ -36,14 +36,8 @@ bool AIBall::init() {
     }
     // 随机位置
     position = Vec2((CCRANDOM_0_1()-0.5) * maxW, (CCRANDOM_0_1()-0.5) * maxH);
-    
-    // 随机重量
-    weight = minWeight + CCRANDOM_0_1()*(maxWeight-minWeight);
-    // 速度(>=1)
-    speed = sqrt(Energy/weight);
-    // 半径
-    radius = sqrt(weight*5/PI);
-    
+    // 初始重量
+    updateWeight(minWeight);
     // 随机颜色
     color = Color4F(255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 1.0);
     // 随机方向
@@ -67,19 +61,47 @@ bool AIBall::init() {
 }
 
 /**
+ * 更新重量
+ */
+void AIBall::updateWeight(int addedWeight) {
+    weight += addedWeight;
+    // 速度(>=1)
+    speed = sqrt(Energy/weight);
+    // 半径
+    radius = sqrt(weight*10/PI);
+}
+
+/**
  * 安帧更新
  */
 void AIBall::update(float time) {
     // 检测吃小球
     for (Vector<BaseBall*>::const_iterator it = Game::sharedGame()->baseBallArray.begin(); it != Game::sharedGame()->baseBallArray.end(); ++it) {
         BaseBall *baseball = *it;
+        if (!baseball) return;
         double distance = pow(baseball->getPos().x -  position.x, 2) + pow(baseball->getPos().y - position.y, 2);
         if (distance <= radius*radius) {
             // 吃掉baseball，获得其体重
-            weight += baseball->getWeight();
+            updateWeight(baseball->getWeight());
             // 移除baseball
             Game::sharedGame()->baseBallArray.eraseObject(baseball);
             Game::sharedGame()->removeChild(baseball);
+        }
+    }
+    
+    // 检测吞并
+    for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); ++it) {
+        AIBall *aiball = *it;
+        if (!aiball) return;
+        if (radius > aiball->radius) {
+            double distance = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
+            if (distance <= pow(radius - aiball->radius, 2)) {
+                // 吃掉baseball，获得其体重
+                updateWeight(aiball->getWeight());
+                // 移除baseball
+                Game::sharedGame()->AIBallArray.eraseObject(aiball);
+                Game::sharedGame()->removeChild(aiball);
+            }
         }
     }
     
@@ -91,7 +113,7 @@ void AIBall::update(float time) {
 void AIBall::fixedUpdate(float delta) {
     
     // 移动
-    position += direction*speed;
+    position += direction * speed;
     setPosition(position);
     
     // 检测边界

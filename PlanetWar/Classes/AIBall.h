@@ -29,6 +29,8 @@ protected:
     // 移动速度
     int speed = 0;
     
+    // 更新重量
+    virtual void updateWeight(int addedWeight);
     // 定时更新
     virtual void fixedUpdate(float delta);
     

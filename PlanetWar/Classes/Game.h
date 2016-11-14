@@ -33,9 +33,11 @@ private:
     // 添加UI
     void addUI();
     // BaseBall工厂函数
-    void createBaseBalls();
+    void createBaseBalls(int num);
     // AIBall工厂函数
     void createAIBAlls();
+    // 定时生成小球
+    void createBaseBallTimer(float delta);
     // 返回到菜单页面
     void back(cocos2d::Ref* pSender);
     // 注册屏幕触摸事件
@@ -51,7 +53,7 @@ public:
     // BaseBall数组
     cocos2d::Vector<BaseBall*> baseBallArray;
     // AIBall数组
-    //cocos2d::__Array *AIBallArray;
+    cocos2d::Vector<AIBall*> AIBallArray;
 
     //cocos2d::__Array* getBaseBallArray() {return baseBallArray;};
     //cocos2d::__Array* getAIBallArray() {return AIBallArray;};

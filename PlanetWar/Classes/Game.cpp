@@ -48,7 +48,7 @@ bool Game::init() {
     addUI();
     
     // 静态baseball
-    createBaseBalls();
+    createBaseBalls(1000);
     // 动态AIBall
     createAIBAlls();
     
@@ -58,6 +58,9 @@ bool Game::init() {
     
     // 开启玩家触屏交互
     addTouchListener();
+    
+    // 开启定时器
+    this->schedule(schedule_selector(Game::createBaseBallTimer), Interval*50);
     
     return true;
 }
@@ -94,8 +97,8 @@ void Game::addUI() {
 /**
  * BaseBall工厂函数
  */
-void Game::createBaseBalls() {
-    for (int i = 0; i<600; i++) {
+void Game::createBaseBalls(int num) {
+    for (int i = 0; i<num; i++) {
         auto ball = BaseBall::create();
         this->addChild(ball);
         baseBallArray.pushBack(ball);
@@ -109,8 +112,15 @@ void Game::createAIBAlls() {
     for (int i = 0 ; i<20 ; i++) {
         auto aiball = AIBall::create();
         this->addChild(aiball);
-        //AIBallArray->addObject(aiball);
+        AIBallArray.pushBack(aiball);
     }
+}
+
+/**
+ * 定时生成小球
+ */
+void Game::createBaseBallTimer(float delta) {
+    createBaseBalls(200*CCRANDOM_0_1());
 }
 
 /**

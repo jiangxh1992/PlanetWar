@@ -39,7 +39,7 @@ bool BaseBall::init() {
     color = Color4F(255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 1.0);
     // drawnode
     drawNode = DrawNode::create();
-    this->addChild(drawNode);
+    this->addChild(drawNode, -100);
     
     // 随机图片
     //initWithFile("CloseNormal.png");
@@ -68,6 +68,4 @@ void BaseBall::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform,
 /**
  * 安帧更新
  */
-void BaseBall::update(float time) {
-    
-}
+//void BaseBall::update(float time) {}
