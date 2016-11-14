@@ -7,6 +7,8 @@
 //
 
 #include "AIBall.h"
+#include "BaseBall.h"
+#include "Game.h"
 #include <math.h>
 USING_NS_CC;
 
@@ -57,11 +59,30 @@ bool AIBall::init() {
     this->addChild(drawNode);
     
     // 开启安帧更新
-    //this->scheduleUpdate();
+    this->scheduleUpdate();
     // 开启定时器
     this->schedule(schedule_selector(AIBall::fixedUpdate), Interval);
     
     return true;
+}
+
+/**
+ * 安帧更新
+ */
+void AIBall::update(float time) {
+    // 检测吃小球
+    for (Vector<BaseBall*>::const_iterator it = Game::sharedGame()->baseBallArray.begin(); it != Game::sharedGame()->baseBallArray.end(); ++it) {
+        BaseBall *baseball = *it;
+        double distance = pow(baseball->getPos().x -  position.x, 2) + pow(baseball->getPos().y - position.y, 2);
+        if (distance <= radius*radius) {
+            // 吃掉baseball，获得其体重
+            weight += baseball->getWeight();
+            // 移除baseball
+            Game::sharedGame()->baseBallArray.eraseObject(baseball);
+            Game::sharedGame()->removeChild(baseball);
+        }
+    }
+    
 }
 
 /**

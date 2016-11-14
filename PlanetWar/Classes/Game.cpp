@@ -41,21 +41,16 @@ bool Game::init() {
     }
     
     game = this;
+    // 游戏变量初始化
+    initData();
     
     // 添加UI
     addUI();
     
     // 静态baseball
-    for (int i = 0; i<600; i++) {
-        auto ball = BaseBall::create();
-        this->addChild(ball);
-    }
-    
+    createBaseBalls();
     // 动态AIBall
-    for (int i = 0 ; i<20 ; i++) {
-        auto aiball = AIBall::create();
-        this->addChild(aiball);
-    }
+    createAIBAlls();
     
     // 创建玩家
     player = PlayerBall::create();
@@ -65,6 +60,14 @@ bool Game::init() {
     addTouchListener();
     
     return true;
+}
+
+/**
+ * 游戏变量初始化
+ */
+void Game::initData() {
+    baseBallArray = Vector<BaseBall*>();
+    //AIBallArray = __Array::create();
 }
 
 /**
@@ -86,6 +89,28 @@ void Game::addUI() {
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu,1);
     
+}
+
+/**
+ * BaseBall工厂函数
+ */
+void Game::createBaseBalls() {
+    for (int i = 0; i<600; i++) {
+        auto ball = BaseBall::create();
+        this->addChild(ball);
+        baseBallArray.pushBack(ball);
+    }
+}
+
+/**
+ * AIBall工厂函数
+ */
+void Game::createAIBAlls() {
+    for (int i = 0 ; i<20 ; i++) {
+        auto aiball = AIBall::create();
+        this->addChild(aiball);
+        //AIBallArray->addObject(aiball);
+    }
 }
 
 /**

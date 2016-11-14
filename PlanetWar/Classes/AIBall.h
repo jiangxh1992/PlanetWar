@@ -19,6 +19,8 @@ public:
     static AIBall* create();
 	// 对象初始化
 	virtual bool init();
+    // 安帧更新
+    virtual void update(float time);
 
 /** 内部变量和函数 **/
 protected:

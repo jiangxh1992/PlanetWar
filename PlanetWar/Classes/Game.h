@@ -28,8 +28,14 @@ private:
     cocos2d::Vec2 startPoint = cocos2d::Vec2::ZERO;
     cocos2d::Vec2 endPoint = cocos2d::Vec2::ZERO;
     
+    // 游戏变量初始化
+    void initData();
     // 添加UI
     void addUI();
+    // BaseBall工厂函数
+    void createBaseBalls();
+    // AIBall工厂函数
+    void createAIBAlls();
     // 返回到菜单页面
     void back(cocos2d::Ref* pSender);
     // 注册屏幕触摸事件
@@ -40,7 +46,15 @@ private:
 /** 对外接口 **/
 public:
     // 游戏场景单例
-    Game* sharedGame();
+    static Game* sharedGame();
+    // 数组
+    // BaseBall数组
+    cocos2d::Vector<BaseBall*> baseBallArray;
+    // AIBall数组
+    //cocos2d::__Array *AIBallArray;
+
+    //cocos2d::__Array* getBaseBallArray() {return baseBallArray;};
+    //cocos2d::__Array* getAIBallArray() {return AIBallArray;};
 
 };
 
