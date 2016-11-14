@@ -33,7 +33,7 @@ bool AIBall::init() {
         return false;
     }
     // 随机位置
-    position = Vec2(CCRANDOM_0_1() * maxW, CCRANDOM_0_1() * maxH);
+    position = Vec2((CCRANDOM_0_1()-0.5) * maxW, (CCRANDOM_0_1()-0.5) * maxH);
     
     // 随机重量
     weight = minWeight + CCRANDOM_0_1()*(maxWeight-minWeight);
@@ -45,7 +45,7 @@ bool AIBall::init() {
     // 随机颜色
     color = Color4F(255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 1.0);
     // 随机方向
-    direction = Vec2(1,0);//Vec2((CCRANDOM_0_1()*2-1), (CCRANDOM_0_1()*2-1));
+    direction = Vec2((CCRANDOM_0_1()*2-1), (CCRANDOM_0_1()*2-1));
     direction.normalize();
     // 随机图片
     //initWithFile("CloseNormal.png");
@@ -68,6 +68,19 @@ bool AIBall::init() {
  * 定时器
  */
 void AIBall::fixedUpdate(float delta) {
+    
+    // 移动
     position += direction*speed;
     setPosition(position);
+    
+    // 检测边界
+    if(position.x >= maxW-radius || position.x <= -(maxW-radius)) {
+        direction.x = -direction.x;
+        direction.y = CCRANDOM_0_1();
+        direction.normalize();
+    }else if(position.y >= maxH-radius || position.y <= -(maxH-radius)) {
+        direction.y = -direction.y;
+        direction.x = CCRANDOM_0_1();
+        direction.normalize();
+    }
 }

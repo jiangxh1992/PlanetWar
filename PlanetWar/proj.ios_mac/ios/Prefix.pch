@@ -30,7 +30,7 @@
 #define designH 320
 
 // 移动间隔时间
-#define Interval 0.01
+#define Interval 0.05
 // PI
 #define PI 3.1415926
 // 能量常量
