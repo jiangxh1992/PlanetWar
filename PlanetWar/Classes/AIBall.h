@@ -28,7 +28,7 @@ protected:
     int speed = 0;
     
     // 定时更新
-    void fixedUpdate(float delta);
+    virtual void fixedUpdate(float delta);
     
 /** 对外接口 **/
 public:

@@ -22,6 +22,15 @@ Scene* Game::createScene() {
     return scene;
 }
 
+/** 游戏场景单例 **/
+static Game *game;
+Game* Game::sharedGame() {
+    if (game) {
+        return game;
+    }
+    return NULL;
+}
+
 /**
  * 游戏初始化
  */
@@ -31,20 +40,36 @@ bool Game::init() {
         return false;
     }
     
+    game = this;
+    
     // 添加UI
     addUI();
     
     // 静态baseball
-    for (int i = 0; i<100; i++) {
+    for (int i = 0; i<600; i++) {
         auto ball = BaseBall::create();
         this->addChild(ball);
     }
     
     // 动态AIBall
-    for (int i = 0 ; i<5 ; i++) {
+    for (int i = 0 ; i<20 ; i++) {
         auto aiball = AIBall::create();
         this->addChild(aiball);
     }
+    
+    // 创建玩家
+    player = PlayerBall::create();
+    this->addChild(player);
+    
+    // 开启玩家触屏交互
+    this->setTouchEnabled(true);
+    EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
+    auto listen = EventListenerTouchAllAtOnce::create();
+    listen->onTouchesBegan = CC_CALLBACK_2(Game::onTouchesBegan,this);
+    //listen->onTouchesMoved = CC_CALLBACK_2(Game::onTouchesMoved,this);
+    //listen->onTouchesEnded = CC_CALLBACK_2(Game::onTouchesEnded,this);
+    //listen->onTouchesCancelled = CC_CALLBACK_2(Game::onTouchesCancelled,this);
+    eventDispatcher->addEventListenerWithSceneGraphPriority(listen,this);
     
     return true;
 }
@@ -76,3 +101,15 @@ void Game::addUI() {
 void Game::back(cocos2d::Ref* pSender) {
     Director::getInstance()->replaceScene(MenuScene::createScene());
 }
+
+/**
+ * 注册屏幕触摸事件
+ */
+
+/**
+ * 触摸开始事件
+ */
+bool Game::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
+    std::cout<<" ";
+}
+

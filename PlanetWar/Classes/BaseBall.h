@@ -32,6 +32,8 @@ protected:
     cocos2d::Color4F color = cocos2d::Color4F::YELLOW;
     // 重量
     int weight = 1;
+    // 是否启动图形绘制
+    bool isDraw = true;
     // DrawNode
     cocos2d::DrawNode *drawNode;
     

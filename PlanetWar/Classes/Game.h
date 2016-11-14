@@ -8,6 +8,7 @@
 
 #ifndef __PlanetWar__Game__ 
 #define __PlanetWar__Game__
+#include "PlayerBall.h"
 
 class Game : public cocos2d::Layer {
   
@@ -21,10 +22,21 @@ public:
     
 /** 内部变量和函数 **/
 private:
+    // 玩家
+    PlayerBall *player;
+    
     // 添加UI
     void addUI();
     // 返回到菜单页面
     void back(cocos2d::Ref* pSender);
+    // 注册屏幕触摸事件
+    bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *unused_event);
+
+/** 对外接口 **/
+public:
+    // 游戏场景单例
+    Game* sharedGame();
+
 };
 
 #endif /* defined(__PlanetWar__Game__) */

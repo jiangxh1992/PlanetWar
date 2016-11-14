@@ -32,7 +32,7 @@ bool BaseBall::init() {
         return false;
     }
     // 随机位置
-    position = Vec2(CCRANDOM_0_1() * maxW, CCRANDOM_0_1() * maxH);
+    position = Vec2((CCRANDOM_0_1()*2-1) * maxW, (CCRANDOM_0_1()*2-1) * maxH);
     // 半径
     radius = 2;
     // 随机颜色
@@ -57,11 +57,12 @@ bool BaseBall::init() {
  * 绘图
  */
 void BaseBall::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
-    // 清空之前的绘制
-    drawNode->clear();
-    // 绘制实心圆形
-    drawNode->drawDot(Vec2(0, 0), radius, color);
-
+    if (isDraw) {
+        // 清空之前的绘制
+        drawNode->clear();
+        // 绘制实心圆形
+        drawNode->drawDot(Vec2(0, 0), radius, color);
+    }
 }
 
 /**
