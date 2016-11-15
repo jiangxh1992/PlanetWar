@@ -44,6 +44,9 @@ private:
     void addTouchListener();
     bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *unused_event);
     void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event);
+    
+    // 游戏观察者（检测吞并情况）
+    void gameObserver(float delta);
 
 /** 对外接口 **/
 public:

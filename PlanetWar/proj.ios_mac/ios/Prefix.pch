@@ -21,7 +21,7 @@
 #define VisiableSize Director::getInstance()->getVisibleSize()
 
 // 游戏场景边界
-#define maxW 568
+#define maxW 1000
 #define maxH 320
 
 

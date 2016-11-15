@@ -53,7 +53,7 @@ bool AIBall::init() {
     this->addChild(drawNode);
     
     // 开启安帧更新
-    this->scheduleUpdate();
+    //this->scheduleUpdate();
     // 开启定时器
     this->schedule(schedule_selector(AIBall::fixedUpdate), Interval);
     
@@ -119,12 +119,12 @@ void AIBall::fixedUpdate(float delta) {
     
     // 2.检测边界
     if(position.x >= maxW-radius || position.x <= -(maxW-radius)) {
-        position -= direction * speed * 2;
+        position -= direction * speed;
         direction.x = -direction.x;
         direction.y = CCRANDOM_0_1();
         direction.normalize();
     }else if(position.y >= maxH-radius || position.y <= -(maxH-radius)) {
-        position = direction * speed * 2;
+        position -= direction * speed;
         direction.y = -direction.y;
         direction.x = CCRANDOM_0_1();
         direction.normalize();

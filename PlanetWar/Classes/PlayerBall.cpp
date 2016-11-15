@@ -47,7 +47,7 @@ bool PlayerBall::init() {
     this->addChild(drawNode);
     
     // 开启安帧更新
-    this->scheduleUpdate();
+    //this->scheduleUpdate();
     // 开启定时器
     this->schedule(schedule_selector(PlayerBall::fixedUpdate), Interval);
     

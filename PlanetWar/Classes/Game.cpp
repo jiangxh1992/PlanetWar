@@ -10,6 +10,7 @@
 #include "BaseBall.h"
 #include "AIBall.h"
 #include "MenuScene.h"
+#include <math.h>
 USING_NS_CC;
 
 /**
@@ -55,12 +56,16 @@ bool Game::init() {
     // 创建玩家
     player = PlayerBall::create();
     this->addChild(player);
+    AIBallArray.pushBack(player);
     
     // 开启玩家触屏交互
     addTouchListener();
     
     // 开启定时器
     this->schedule(schedule_selector(Game::createBaseBallTimer), Interval*50);
+    
+    // 开启观察者
+    this->schedule(schedule_selector(Game::gameObserver), Interval);
     
     return true;
 }
@@ -173,4 +178,34 @@ void Game::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
     newDir.normalize();
     player->setDir(newDir);
     
+}
+
+/**
+ * 游戏观察者
+ */
+void Game::gameObserver(float delta) {
+    // 死亡球回收池
+    Vector<BaseBall*> deadballs = Vector<BaseBall*>();
+    // 检测吃小球
+    for (Vector<AIBall*>::const_iterator it = AIBallArray.begin(); it != AIBallArray.end(); it++) {
+        AIBall *aiball = *it;
+        for (Vector<BaseBall*>::const_iterator it2 = baseBallArray.begin(); it2 != baseBallArray.end(); it2++) {
+            BaseBall *baseball = *it2;
+            
+            double distance = pow(baseball->getPos().x - aiball->getPos().x, 2) + pow(baseball->getPos().y - aiball->getPos().y, 2);
+            if (distance <= pow(aiball->getR(), 2)) {
+                // 吃掉baseball，获得其体重
+                aiball->updateWeight(baseball->getWeight());
+                // 移除baseball
+                baseBallArray.eraseObject(baseball);
+                // 添加到待回收池
+                deadballs.pushBack(baseball);
+            }
+        }
+    }
+    
+    // 移除回收池内的死球
+    for (Vector<BaseBall*>::const_iterator it = deadballs.begin(); it != deadballs.end(); it++) {
+        removeChild(*it);
+    }
 }
