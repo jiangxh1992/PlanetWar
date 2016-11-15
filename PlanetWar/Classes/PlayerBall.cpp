@@ -7,6 +7,7 @@
 //
 
 #include "PlayerBall.h"
+#include "Game.h"
 USING_NS_CC;
 
 PlayerBall* PlayerBall::create() {
@@ -63,9 +64,11 @@ void PlayerBall::fixedUpdate(float delta) {
     setPosition(position);
     
     // 检测边界
-    if(position.x >= VisiableSize.width-radius || position.x <= radius || position.y >= VisiableSize.height-radius || position.y <= radius) {
+    if(position.x >= maxW-radius || position.x <= radius-maxW || position.y >= maxH-radius || position.y <= radius-maxH) {
         position -= direction*speed*2;
         setPosition(position);
-        direction = Vec2::ZERO;
+    }else {
+        // 屏幕跟随
+        Game::sharedGame()->setPosition(Game::sharedGame()->getPosition() - direction*speed);
     }
 }

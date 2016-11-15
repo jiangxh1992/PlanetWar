@@ -66,7 +66,7 @@ bool AIBall::init() {
 void AIBall::updateWeight(int addedWeight) {
     weight += addedWeight;
     // 速度(>=1)
-    speed = sqrt(Energy/weight);
+    speed = sqrt(Energy/(weight*2));
     if (speed<1) speed = 1;
     // 半径
     radius = sqrt(weight*10/PI);
@@ -96,10 +96,10 @@ void AIBall::update(float time) {
     // 检测吞并
     for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
         AIBall *aiball = *it;
-        if (!aiball || !aiball->weight) return;
-        if (weight > aiball->weight) {
+        if (!aiball || !aiball->getWeight()) return;
+        if (weight > aiball->getWeight()) {
             double distance = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
-            if (distance <= pow(radius - aiball->radius + 2, 2)) {
+            if (distance <= pow(radius - aiball->radius, 2)) {
                 // 吃掉baseball，获得其体重
                 updateWeight(aiball->getWeight());
                 // 移除baseball
