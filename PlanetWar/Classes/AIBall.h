@@ -21,6 +21,8 @@ public:
 	virtual bool init();
     // 安帧更新
     virtual void update(float time);
+    // 西沟函数
+    virtual ~AIBall();
 
 /** 内部变量和函数 **/
 protected:

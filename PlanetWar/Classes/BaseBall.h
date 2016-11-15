@@ -21,6 +21,8 @@ public:
     virtual void draw(cocos2d::Renderer*renderer, const cocos2d::Mat4& transform, uint32_t flags);
     // 安帧更新
     //virtual void update(float time);
+    // 析构函数
+    virtual ~BaseBall();
 
 /** 内部变量和函数 **/
 protected:

@@ -19,6 +19,10 @@ public:
 	// 对象初始化
 	virtual bool init();
     CREATE_FUNC(Game);
+    // 退出
+    void onExit();
+    // 析构函数
+    virtual ~Game();
     
 /** 内部变量和函数 **/
 private:
@@ -35,7 +39,7 @@ private:
     // BaseBall工厂函数
     void createBaseBalls(int num);
     // AIBall工厂函数
-    void createAIBAlls();
+    void createAIBAlls(int num);
     // 定时生成小球
     void createBaseBallTimer(float delta);
     // 返回到菜单页面

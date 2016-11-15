@@ -51,7 +51,7 @@ bool Game::init() {
     // 静态baseball
     createBaseBalls(maxBaseBallNum);
     // 动态AIBall
-    createAIBAlls();
+    createAIBAlls(maxAIBallNum);
     
     // 创建玩家
     player = PlayerBall::create();
@@ -62,10 +62,10 @@ bool Game::init() {
     addTouchListener();
     
     // 开启定时器
-    this->schedule(schedule_selector(Game::createBaseBallTimer), Interval*50);
+    this->schedule(schedule_selector(Game::createBaseBallTimer), Interval*30);
     
     // 开启观察者
-    this->schedule(schedule_selector(Game::gameObserver), Interval);
+    //this->schedule(schedule_selector(Game::gameObserver), Interval);
     
     return true;
 }
@@ -113,8 +113,8 @@ void Game::createBaseBalls(int num) {
 /**
  * AIBall工厂函数
  */
-void Game::createAIBAlls() {
-    for (int i = 0 ; i<20 ; i++) {
+void Game::createAIBAlls(int num) {
+    for (int i = 0 ; i<num ; i++) {
         auto aiball = AIBall::create();
         this->addChild(aiball);
         AIBallArray.pushBack(aiball);
@@ -122,11 +122,17 @@ void Game::createAIBAlls() {
 }
 
 /**
- * 定时生成小球
+ * 定时生成小球和AIBall
  */
 void Game::createBaseBallTimer(float delta) {
+    // 小球
     if (baseBallArray.size() > maxBaseBallNum) return;
-    createBaseBalls(200*CCRANDOM_0_1());
+    createBaseBalls(300*CCRANDOM_0_1());
+    // AIBall
+    int createNum = maxAIBallNum - (int)AIBallArray.size();
+    if (createNum > 0) {
+        createAIBAlls(createNum);
+    }
 }
 
 /**
@@ -191,7 +197,6 @@ void Game::gameObserver(float delta) {
         AIBall *aiball = *it;
         for (Vector<BaseBall*>::const_iterator it2 = baseBallArray.begin(); it2 != baseBallArray.end(); it2++) {
             BaseBall *baseball = *it2;
-            
             double distance = pow(baseball->getPos().x - aiball->getPos().x, 2) + pow(baseball->getPos().y - aiball->getPos().y, 2);
             if (distance <= pow(aiball->getR(), 2)) {
                 // 吃掉baseball，获得其体重
@@ -208,4 +213,19 @@ void Game::gameObserver(float delta) {
     for (Vector<BaseBall*>::const_iterator it = deadballs.begin(); it != deadballs.end(); it++) {
         removeChild(*it);
     }
+}
+
+/**
+ * 退出场景
+ */
+void Game::onExit() {
+    this->unscheduleUpdate();
+    this->unscheduleAllCallbacks();
+}
+
+/**
+ * 析构函数
+ */
+Game::~Game(){
+    
 }

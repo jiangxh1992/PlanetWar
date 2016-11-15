@@ -28,7 +28,7 @@ bool PlayerBall::init() {
     position = Vec2(VisiableSize.width/2, VisiableSize.height/2);
     
     // 初始重量
-    weight = minWeight*4;
+    weight = minWeight*10;
     // 速度(>=1)
     speed = sqrt(Energy/weight);
     // 半径
@@ -47,7 +47,7 @@ bool PlayerBall::init() {
     this->addChild(drawNode);
     
     // 开启安帧更新
-    //this->scheduleUpdate();
+    this->scheduleUpdate();
     // 开启定时器
     this->schedule(schedule_selector(PlayerBall::fixedUpdate), Interval);
     

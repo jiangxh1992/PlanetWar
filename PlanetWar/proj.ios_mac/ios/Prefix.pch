@@ -22,7 +22,7 @@
 
 // 游戏场景边界
 #define maxW 1000
-#define maxH 320
+#define maxH 500
 
 
 // 设计分辨率
@@ -41,3 +41,5 @@
 #define maxWeight 1000
 // 屏幕小球的数量上限
 #define maxBaseBallNum 1000
+// AI球的数量上限
+#define maxAIBallNum 40

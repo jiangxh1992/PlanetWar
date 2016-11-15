@@ -53,7 +53,7 @@ bool AIBall::init() {
     this->addChild(drawNode);
     
     // 开启安帧更新
-    //this->scheduleUpdate();
+    this->scheduleUpdate();
     // 开启定时器
     this->schedule(schedule_selector(AIBall::fixedUpdate), Interval);
     
@@ -76,6 +76,9 @@ void AIBall::updateWeight(int addedWeight) {
  * 安帧更新
  */
 void AIBall::update(float time) {
+    // 死亡球回收池
+    Vector<BaseBall*> deadballs = Vector<BaseBall*>();
+
     // 检测吃小球
     for (Vector<BaseBall*>::const_iterator it = Game::sharedGame()->baseBallArray.begin(); it != Game::sharedGame()->baseBallArray.end(); it++) {
         BaseBall *baseball = *it;
@@ -86,7 +89,7 @@ void AIBall::update(float time) {
             updateWeight(baseball->getWeight());
             // 移除baseball
             Game::sharedGame()->baseBallArray.eraseObject(baseball);
-            Game::sharedGame()->removeChild(baseball);
+            deadballs.pushBack(baseball);
         }
     }
     
@@ -96,14 +99,19 @@ void AIBall::update(float time) {
         if (!aiball || !aiball->weight) return;
         if (weight > aiball->weight) {
             double distance = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
-            if (distance <= pow(radius - aiball->radius, 2)) {
+            if (distance <= pow(radius - aiball->radius + 2, 2)) {
                 // 吃掉baseball，获得其体重
                 updateWeight(aiball->getWeight());
                 // 移除baseball
                 Game::sharedGame()->AIBallArray.eraseObject(aiball);
-                Game::sharedGame()->removeChild(aiball);
+                deadballs.pushBack(aiball);
             }
         }
+    }
+    
+    // 移除回收池内的死球
+    for (Vector<BaseBall*>::const_iterator it = deadballs.begin(); it != deadballs.end(); it++) {
+        Game::sharedGame()->removeChild(*it);
     }
     
 }
@@ -152,4 +160,11 @@ void AIBall::fixedUpdate(float delta) {
 //        direction = -dir;
 //    }
 
+}
+
+/**
+ * 析构函数
+ */
+AIBall::~AIBall() {
+    this->unscheduleAllCallbacks();
 }

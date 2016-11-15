@@ -69,3 +69,10 @@ void BaseBall::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform,
  * 安帧更新
  */
 //void BaseBall::update(float time) {}
+
+/**
+ * 析构
+ */
+BaseBall::~BaseBall() {
+    //this->unscheduleUpdate();
+}
