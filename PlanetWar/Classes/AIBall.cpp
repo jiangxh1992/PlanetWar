@@ -166,5 +166,6 @@ void AIBall::fixedUpdate(float delta) {
  * 析构函数
  */
 AIBall::~AIBall() {
+    this->unscheduleUpdate();
     this->unscheduleAllCallbacks();
 }

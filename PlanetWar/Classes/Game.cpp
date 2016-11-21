@@ -147,11 +147,11 @@ void Game::back(cocos2d::Ref* pSender) {
  */
 void Game::addTouchListener() {
     // 开启交互
-    this->setTouchEnabled(true);
+    //this->setTouchEnabled(true);
     // 定义事件分发
     EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
     // 单点触控
-    this->setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
+    //this->setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
     
     auto oneTouch = EventListenerTouchOneByOne::create();
     // 触摸开始
@@ -219,13 +219,18 @@ void Game::gameObserver(float delta) {
  * 退出场景
  */
 void Game::onExit() {
+    // 关闭所有回调
     this->unscheduleUpdate();
     this->unscheduleAllCallbacks();
+    // 关闭交互监听
+    Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+    Layer::onExit();
 }
 
 /**
  * 析构函数
  */
 Game::~Game(){
-    
+    // 销毁所有对象
+    this->removeAllChildren();
 }
