@@ -9,6 +9,7 @@
 #ifndef __PlanetWar__Game__ 
 #define __PlanetWar__Game__
 #include "PlayerBall.h"
+#include "StaticBall.h"
 
 class Game : public cocos2d::Layer {
   
@@ -19,6 +20,8 @@ public:
 	// 对象初始化
 	virtual bool init();
     CREATE_FUNC(Game);
+    // 图形绘制函数
+    virtual void draw(cocos2d::Renderer*renderer, const cocos2d::Mat4& transform, uint32_t flags);
     // 退出
     void onExit();
     // 析构函数
@@ -31,6 +34,9 @@ private:
     // 触摸起始点和结束点
     cocos2d::Vec2 startPoint = cocos2d::Vec2::ZERO;
     cocos2d::Vec2 endPoint = cocos2d::Vec2::ZERO;
+    // DrawNode
+    cocos2d::DrawNode *drawNode;
+
     
     // 游戏变量初始化
     void initData();
@@ -57,8 +63,10 @@ public:
     // 游戏场景单例
     static Game* sharedGame();
     // 数组
+    // staticball数组
     // BaseBall数组
-    cocos2d::Vector<BaseBall*> baseBallArray;
+    StaticBall *staticArray;
+    //cocos2d::Vector<StaticBall*> baseBallArray;
     // AIBall数组
     cocos2d::Vector<AIBall*> AIBallArray;
 

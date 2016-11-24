@@ -7,7 +7,7 @@
 //
 
 #include "AIBall.h"
-#include "BaseBall.h"
+#include "StaticBall.h"
 #include "Game.h"
 #include <math.h>
 USING_NS_CC;
@@ -76,23 +76,21 @@ void AIBall::updateWeight(int addedWeight) {
  * 安帧更新
  */
 void AIBall::update(float time) {
-    // 死亡球回收池
-    Vector<BaseBall*> deadballs = Vector<BaseBall*>();
-
+    
     // 检测吃小球
-    for (Vector<BaseBall*>::const_iterator it = Game::sharedGame()->baseBallArray.begin(); it != Game::sharedGame()->baseBallArray.end(); it++) {
-        BaseBall *baseball = *it;
-        if (!baseball) return;
-        double distance = pow(baseball->getPos().x -  position.x, 2) + pow(baseball->getPos().y - position.y, 2);
+    for (int i = 0; i < maxBaseBallNum ; i++) {
+        StaticBall baseball = Game::sharedGame()->staticArray[i];
+        if (!baseball.isActive) continue;
+        double distance = pow(baseball.position.x -  position.x, 2) + pow(baseball.position.y - position.y, 2);
         if (distance <= radius*radius) {
             // 吃掉baseball，获得其体重
-            updateWeight(baseball->getWeight());
+            updateWeight(baseball.weight);
             // 移除baseball
-            Game::sharedGame()->baseBallArray.eraseObject(baseball);
-            deadballs.pushBack(baseball);
+            Game::sharedGame()->staticArray[i].isActive = false;
         }
     }
     
+    Vector<AIBall*> autoreleasepool = Vector<AIBall*>();
     // 检测吞并
     for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
         AIBall *aiball = *it;
@@ -104,15 +102,16 @@ void AIBall::update(float time) {
                 updateWeight(aiball->getWeight());
                 // 移除baseball
                 Game::sharedGame()->AIBallArray.eraseObject(aiball);
-                deadballs.pushBack(aiball);
+                autoreleasepool.pushBack(aiball);
             }
         }
     }
-    
     // 移除回收池内的死球
-    for (Vector<BaseBall*>::const_iterator it = deadballs.begin(); it != deadballs.end(); it++) {
-        Game::sharedGame()->removeChild(*it);
+    for (Vector<AIBall*>::const_iterator it = autoreleasepool.begin(); it != autoreleasepool.end(); it++) {
+        AIBall *ball = *it;
+        Game::sharedGame()->AIBallArray.eraseObject(ball);
     }
+    
     
 }
 

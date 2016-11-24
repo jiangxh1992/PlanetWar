@@ -54,7 +54,6 @@ bool MenuScene::init() {
     menu->setPosition(Vec2(VisiableSize.width/2, VisiableSize.height/2));
     this->addChild(menu,1);
     
-    
     return true;
 }
 
@@ -63,4 +62,11 @@ bool MenuScene::init() {
  */
 void MenuScene::startGame(cocos2d::Ref* pSender) {
     Director::getInstance()->replaceScene(Game::createScene());
+}
+
+/**
+ * 场景退出
+ */
+void MenuScene::onExit() {
+    Layer::onExit();
 }

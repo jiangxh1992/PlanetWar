@@ -17,6 +17,9 @@ public:
     virtual bool init();
     CREATE_FUNC(MenuScene);
     
+    // 场景退出
+    void onExit();
+    
     // 开始游戏
     void startGame(cocos2d::Ref* pSender);
 };

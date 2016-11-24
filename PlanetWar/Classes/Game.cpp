@@ -65,7 +65,7 @@ bool Game::init() {
     this->schedule(schedule_selector(Game::createBaseBallTimer), Interval*30);
     
     // 开启观察者
-    this->schedule(schedule_selector(Game::gameObserver), Interval);
+    //this->schedule(schedule_selector(Game::gameObserver), Interval);
     
     return true;
 }
@@ -74,8 +74,12 @@ bool Game::init() {
  * 游戏变量初始化
  */
 void Game::initData() {
-    baseBallArray = Vector<BaseBall*>();
-    //AIBallArray = __Array::create();
+    //baseBallArray = Vector<StaticBall*>();
+    AIBallArray = Vector<AIBall*>();
+    
+    // drawnode
+    drawNode = DrawNode::create();
+    this->addChild(drawNode);
 }
 
 /**
@@ -103,10 +107,9 @@ void Game::addUI() {
  * BaseBall工厂函数
  */
 void Game::createBaseBalls(int num) {
+    staticArray = new StaticBall[num];
     for (int i = 0; i<num; i++) {
-        auto ball = BaseBall::create();
-        this->addChild(ball);
-        baseBallArray.pushBack(ball);
+        staticArray[i] = StaticBall();
     }
 }
 
@@ -125,13 +128,32 @@ void Game::createAIBAlls(int num) {
  * 定时生成小球和AIBall
  */
 void Game::createBaseBallTimer(float delta) {
-    // 小球
-    if (baseBallArray.size() > maxBaseBallNum) return;
-    createBaseBalls(300*CCRANDOM_0_1());
+    // 小球随机激活
+    for (int i = 0; i<maxBaseBallNum; i++) {
+        bool random = CCRANDOM_0_1()>0.5 ? true : false;
+        if (random && !staticArray[i].isActive) {
+            staticArray[i].reActive();
+        }
+    }
     // AIBall
-    int createNum = maxAIBallNum - (int)AIBallArray.size();
-    if (createNum > 0) {
-        createAIBAlls(createNum);
+//    int createNum = maxAIBallNum - (int)AIBallArray.size();
+//    if (createNum > 0) {
+//        createAIBAlls(createNum);
+//    }
+}
+
+/**
+ * 图形绘制
+ */
+void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
+    // 清空之前的绘制
+    drawNode->clear();
+    for (int i = 0 ; i < maxBaseBallNum ; i++) {
+        if (!staticArray[i].isActive) continue;
+        // 绘制实心圆形
+        drawNode->drawDot(staticArray[i].position, staticArray[i].radius, staticArray[i].color);
+        // 深度
+        drawNode->setGlobalZOrder(-1);
     }
 }
 
