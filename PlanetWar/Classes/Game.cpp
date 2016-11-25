@@ -88,7 +88,7 @@ void Game::addUI() {
     
     // debug text
     debuglabel = Label::create();
-    debuglabel->setString("debug");
+    debuglabel->setString("");
     debuglabel->setPosition(Vec2(100,100));
     addChild(debuglabel,100);
     

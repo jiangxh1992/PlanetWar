@@ -160,7 +160,7 @@ void AIBall::sharedUpdate(float delta) {
     // 移除回收池内的死球
     for (Vector<AIBall*>::const_iterator it = autoreleasepool.begin(); it != autoreleasepool.end(); it++) {
         AIBall *ball = *it;
-        Game::sharedGame()->AIBallArray.eraseObject(ball);
+        Game::sharedGame()->removeChild(ball);
     }
 
 }

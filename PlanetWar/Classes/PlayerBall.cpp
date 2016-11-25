@@ -30,7 +30,7 @@ bool PlayerBall::init() {
     position = Vec2(VisiableSize.width/2, VisiableSize.height/2);
     
     // 初始重量
-    weight = minWeight*10;
+    weight = minWeight*2;
     // 速度(>=1)
     speed = sqrt(Energy/weight);
     // 半径
@@ -102,7 +102,7 @@ void PlayerBall::thisUpdate(float delta) {
         Vec2 offset_p = position - Vec2(ScreenWidth/2, ScreenHeight/2);
         Vec2 offset_l = Game::sharedGame()->getPosition();
         Vec2 dir = offset_l + offset_p;
-        int factor = dir.x + dir.y > 2 ? 2 : 1;
+        int factor = dir.x + dir.y > 2 ? 1.2 : 1;
         dir.normalize();
         Game::sharedGame()->setPosition(Game::sharedGame()->getPosition() - dir*factor*speed);
         Game::sharedGame()->menu->setPosition(Game::sharedGame()->menu->getPosition() + dir*factor*speed);
