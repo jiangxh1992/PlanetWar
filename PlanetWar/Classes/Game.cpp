@@ -172,7 +172,7 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
  * 返回到菜单
  */
 void Game::back(cocos2d::Ref* pSender) {
-    Director::getInstance()->replaceScene(MenuScene::createScene());
+    Director::getInstance()->replaceScene(TransitionFade::create(0.5, MenuScene::createScene()));
 }
 
 /**
@@ -238,7 +238,7 @@ void Game::update(float time) {
  * 游戏观察者
  */
 void Game::gameObserver(float delta) {
-    std::cout<<CurState<<std::endl;
+    //std::cout<<CurState<<std::endl;
 //    // 死亡球回收池
 //    Vector<BaseBall*> deadballs = Vector<BaseBall*>();
 //    // 检测吃小球

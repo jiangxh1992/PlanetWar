@@ -17,6 +17,8 @@ public:
     virtual bool init();
     CREATE_FUNC(MenuScene);
     
+    // 进入场景
+    //void onEnter();
     // 场景退出
     void onExit();
     

@@ -41,8 +41,7 @@ bool MenuScene::init() {
     // 2.菜单页面背景图片
     auto menu_bg = Sprite::create("menu_bg.png");
     menu_bg->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
-    
-    this->addChild(menu_bg);
+    addChild(menu_bg);
     
     // 3.按钮菜单
     // 开始游戏按钮
@@ -52,7 +51,7 @@ bool MenuScene::init() {
     // 按钮菜单
     auto menu = Menu::create(item_startgame, NULL);
     menu->setPosition(Vec2(VisiableSize.width/2, VisiableSize.height/2));
-    this->addChild(menu,1);
+    addChild(menu,1);
     
     return true;
 }
@@ -61,12 +60,18 @@ bool MenuScene::init() {
  * 跳转到游戏场景
  */
 void MenuScene::startGame(cocos2d::Ref* pSender) {
-    Director::getInstance()->replaceScene(Game::createScene());
+    Director::getInstance()->replaceScene(TransitionFade::create(0.5, Game::createScene()));
 }
+
+/**
+ * 场景进入
+ */
+//void MenuScene::onEnter() {}
 
 /**
  * 场景退出
  */
 void MenuScene::onExit() {
+    this->removeAllChildren();
     Layer::onExit();
 }
