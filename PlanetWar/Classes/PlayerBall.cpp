@@ -69,7 +69,8 @@ void PlayerBall::thisUpdate(float delta) {
     // 移动
     bool isEage = position.x >= maxW-radius || position.x <= radius-maxW || position.y >= maxH-radius || position.y <= radius-maxH;
     if(isEage) {
-        position -= direction*speed;
+        position -= direction*speed*2;
+        direction = Vec2::ZERO;
         setPosition(position);// 本地坐标
     }else {
         position += direction*speed;
@@ -98,10 +99,13 @@ void PlayerBall::thisUpdate(float delta) {
     }
     // 屏幕跟随
     if (Game::sharedGame()->getState() != OVER_MAP) {
-        Vec2 dir = position - Vec2(ScreenWidth/2, ScreenHeight/2);
+        Vec2 offset_p = position - Vec2(ScreenWidth/2, ScreenHeight/2);
+        Vec2 offset_l = Game::sharedGame()->getPosition();
+        Vec2 dir = offset_l + offset_p;
+        int factor = dir.x + dir.y > 2 ? 2 : 1;
         dir.normalize();
-        Game::sharedGame()->setPosition(Game::sharedGame()->getPosition() - dir*speed);
-        Game::sharedGame()->menu->setPosition(Game::sharedGame()->menu->getPosition() + dir*speed);
+        Game::sharedGame()->setPosition(Game::sharedGame()->getPosition() - dir*factor*speed);
+        Game::sharedGame()->menu->setPosition(Game::sharedGame()->menu->getPosition() + dir*factor*speed);
     }
     
     
