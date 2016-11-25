@@ -68,38 +68,42 @@ void PlayerBall::update(float time) {}
 void PlayerBall::thisUpdate(float delta) {
     // 移动
     bool isEage = position.x >= maxW-radius || position.x <= radius-maxW || position.y >= maxH-radius || position.y <= radius-maxH;
-    if(!isEage) {
+    if(isEage) {
+        position -= direction*speed;
+        setPosition(position);// 本地坐标
+    }else {
         position += direction*speed;
         setPosition(position);// 本地坐标
     }
     
     // 检测更新player状态
     // RUN_NORMAL -> OVER_MAP
-    Vec2 dir = Vec2(direction);
     if(Game::sharedGame()->getState() == RUN_NORMAL) {
         if (position.x >= maxW-ScreenWidth/2) {
-            if (dir.x > 0) dir.x = 0;
             Game::sharedGame()->setState(OVER_MAP);
         }
         
         if (position.x <= ScreenWidth/2-maxW) {
-            if (dir.x < 0) dir.x = 0;
             Game::sharedGame()->setState(OVER_MAP);
         }
         
         if (position.y >= maxH-ScreenHeight/2) {
-            if (dir.y > 0) dir.y = 0;
             Game::sharedGame()->setState(OVER_MAP);
         }
         
         if (position.y <= ScreenHeight/2-maxH) {
-            if (dir.y < 0) dir.y = 0;
             Game::sharedGame()->setState(OVER_MAP);
         }
         
     }
     // 屏幕跟随
-    Game::sharedGame()->gameLayer->setPosition(Game::sharedGame()->getPosition() - dir*speed);
+    if (Game::sharedGame()->getState() != OVER_MAP) {
+        Vec2 dir = position - Vec2(ScreenWidth/2, ScreenHeight/2);
+        dir.normalize();
+        Game::sharedGame()->setPosition(Game::sharedGame()->getPosition() - dir*speed);
+        Game::sharedGame()->menu->setPosition(Game::sharedGame()->menu->getPosition() + dir*speed);
+    }
+    
     
     // OVER_MAP -> RUN_NORMAL
     int curState = Game::sharedGame()->getState();

@@ -20,8 +20,6 @@ public:
 	// 对象初始化
 	virtual bool init();
     CREATE_FUNC(Game);
-    // 进入Game层
-    void onEnter();
     // 安帧更新
     virtual void update(float time);
     // 图形绘制函数
@@ -33,10 +31,6 @@ public:
     
 /** 内部变量和函数 **/
 private:
-    // 场景
-    cocos2d::Scene *scene;
-    // 层
-    cocos2d::Layer *uiLayer;
     
     // 玩家
     PlayerBall *player;
@@ -76,7 +70,7 @@ private:
 public:
     // 游戏场景单例
     static Game* sharedGame();
-    cocos2d::Layer *gameLayer;
+    cocos2d::Menu *menu;
     // 数组
     // staticball数组
     StaticBall *staticArray;

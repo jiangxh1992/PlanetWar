@@ -17,9 +17,10 @@ USING_NS_CC;
  * 创建游戏场景
  */
 Scene* Game::createScene() {
-    // UI层
+    auto scene = Scene::create();
     auto layer = Game::create();
-    return layer->scene;
+    scene->addChild(layer);
+    return scene;
 }
 
 /** 游戏场景单例 **/
@@ -40,28 +41,7 @@ bool Game::init() {
         return false;
     }
     game = this;
-    scene = Scene::create();
-    // 游戏层
-    gameLayer = Layer::create();
-    scene->addChild(gameLayer);
-    scene->addChild(this);
     
-    // 开启玩家触屏交互
-    addTouchListener();
-    
-    // 开启定时器
-    //this->schedule(schedule_selector(Game::createBaseBallTimer), Interval*30);
-    
-    // 开启观察者
-    this->schedule(schedule_selector(Game::gameObserver), Interval);
-    
-    return true;
-}
-
-/**
- * 进入Game
- */
-void Game::onEnter() {
     // 游戏变量初始化
     initData();
     // 添加UI
@@ -74,8 +54,19 @@ void Game::onEnter() {
     
     // 创建玩家
     player = PlayerBall::create();
-    gameLayer->addChild(player);
+    addChild(player);
     AIBallArray.pushBack(player);
+    
+    // 开启玩家触屏交互
+    addTouchListener();
+    
+    // 开启定时器
+    this->schedule(schedule_selector(Game::createBaseBallTimer), Interval*30);
+    
+    // 开启观察者
+    this->schedule(schedule_selector(Game::gameObserver), Interval);
+    
+    return true;
 }
 
 /**
@@ -113,13 +104,13 @@ void Game::addUI() {
     item_back->setPosition(Vec2(VisiableSize.width - item_back->getContentSize().width/2, VisiableSize.height - item_back->getContentSize().height/2));
     
     // 按钮菜单
-    auto menu = Menu::create(item_back, NULL);
+    menu = Menu::create(item_back, NULL);
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu,1);
     
     // drawnode
     drawNode = DrawNode::create();
-    gameLayer->addChild(drawNode);
+    addChild(drawNode);
     
 }
 
@@ -139,7 +130,7 @@ void Game::createBaseBalls(int num) {
 void Game::createAIBAlls(int num) {
     for (int i = 0 ; i<num ; i++) {
         auto aiball = AIBall::create();
-        gameLayer->addChild(aiball);
+        addChild(aiball);
         AIBallArray.pushBack(aiball);
     }
 }
@@ -247,6 +238,7 @@ void Game::update(float time) {
  * 游戏观察者
  */
 void Game::gameObserver(float delta) {
+    std::cout<<CurState<<std::endl;
 //    // 死亡球回收池
 //    Vector<BaseBall*> deadballs = Vector<BaseBall*>();
 //    // 检测吃小球
