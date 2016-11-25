@@ -18,15 +18,20 @@ public:
 	static PlayerBall* create();
 	// 对象初始化
 	virtual bool init();
-    // 定时更新
-    virtual void fixedUpdate(float delta);
+    // 安帧更新
+    virtual void update(float time);
+    // 析构函数
+    virtual ~PlayerBall();
 
 /** 内部变量和函数 **/
 protected:
     
+    // 专用更新
+    void thisUpdate(float delta);
+    
 /** 对外接口 **/
 public:
-    void setDir(cocos2d::Vec2 newDir) {direction = newDir;};
+    void setDir(const cocos2d::Vec2 newDir) {direction = newDir;};
 	
 };
 

@@ -8,6 +8,7 @@
 
 #include "PlayerBall.h"
 #include "Game.h"
+#include "Ball.h"
 USING_NS_CC;
 
 PlayerBall* PlayerBall::create() {
@@ -50,25 +51,67 @@ bool PlayerBall::init() {
     // 开启安帧更新
     this->scheduleUpdate();
     // 开启定时器
-    this->schedule(schedule_selector(PlayerBall::fixedUpdate), Interval);
+    this->schedule(schedule_selector(PlayerBall::sharedUpdate), Interval);// 继承自父类的更新
+    this->schedule(schedule_selector(PlayerBall::thisUpdate), Interval);
     
     return true;
 }
 
 /**
+ * 安帧更新
+ */
+void PlayerBall::update(float time) {}
+
+/**
  * 定时更新
  */
-void PlayerBall::fixedUpdate(float delta) {
+void PlayerBall::thisUpdate(float delta) {
     // 移动
-    position += direction*speed;
-    setPosition(position);
-    
-    // 检测边界
-    if(position.x >= maxW-radius || position.x <= radius-maxW || position.y >= maxH-radius || position.y <= radius-maxH) {
-        position -= direction*speed*2;
-        setPosition(position);
-    }else {
-        // 屏幕跟随
-        Game::sharedGame()->setPosition(Game::sharedGame()->getPosition() - direction*speed);
+    bool isEage = position.x >= maxW-radius || position.x <= radius-maxW || position.y >= maxH-radius || position.y <= radius-maxH;
+    if(!isEage) {
+        position += direction*speed;
+        setPosition(position);// 本地坐标
     }
+    
+    // 检测更新player状态
+    // RUN_NORMAL -> OVER_MAP
+    Vec2 dir = Vec2(direction);
+    if(Game::sharedGame()->getState() == RUN_NORMAL) {
+        if (position.x >= maxW-ScreenWidth/2) {
+            if (dir.x > 0) dir.x = 0;
+            Game::sharedGame()->setState(OVER_MAP);
+        }
+        
+        if (position.x <= ScreenWidth/2-maxW) {
+            if (dir.x < 0) dir.x = 0;
+            Game::sharedGame()->setState(OVER_MAP);
+        }
+        
+        if (position.y >= maxH-ScreenHeight/2) {
+            if (dir.y > 0) dir.y = 0;
+            Game::sharedGame()->setState(OVER_MAP);
+        }
+        
+        if (position.y <= ScreenHeight/2-maxH) {
+            if (dir.y < 0) dir.y = 0;
+            Game::sharedGame()->setState(OVER_MAP);
+        }
+        
+    }
+    // 屏幕跟随
+    Game::sharedGame()->gameLayer->setPosition(Game::sharedGame()->getPosition() - dir*speed);
+    
+    // OVER_MAP -> RUN_NORMAL
+    int curState = Game::sharedGame()->getState();
+    bool isOverMap = position.x >= maxW-ScreenWidth/2 || position.x <= ScreenWidth/2-maxW || position.y >= maxH-ScreenHeight/2 || position.y <= ScreenHeight/2-maxH;
+    if(curState == OVER_MAP && !isOverMap) {
+        Game::sharedGame()->setState(RUN_NORMAL);
+    }
+
+}
+
+/**
+ * 析构函数
+ */
+PlayerBall::~PlayerBall() {
 }

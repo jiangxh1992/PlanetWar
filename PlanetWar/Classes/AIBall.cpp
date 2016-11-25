@@ -55,7 +55,8 @@ bool AIBall::init() {
     // 开启安帧更新
     this->scheduleUpdate();
     // 开启定时器
-    this->schedule(schedule_selector(AIBall::fixedUpdate), Interval);
+    this->schedule(schedule_selector(AIBall::thisUpdate), Interval);
+    this->schedule(schedule_selector(AIBall::sharedUpdate), Interval);
     
     return true;
 }
@@ -75,50 +76,12 @@ void AIBall::updateWeight(int addedWeight) {
 /**
  * 安帧更新
  */
-void AIBall::update(float time) {
-    
-    // 检测吃小球
-    for (int i = 0; i < maxBaseBallNum ; i++) {
-        StaticBall baseball = Game::sharedGame()->staticArray[i];
-        if (!baseball.isActive) continue;
-        double distance = pow(baseball.position.x -  position.x, 2) + pow(baseball.position.y - position.y, 2);
-        if (distance <= radius*radius) {
-            // 吃掉baseball，获得其体重
-            updateWeight(baseball.weight);
-            // 移除baseball
-            Game::sharedGame()->staticArray[i].isActive = false;
-        }
-    }
-    
-    Vector<AIBall*> autoreleasepool = Vector<AIBall*>();
-    // 检测吞并
-    for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
-        AIBall *aiball = *it;
-        if (!aiball || !aiball->getWeight()) return;
-        if (weight > aiball->getWeight()) {
-            double distance = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
-            if (distance <= pow(radius - aiball->radius, 2)) {
-                // 吃掉baseball，获得其体重
-                updateWeight(aiball->getWeight());
-                // 移除baseball
-                Game::sharedGame()->AIBallArray.eraseObject(aiball);
-                autoreleasepool.pushBack(aiball);
-            }
-        }
-    }
-    // 移除回收池内的死球
-    for (Vector<AIBall*>::const_iterator it = autoreleasepool.begin(); it != autoreleasepool.end(); it++) {
-        AIBall *ball = *it;
-        Game::sharedGame()->AIBallArray.eraseObject(ball);
-    }
-    
-    
-}
+void AIBall::update(float time) {}
 
 /**
- * 定时器
+ * 本类专用更新
  */
-void AIBall::fixedUpdate(float delta) {
+void AIBall::thisUpdate(float delta) {
     
     // 1.移动
     position += direction * speed;
@@ -138,26 +101,67 @@ void AIBall::fixedUpdate(float delta) {
     }
     
     // 3.简单AI（躲大追小）
-//    // 搜索最近的球
-//    AIBall *nearestball = *Game::sharedGame()->AIBallArray.begin();
-//    if (!nearestball) return;
-//    for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin()+1; it != Game::sharedGame()->AIBallArray.end(); it++) {
-//        AIBall *nextball = *it;
-//        if(!nextball) return;
-//        double nearestDis = pow(nearestball->getPos().x-position.x, 2) + pow(nearestball->getPos().y-position.y, 2);
-//        double newDis = pow(nextball->getPos().x-position.x, 2) + pow(nextball->getPos().y-position.y, 2);
-//        if (newDis < nearestDis) {
-//            nearestball = nextball;
-//        }
-//    }
-//    // 躲大追小
-//    Vec2 dir = nearestball->position - position;
-//    dir.normalize();
-//    if (weight > nearestball->weight) {
-//        direction = dir;
-//    }else {
-//        direction = -dir;
-//    }
+    //    // 搜索最近的球
+    //    AIBall *nearestball = *Game::sharedGame()->AIBallArray.begin();
+    //    if (!nearestball) return;
+    //    for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin()+1; it != Game::sharedGame()->AIBallArray.end(); it++) {
+    //        AIBall *nextball = *it;
+    //        if(!nextball) return;
+    //        double nearestDis = pow(nearestball->getPos().x-position.x, 2) + pow(nearestball->getPos().y-position.y, 2);
+    //        double newDis = pow(nextball->getPos().x-position.x, 2) + pow(nextball->getPos().y-position.y, 2);
+    //        if (newDis < nearestDis) {
+    //            nearestball = nextball;
+    //        }
+    //    }
+    //    // 躲大追小
+    //    Vec2 dir = nearestball->position - position;
+    //    dir.normalize();
+    //    if (weight > nearestball->weight) {
+    //        direction = dir;
+    //    }else {
+    //        direction = -dir;
+    //    }
+}
+
+/**
+ * 共享更新
+ */
+void AIBall::sharedUpdate(float delta) {
+    
+    // 1.检测吃小球
+    for (int i = 0; i < maxBaseBallNum ; i++) {
+        StaticBall baseball = Game::sharedGame()->staticArray[i];
+        if (!baseball.isActive) continue;
+        double distance = pow(baseball.position.x -  position.x, 2) + pow(baseball.position.y - position.y, 2);
+        if (distance <= radius*radius) {
+            // 吃掉baseball，获得其体重
+            updateWeight(baseball.weight);
+            // 移除baseball
+            Game::sharedGame()->staticArray[i].isActive = false;
+        }
+    }
+    
+    // 2.检测吞并
+    Vector<AIBall*> autoreleasepool = Vector<AIBall*>();
+    for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
+        AIBall *aiball = *it;
+        if (!aiball || !aiball->getWeight()) return;
+        if (weight > aiball->getWeight()) {
+            double distance = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
+            if (distance <= pow(radius - aiball->radius, 2)) {
+                // 吃掉baseball，获得其体重
+                updateWeight(aiball->getWeight());
+                // 移除baseball
+                Game::sharedGame()->AIBallArray.eraseObject(aiball);
+                autoreleasepool.pushBack(aiball);
+            }
+        }
+    }
+    // 移除回收池内的死球
+    for (Vector<AIBall*>::const_iterator it = autoreleasepool.begin(); it != autoreleasepool.end(); it++) {
+        AIBall *ball = *it;
+        Game::sharedGame()->AIBallArray.eraseObject(ball);
+    }
 
 }
 

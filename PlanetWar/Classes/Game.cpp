@@ -17,10 +17,9 @@ USING_NS_CC;
  * 创建游戏场景
  */
 Scene* Game::createScene() {
-    auto scene = Scene::create();
+    // UI层
     auto layer = Game::create();
-    scene->addChild(layer);
-    return scene;
+    return layer->scene;
 }
 
 /** 游戏场景单例 **/
@@ -40,11 +39,31 @@ bool Game::init() {
     if (!Layer::init()) {
         return false;
     }
-    
     game = this;
+    scene = Scene::create();
+    // 游戏层
+    gameLayer = Layer::create();
+    scene->addChild(gameLayer);
+    scene->addChild(this);
+    
+    // 开启玩家触屏交互
+    addTouchListener();
+    
+    // 开启定时器
+    //this->schedule(schedule_selector(Game::createBaseBallTimer), Interval*30);
+    
+    // 开启观察者
+    this->schedule(schedule_selector(Game::gameObserver), Interval);
+    
+    return true;
+}
+
+/**
+ * 进入Game
+ */
+void Game::onEnter() {
     // 游戏变量初始化
     initData();
-    
     // 添加UI
     addUI();
     
@@ -55,41 +74,38 @@ bool Game::init() {
     
     // 创建玩家
     player = PlayerBall::create();
-    this->addChild(player);
+    gameLayer->addChild(player);
     AIBallArray.pushBack(player);
-    
-    // 开启玩家触屏交互
-    addTouchListener();
-    
-    // 开启定时器
-    this->schedule(schedule_selector(Game::createBaseBallTimer), Interval*30);
-    
-    // 开启观察者
-    //this->schedule(schedule_selector(Game::gameObserver), Interval);
-    
-    return true;
 }
 
 /**
  * 游戏变量初始化
  */
 void Game::initData() {
-    //baseBallArray = Vector<StaticBall*>();
-    AIBallArray = Vector<AIBall*>();
     
-    // drawnode
-    drawNode = DrawNode::create();
-    this->addChild(drawNode);
+    // 默认游戏状态
+    CurState = IDLE_NORMAL;
+    
+    // 对象容器初始化
+    AIBallArray = Vector<AIBall*>();
 }
 
 /**
  * 添加UI
  */
 void Game::addUI() {
+    
+    // debug text
+    debuglabel = Label::create();
+    debuglabel->setString("debug");
+    debuglabel->setPosition(Vec2(100,100));
+    addChild(debuglabel,100);
+    
+    
     // 背景图片
     auto game_bg = Sprite::create("game_bg.jpg");
     game_bg->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
-    //this->addChild(game_bg);
+    //gameLayer->addChild(game_bg);
     
     // 按钮菜单
     // 返回按钮
@@ -100,6 +116,10 @@ void Game::addUI() {
     auto menu = Menu::create(item_back, NULL);
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu,1);
+    
+    // drawnode
+    drawNode = DrawNode::create();
+    gameLayer->addChild(drawNode);
     
 }
 
@@ -119,7 +139,7 @@ void Game::createBaseBalls(int num) {
 void Game::createAIBAlls(int num) {
     for (int i = 0 ; i<num ; i++) {
         auto aiball = AIBall::create();
-        this->addChild(aiball);
+        gameLayer->addChild(aiball);
         AIBallArray.pushBack(aiball);
     }
 }
@@ -196,6 +216,7 @@ bool Game::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
     startPoint = touch->getLocation();
     return true;
 }
+
 /**
  * 触摸结束事件
  */
@@ -203,9 +224,23 @@ void Game::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
     endPoint = touch->getLocation();
     // 更新玩家移动方向
     Vec2 newDir = endPoint - startPoint;
+    
+    // RUN_NORMAL -> IDLE_NORMAL
+    if (newDir.isZero() && CurState == RUN_NORMAL) {
+        CurState = IDLE_NORMAL;
+    }
+    // IDLE_NORMAL -> RUN_NORMAL
+    else if (CurState == IDLE_NORMAL) {
+        CurState = RUN_NORMAL;
+    }
+    
     newDir.normalize();
     player->setDir(newDir);
     
+}
+
+// 安帧更新
+void Game::update(float time) {
 }
 
 /**

@@ -21,7 +21,7 @@ public:
 	virtual bool init();
     // 安帧更新
     virtual void update(float time);
-    // 西沟函数
+    // 析构函数
     virtual ~AIBall();
 
 /** 内部变量和函数 **/
@@ -31,8 +31,10 @@ protected:
     // 移动速度
     int speed = 0;
     
-    // 定时更新
-    virtual void fixedUpdate(float delta);
+    // 专用更新(禁止子类重用)
+    void thisUpdate(float delta);
+    // 通用更新(用于子类重用)
+    virtual void sharedUpdate(float delta);
     
 /** 对外接口 **/
 public:

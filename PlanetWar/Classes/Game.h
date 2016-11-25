@@ -20,6 +20,10 @@ public:
 	// 对象初始化
 	virtual bool init();
     CREATE_FUNC(Game);
+    // 进入Game层
+    void onEnter();
+    // 安帧更新
+    virtual void update(float time);
     // 图形绘制函数
     virtual void draw(cocos2d::Renderer*renderer, const cocos2d::Mat4& transform, uint32_t flags);
     // 退出
@@ -29,13 +33,23 @@ public:
     
 /** 内部变量和函数 **/
 private:
+    // 场景
+    cocos2d::Scene *scene;
+    // 层
+    cocos2d::Layer *uiLayer;
+    
     // 玩家
     PlayerBall *player;
+    // 状态机
+    int CurState;
     // 触摸起始点和结束点
     cocos2d::Vec2 startPoint = cocos2d::Vec2::ZERO;
     cocos2d::Vec2 endPoint = cocos2d::Vec2::ZERO;
     // DrawNode
     cocos2d::DrawNode *drawNode;
+    
+    // debug txt
+    cocos2d::Label *debuglabel;
 
     
     // 游戏变量初始化
@@ -62,16 +76,19 @@ private:
 public:
     // 游戏场景单例
     static Game* sharedGame();
+    cocos2d::Layer *gameLayer;
     // 数组
     // staticball数组
-    // BaseBall数组
     StaticBall *staticArray;
-    //cocos2d::Vector<StaticBall*> baseBallArray;
     // AIBall数组
     cocos2d::Vector<AIBall*> AIBallArray;
+    
+    // setter
+    void setState(const int state) { CurState = state; }
 
-    //cocos2d::__Array* getBaseBallArray() {return baseBallArray;};
-    //cocos2d::__Array* getAIBallArray() {return AIBallArray;};
+    // getter
+    const int getState() { return CurState; }
+    const PlayerBall* getPlayer() { return player; }
 
 };
 
