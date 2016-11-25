@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "MenuScene.h"
+#include "WellCome.h"
 
 USING_NS_CC;
 
@@ -74,7 +75,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = MenuScene::createScene();
+    auto scene = WellCome::createScene();
 
     // run
     director->runWithScene(scene);
