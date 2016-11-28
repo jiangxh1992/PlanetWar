@@ -79,6 +79,9 @@ private:
 /** 对外接口 **/
 public:
     
+    // 缩放参数
+    float scale;
+    
     // 游戏场景单例
     static Game* sharedGame();
     // UI layer

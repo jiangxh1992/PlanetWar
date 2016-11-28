@@ -11,7 +11,18 @@
 #include "AIBall.h"
 #include "MenuScene.h"
 #include <math.h>
+#include <string.h>
+#include <iostream>
+using namespace std;
 
+//转换成string类型
+template<typename T>
+string Convert2String(const T &value)
+{
+    stringstream ss;
+    ss << value;
+    return ss.str();
+}
 
 /**
  * 创建游戏场景
@@ -60,6 +71,8 @@ bool Game::init() {
     // 开启玩家触屏交互
     addTouchListener();
     
+    this->scheduleUpdate();
+    
     // 开启定时器
     this->schedule(schedule_selector(Game::createBaseBallTimer), Interval*30);
     
@@ -73,6 +86,9 @@ bool Game::init() {
  * 游戏变量初始化
  */
 void Game::initData() {
+    
+    // 默认不缩放
+    scale = 1.0f;
     
     // 默认游戏状态
     CurState = IDLE_NORMAL;
@@ -101,10 +117,14 @@ void Game::addUI() {
     // debug text
     debuglabel = Label::create();
     debuglabel->setString("TEST!!!");
-    debuglabel->setBMFontSize(100);
-    debuglabel->setPosition(Vec2(ScreenWidth/2,ScreenHeight/2));
-    uilayer->addChild(debuglabel,100);
+    debuglabel->setPosition(Vec2(debuglabel->getContentSize().width/2 + 10,ScreenHeight - 30));
+    uilayer->addChild(debuglabel);
     
+    // 绘制屏幕中心
+    auto centerLabel = Label::create();
+    centerLabel->setString("+++++++++++");
+    centerLabel->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
+    uilayer->addChild(centerLabel);
     
     // 背景图片
     auto game_bg = Sprite::create("game_bg.jpg");
@@ -239,7 +259,8 @@ void Game::back(cocos2d::Ref* pSender) {
  * 加速
  */
 void Game::dash(cocos2d::Ref *pSender) {
-    scaleScreen(0.5);
+    scale = 0.5f;
+    scaleScreen(scale);
 }
 
 /**
@@ -299,6 +320,8 @@ void Game::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
 
 // 安帧更新
 void Game::update(float time) {
+    debuglabel->setString(Convert2String(player->getWeight()));
+    
 }
 
 /**

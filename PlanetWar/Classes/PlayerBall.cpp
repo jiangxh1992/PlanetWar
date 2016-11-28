@@ -30,11 +30,7 @@ bool PlayerBall::init() {
     position = Vec2(VisiableSize.width/2, VisiableSize.height/2);
     
     // 初始重量
-    weight = minWeight*2;
-    // 速度(>=1)
-    speed = sqrt(Energy/weight);
-    // 半径
-    radius = 15;
+    updateWeight(minWeight);
     
     // 随机颜色
     color = Color4F(255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 1.0);

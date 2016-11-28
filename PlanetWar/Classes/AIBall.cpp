@@ -67,10 +67,9 @@ bool AIBall::init() {
 void AIBall::updateWeight(int addedWeight) {
     weight += addedWeight;
     // 速度(>=1)
-    speed = sqrt(Energy/(weight*2));
-    if (speed<1) speed = 1;
+    speed = 3;
     // 半径
-    radius = sqrt(weight*10/PI);
+    radius = sqrt(weight)*Game::sharedGame()->scale;
 }
 
 /**
