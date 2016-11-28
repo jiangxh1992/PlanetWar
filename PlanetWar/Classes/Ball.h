@@ -11,8 +11,8 @@
 
 /** 常量 **/
 // 游戏场景边界
-extern const int maxW;
-extern const int maxH;
+extern int maxW;
+extern int maxH;
 
 // 设计分辨率
 extern const int designW;
@@ -39,6 +39,8 @@ typedef enum{
     RUN_NORMAL,
     OVER_MAP
 }PLAYER_STATE;
+
+
 
 
 #endif /* Ball_h */

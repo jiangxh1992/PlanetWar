@@ -18,7 +18,7 @@ void StaticBall::reActive() {
     // 随机位置
     position = Vec2((CCRANDOM_0_1()*2-1) * maxW, (CCRANDOM_0_1()*2-1) * maxH);
     // 半径
-    radius = 2;
+    radius = 5;
     // 随机颜色
     color = Color4F(255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 1.0);
 }

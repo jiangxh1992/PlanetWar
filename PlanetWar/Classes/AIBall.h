@@ -40,6 +40,7 @@ protected:
 public:
     // 更新重量
     virtual void updateWeight(int addedWeight);
+    void scaleSpeed(float scale){speed *= scale;};
     
 };
 

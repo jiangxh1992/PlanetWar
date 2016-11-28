@@ -79,6 +79,15 @@ void Game::initData() {
     
     // 对象容器初始化
     AIBallArray = Vector<AIBall*>();
+
+    // 3,4,5边形
+//    polyData = new Point*[3];
+//    for (int i = 3; i<=5; i++) {
+//        polyData[i-3] = new Point[i];
+//        for (int j = 0 ; j<i; j++) {
+//            polyData[i-3][j] = Vec2(cos(2*PI*j/i), sin(2*PI*j/i));
+//        }
+//    }
 }
 
 /**
@@ -103,12 +112,16 @@ void Game::addUI() {
     //gameLayer->addChild(game_bg);
     
     // 按钮菜单
-    // 返回按钮
+    // 1.返回按钮
     auto item_back = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", CC_CALLBACK_1(Game::back, this));
     item_back->setPosition(Vec2(VisiableSize.width - item_back->getContentSize().width/2, VisiableSize.height - item_back->getContentSize().height/2));
     
+    // 2.加速按钮
+    auto item_dash = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", CC_CALLBACK_1(Game::dash, this));
+    item_dash->setPosition(Vec2(VisiableSize.width - item_dash->getContentSize().width/2, item_dash->getContentSize().height/2));
+    
     // 按钮菜单
-    menu = Menu::create(item_back, NULL);
+    menu = Menu::create(item_back, item_dash, NULL);
     menu->setPosition(Vec2::ZERO);
     uilayer->addChild(menu,1);
     
@@ -163,9 +176,18 @@ void Game::createBaseBallTimer(float delta) {
 void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
     // 清空之前的绘制
     drawNode->clear();
+    // 生成随机边数
+    //int polyNum = 2 + CCRANDOM_0_1()*3;
+    
     for (int i = 0 ; i < maxBaseBallNum ; i++) {
         if (!staticArray[i].isActive) continue;
-        // 绘制实心圆形
+        // 绘制多边形
+//        Point *vertexs = new Point[polyNum];
+//        for (int i = 0; i<polyNum; i++) {
+//            vertexs[i].x = staticArray[i].position.x + staticArray[i].radius * polyData[polyNum-3][i].x;
+//            vertexs[i].y = staticArray[i].position.y + staticArray[i].radius * polyData[polyNum-3][i].y;
+//        }
+        //drawNode->drawPoly(vertexs, polyNum, true, staticArray[i].color);
         drawNode->drawDot(staticArray[i].position, staticArray[i].radius, staticArray[i].color);
         // 深度
         drawNode->setGlobalZOrder(-1);
@@ -173,10 +195,51 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
 }
 
 /**
+ * 屏幕缩放
+ */
+void Game::scaleScreen(float scale) {
+    maxW *= scale;
+    maxH *= scale;
+    
+    // baseball缩放
+    for (int i = 0; i < maxBaseBallNum ; i++) {
+        StaticBall baseball = Game::sharedGame()->staticArray[i];
+        if (!baseball.isActive) continue;
+        // size
+        baseball.radius *= scale;
+        // position
+        baseball.position *= scale;
+    }
+    
+    // AIBall缩放
+    for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
+        AIBall *aiball = *it;
+        // size
+        aiball->scaleRadius(scale);
+        // position
+        aiball->scalePosition(scale);
+        // speed
+        aiball->scaleSpeed(scale);
+    }
+    
+    // 场景缩放
+    setPosition(getPosition()*scale);
+    uilayer->setPosition(uilayer->getPosition()*scale);
+    
+}
+
+/**
  * 返回到菜单
  */
 void Game::back(cocos2d::Ref* pSender) {
     Director::getInstance()->replaceScene(TransitionFade::create(0.5, MenuScene::createScene()));
+}
+
+/**
+ * 加速
+ */
+void Game::dash(cocos2d::Ref *pSender) {
+    scaleScreen(0.5);
 }
 
 /**

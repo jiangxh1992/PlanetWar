@@ -34,7 +34,7 @@ bool PlayerBall::init() {
     // 速度(>=1)
     speed = sqrt(Energy/weight);
     // 半径
-    radius = sqrt(weight*5/PI);
+    radius = 15;
     
     // 随机颜色
     color = Color4F(255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 1.0);
@@ -107,7 +107,6 @@ void PlayerBall::thisUpdate(float delta) {
         Game::sharedGame()->setPosition(Game::sharedGame()->getPosition() - dir*factor*speed);
         Game::sharedGame()->uilayer->setPosition(Game::sharedGame()->uilayer->getPosition() + dir*factor*speed);
     }
-    
     
     // OVER_MAP -> RUN_NORMAL
     int curState = Game::sharedGame()->getState();

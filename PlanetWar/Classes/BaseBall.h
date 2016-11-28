@@ -42,6 +42,8 @@ public:
     
     // setter
     void setWeight(const int _weight){weight = _weight;}
+    void scaleRadius(const float scale){radius *= scale;}
+    void scalePosition(const float scale){position *= scale;}
 };
 
 #endif /* defined(__PlanetWar__BaseBall__) */
