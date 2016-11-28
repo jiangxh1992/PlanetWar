@@ -10,20 +10,21 @@
 #define __PlanetWar__Game__
 #include "PlayerBall.h"
 #include "StaticBall.h"
+USING_NS_CC;
 
-class Game : public cocos2d::Layer {
+class Game : public Layer {
   
 /** 重写函数 **/
 public:
 	// 创建类对象
-	static cocos2d::Scene* createScene();
+	static Scene* createScene();
 	// 对象初始化
 	virtual bool init();
     CREATE_FUNC(Game);
     // 安帧更新
     virtual void update(float time);
     // 图形绘制函数
-    virtual void draw(cocos2d::Renderer*renderer, const cocos2d::Mat4& transform, uint32_t flags);
+    virtual void draw(Renderer*renderer, const Mat4& transform, uint32_t flags);
     // 退出
     void onExit();
     // 析构函数
@@ -37,13 +38,15 @@ private:
     // 状态机
     int CurState;
     // 触摸起始点和结束点
-    cocos2d::Vec2 startPoint = cocos2d::Vec2::ZERO;
-    cocos2d::Vec2 endPoint = cocos2d::Vec2::ZERO;
+    Vec2 startPoint = Vec2::ZERO;
+    Vec2 endPoint = Vec2::ZERO;
     // DrawNode
-    cocos2d::DrawNode *drawNode;
+    DrawNode *drawNode;
     
     // debug txt
-    cocos2d::Label *debuglabel;
+    Label *debuglabel;
+    // 按钮菜单
+    Menu *menu;
 
     
     // 游戏变量初始化
@@ -57,11 +60,11 @@ private:
     // 定时生成小球
     void createBaseBallTimer(float delta);
     // 返回到菜单页面
-    void back(cocos2d::Ref* pSender);
+    void back(Ref* pSender);
     // 注册屏幕触摸事件
     void addTouchListener();
-    bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *unused_event);
-    void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event);
+    bool onTouchBegan(Touch *touch, Event *unused_event);
+    void onTouchEnded(Touch *touch, Event *unused_event);
     
     // 游戏观察者（检测吞并情况）
     void gameObserver(float delta);
@@ -70,12 +73,13 @@ private:
 public:
     // 游戏场景单例
     static Game* sharedGame();
-    cocos2d::Menu *menu;
+    // UI layer
+    LayerColor *uilayer;
     // 数组
     // staticball数组
     StaticBall *staticArray;
     // AIBall数组
-    cocos2d::Vector<AIBall*> AIBallArray;
+    Vector<AIBall*> AIBallArray;
     
     // setter
     void setState(const int state) { CurState = state; }

@@ -11,7 +11,7 @@
 #include "AIBall.h"
 #include "MenuScene.h"
 #include <math.h>
-USING_NS_CC;
+
 
 /**
  * 创建游戏场景
@@ -86,11 +86,15 @@ void Game::initData() {
  */
 void Game::addUI() {
     
+    uilayer = LayerColor::create(Color4B(255, 255, 255, 1.0), ScreenWidth, ScreenHeight);
+    addChild(uilayer);
+    
     // debug text
     debuglabel = Label::create();
-    debuglabel->setString("");
-    debuglabel->setPosition(Vec2(100,100));
-    addChild(debuglabel,100);
+    debuglabel->setString("TEST!!!");
+    debuglabel->setBMFontSize(100);
+    debuglabel->setPosition(Vec2(ScreenWidth/2,ScreenHeight/2));
+    uilayer->addChild(debuglabel,100);
     
     
     // 背景图片
@@ -106,7 +110,7 @@ void Game::addUI() {
     // 按钮菜单
     menu = Menu::create(item_back, NULL);
     menu->setPosition(Vec2::ZERO);
-    this->addChild(menu,1);
+    uilayer->addChild(menu,1);
     
     // drawnode
     drawNode = DrawNode::create();

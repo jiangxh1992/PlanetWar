@@ -105,7 +105,7 @@ void PlayerBall::thisUpdate(float delta) {
         int factor = dir.x + dir.y > 2 ? 1.2 : 1;
         dir.normalize();
         Game::sharedGame()->setPosition(Game::sharedGame()->getPosition() - dir*factor*speed);
-        Game::sharedGame()->menu->setPosition(Game::sharedGame()->menu->getPosition() + dir*factor*speed);
+        Game::sharedGame()->uilayer->setPosition(Game::sharedGame()->uilayer->getPosition() + dir*factor*speed);
     }
     
     
