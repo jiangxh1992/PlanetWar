@@ -10,9 +10,6 @@
 #include "BaseBall.h"
 #include "AIBall.h"
 #include "MenuScene.h"
-#include <math.h>
-#include <string.h>
-#include <iostream>
 using namespace std;
 
 //转换成string类型
@@ -66,6 +63,7 @@ bool Game::init() {
     
     // 创建玩家
     player = PlayerBall::create();
+    player->setLabel("名字起个啥");
     addChild(player);
     AIBallArray.pushBack(player);
     

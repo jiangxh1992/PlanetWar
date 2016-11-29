@@ -26,6 +26,13 @@ bool PlayerBall::init() {
     if (!Sprite::init()) {
         return false;
     }
+    
+    // label
+    label_tag = Label::create();
+    label_tag->setString("player");
+    label_tag->setPosition(Vec2(0, radius+label_tag->getContentSize().height));
+    addChild(label_tag);
+    
     // 位置初始化在屏幕中心
     position = Vec2(VisiableSize.width/2, VisiableSize.height/2);
     // 初始重量
@@ -54,7 +61,7 @@ bool PlayerBall::init() {
     this->scheduleUpdate();
     // 开启定时器
     this->schedule(schedule_selector(PlayerBall::sharedUpdate), Interval);// 继承自父类的更新
-    this->schedule(schedule_selector(PlayerBall::thisUpdate), Interval/3);
+    this->schedule(schedule_selector(PlayerBall::thisUpdate), Interval/2);
     
     return true;
 }
@@ -70,9 +77,9 @@ void PlayerBall::update(float time) {}
 void PlayerBall::thisUpdate(float delta) {
     
     // 0.延迟检测
-    speedInterval = 1+(double)weight/(double)minWeight/30;
+    speedInterval = 1+(double)weight/(double)minWeight/20;
     if (intervalCount < speedInterval && !isSpeedUp) {
-        intervalCount += 0.1*Game::sharedGame()->scale;
+        intervalCount += 0.2*Game::sharedGame()->scale;
         return;
     }else {
         intervalCount = 1.0;
@@ -152,6 +159,10 @@ void PlayerBall::speedUp() {
 
 void PlayerBall::endSpeedUp() {
     isSpeedUp = false;
+}
+
+void PlayerBall::setLabel(const cocos2d::__String label) {
+    label_tag->setString(label._string);
 }
 
 /**

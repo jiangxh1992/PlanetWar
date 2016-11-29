@@ -37,6 +37,8 @@ protected:
     // 间隔帧数计数器
     double intervalCount;
     
+    cocos2d::Label *label_tag;
+    
     // 专用更新(禁止子类重用)
     void thisUpdate(float delta);
     // 通用更新(用于子类重用)

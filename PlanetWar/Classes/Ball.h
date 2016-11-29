@@ -28,8 +28,6 @@ extern const double PI;
 extern const int Energy;
 // 重量下限
 extern const int minWeight;
-// 重量上限
-extern const int maxWeight;
 // 屏幕小球的数量上限
 extern const int maxBaseBallNum;
 // AI球的数量上限

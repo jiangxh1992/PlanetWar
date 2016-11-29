@@ -10,6 +10,8 @@
 #ifdef __cplusplus
 	#include "cocos2d.h"
     #include <iostream>
+    #include <math.h>
+    #include <string.h>
 #endif
 
 /** 共享数据 **/

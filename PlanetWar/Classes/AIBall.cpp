@@ -34,6 +34,13 @@ bool AIBall::init() {
     if (!Sprite::init()) {
         return false;
     }
+    
+    // label
+    label_tag = Label::create();
+    label_tag->setString("enemy");
+    label_tag->setPosition(Vec2(0, radius+label_tag->getContentSize().height));
+    addChild(label_tag);
+    
     // 步长
     speed = maxSpeed;
     // 随机位置
@@ -45,8 +52,6 @@ bool AIBall::init() {
     // 随机方向
     direction = Vec2((CCRANDOM_0_1()*2-1), (CCRANDOM_0_1()*2-1));
     direction.normalize();
-    // 随机图片
-    //initWithFile("CloseNormal.png");
     
     // 移动间隔帧数
     speedInterval = 1.0f;
@@ -62,7 +67,7 @@ bool AIBall::init() {
     // 开启安帧更新
     this->scheduleUpdate();
     // 开启定时器
-    this->schedule(schedule_selector(AIBall::thisUpdate), Interval/3);
+    this->schedule(schedule_selector(AIBall::thisUpdate), Interval/2);
     this->schedule(schedule_selector(AIBall::sharedUpdate), Interval);
     
     return true;
@@ -75,6 +80,8 @@ void AIBall::updateWeight(int addedWeight) {
     weight += addedWeight;
     // 半径
     radius = sqrt(weight*Game::sharedGame()->scale);
+    
+    label_tag->setPosition(Vec2(0, radius+label_tag->getContentSize().height));
 }
 
 /**
@@ -88,9 +95,9 @@ void AIBall::update(float time) {}
 void AIBall::thisUpdate(float delta) {
     
     // 0.延迟检测
-    speedInterval = 1+(double)weight/(double)minWeight/30;
+    speedInterval = 1+(double)weight/(double)minWeight/20;
     if (intervalCount < speedInterval) {
-        intervalCount += 0.1*Game::sharedGame()->scale;
+        intervalCount += 0.2*Game::sharedGame()->scale;
         return;
     }else {
         intervalCount = 1.0;
