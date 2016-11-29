@@ -109,8 +109,9 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
 
 // 安帧更新
 void Game::update(float time) {
-    debuglabel->setString(Convert2String(player->getWeight()));
-    
+    debuglabel->setString("interval:"+Convert2String(player->getSpeedInterval()));
+    label_weight->setString("wieght:"+Convert2String(player->getWeight()));
+    label_scale->setString("scale:"+Convert2String(scale));
 }
 
 /**
@@ -199,9 +200,22 @@ void Game::addUI() {
     
     // debug text
     debuglabel = Label::create();
-    debuglabel->setString("TEST!!!");
-    debuglabel->setPosition(Vec2(debuglabel->getContentSize().width/2 + 10,ScreenHeight - 30));
+    debuglabel->setString("0");
+    debuglabel->setAnchorPoint(Vec2(0, 1));
+    debuglabel->setPosition(Vec2(5,ScreenHeight));
     uilayer->addChild(debuglabel);
+    
+    label_weight = Label::create();
+    label_weight->setString("");
+    label_weight->setAnchorPoint(Vec2(0, 1));
+    label_weight->setPosition(Vec2(5, ScreenHeight - debuglabel->getContentSize().height));
+    uilayer->addChild(label_weight);
+    
+    label_scale = Label::create();
+    label_scale->setString("");
+    label_scale->setAnchorPoint(Vec2(0, 1));
+    label_scale->setPosition(Vec2(5, ScreenHeight - debuglabel->getContentSize().height*2));
+    uilayer->addChild(label_scale);
     
     // 绘制屏幕中心
     auto centerLabel = Label::create();
@@ -288,8 +302,8 @@ void Game::scaleScreen(float scale) {
     
     this->scale *= scale;
     // 场景缩放
-    maxW *= scale;
-    maxH *= scale;
+    //maxW *= scale;
+    //maxH *= scale;
     setPosition(getPosition()*scale);
     uilayer->setPosition(uilayer->getPosition()*scale);
     
@@ -321,6 +335,11 @@ void Game::back(cocos2d::Ref* pSender) {
  * 加速
  */
 void Game::dash(cocos2d::Ref *pSender) {
+    player->speedUp();
+    DelayTime *delay = DelayTime::create(3.0f);
+    CallFunc *fun = CallFunc::create(CC_CALLBACK_0(PlayerBall::endSpeedUp, player));
+    Sequence *action = Sequence::create(delay,fun, NULL);
+    runAction(action);
 }
 
 /**
@@ -377,7 +396,7 @@ void Game::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
     // 更新玩家移动方向
     Vec2 newDir = endPoint - startPoint;
     
-    if (abs(newDir.x) < 0.1f || abs(newDir.y) < 0.1f) {
+    if (abs(newDir.x) < 0.01f || abs(newDir.y) < 0.01f) {
         newDir = Vec2::ZERO;
         // RUN_NORMAL -> IDLE_NORMAL
         if (CurState == RUN_NORMAL) {

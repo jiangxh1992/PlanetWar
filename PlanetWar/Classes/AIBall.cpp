@@ -41,7 +41,7 @@ bool AIBall::init() {
     // 初始重量
     updateWeight(minWeight);
     // 随机颜色
-    color = Color4F(255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 1.0);
+    color = Color4F(10+245*CCRANDOM_0_1(), 10+245*CCRANDOM_0_1(), 10+245*CCRANDOM_0_1(), 1.0);
     // 随机方向
     direction = Vec2((CCRANDOM_0_1()*2-1), (CCRANDOM_0_1()*2-1));
     direction.normalize();
@@ -51,7 +51,7 @@ bool AIBall::init() {
     // 移动间隔帧数
     speedInterval = 1.0f;
     // 间隔帧数计数器
-    intervalCount = 1.0f;
+    intervalCount = 0.9f;
     
     // 设置位置
     setPosition(position);
@@ -62,7 +62,7 @@ bool AIBall::init() {
     // 开启安帧更新
     this->scheduleUpdate();
     // 开启定时器
-    this->schedule(schedule_selector(AIBall::thisUpdate), Interval);
+    this->schedule(schedule_selector(AIBall::thisUpdate), Interval/3);
     this->schedule(schedule_selector(AIBall::sharedUpdate), Interval);
     
     return true;
@@ -74,7 +74,7 @@ bool AIBall::init() {
 void AIBall::updateWeight(int addedWeight) {
     weight += addedWeight;
     // 半径
-    radius = sqrt(weight) * Game::sharedGame()->scale;
+    radius = sqrt(weight*Game::sharedGame()->scale);
 }
 
 /**
@@ -88,12 +88,12 @@ void AIBall::update(float time) {}
 void AIBall::thisUpdate(float delta) {
     
     // 0.延迟检测
+    speedInterval = 1+(double)weight/(double)minWeight/30;
     if (intervalCount < speedInterval) {
-        speedInterval = sqrt(minWeight)/radius;
-        intervalCount += 0.1f;
+        intervalCount += 0.1*Game::sharedGame()->scale;
         return;
     }else {
-        intervalCount = 1.0f;
+        intervalCount = 1.0;
     }
     
     // 1.移动
@@ -158,13 +158,12 @@ void AIBall::sharedUpdate(float delta) {
     Vector<AIBall*> autoreleasepool = Vector<AIBall*>();
     for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
         AIBall *aiball = *it;
-        if (!aiball || !aiball->getWeight()) return;
         if (weight > aiball->getWeight()) {
             double distance = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
             if (distance <= pow(radius - aiball->radius, 2)) {
-                // 吃掉baseball，获得其体重
+                // 获得其体重
                 updateWeight(aiball->getWeight());
-                // 移除baseball
+                // 移除
                 Game::sharedGame()->AIBallArray.eraseObject(aiball);
                 autoreleasepool.pushBack(aiball);
             }
@@ -184,10 +183,8 @@ void AIBall::sharedUpdate(float delta) {
 void AIBall::scale(float scale) {
     // postion
     position *= scale;
-    // size
-    radius *= scale;
     // speed
-    //speed *= scale;
+    speedInterval /= scale;
 }
 
 /**

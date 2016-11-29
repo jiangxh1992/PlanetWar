@@ -23,7 +23,7 @@ protected:
     // 坐标
     cocos2d::Vec2 position = cocos2d::Vec2::ZERO;
     // 半径
-    float radius = 0;
+    double radius = 0;
     // 颜色
     cocos2d::Color4F color = cocos2d::Color4F::YELLOW;
     // 重量

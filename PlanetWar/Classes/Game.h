@@ -33,37 +33,28 @@ public:
 /** 内部变量和函数 **/
 private:
     
-    // 玩家
-    PlayerBall *player;
-    // 状态机
-    int CurState;
-    // 触摸起始点和结束点
-    Vec2 startPoint = Vec2::ZERO;
-    Vec2 endPoint = Vec2::ZERO;
-    // DrawNode
-    DrawNode *drawNode;
+    // 数据
+    PlayerBall *player;           // 玩家
+    int CurState;                 // 状态机
+    Vec2 startPoint = Vec2::ZERO; // 触摸起始点
+    Vec2 endPoint = Vec2::ZERO;   // 触摸结束点
+    Point **polyData;             // baseball 多边形数组
     
-    // debug txt
-    Label *debuglabel;
-    // 按钮菜单
-    Menu *menu;
-    // baseball 多边形数组
-    Point **polyData;
-
+    // UI
+    Menu *menu;          // 按钮菜单
+    Label *debuglabel;   // debug txt
+    Label *label_weight;
+    Label *label_scale;
+    DrawNode *drawNode;  // DrawNode
     
     // 工具函数
-    // 游戏变量初始化
-    void initData();
-    // 添加UI
-    void addUI();
-    // BaseBall工厂函数
-    void createBaseBalls(int num);
-    // AIBall工厂函数
-    void createAIBAlls(int num);
-    // 定时生成小球
-    void createBaseBallTimer(float delta);
-    // 屏幕缩放(0<scale<1)
-    void scaleScreen(float scale);
+    void initData();                       // 游戏变量初始化
+    void addUI();                          // 添加UI
+    void createBaseBalls(int num);         // BaseBall工厂函数
+    void createAIBAlls(int num);           // AIBall工厂函数
+    void createBaseBallTimer(float delta); // 定时生成小球
+    void gameObserver(float delta);        // 游戏观察者（检测吞并情况）
+    void scaleScreen(float scale);         // 屏幕缩放(0<scale<1)
     
     // 事件函数
     void back(Ref* pSender);
@@ -77,25 +68,15 @@ private:
     void onTouchMoved(Touch *touch, Event *unused_event);
     void onTouchEnded(Touch *touch, Event *unused_event);
     void onTouchCancelled(Touch *touch, Event *unused_event);
-    
-    // 游戏观察者（检测吞并情况）
-    void gameObserver(float delta);
 
 /** 对外接口 **/
 public:
     
-    // 缩放参数
-    float scale;
-    
-    // 游戏场景单例
-    static Game* sharedGame();
-    // UI layer
-    LayerColor *uilayer;
-    // 数组
-    // staticball数组
-    StaticBall *staticArray;
-    // AIBall数组
-    Vector<AIBall*> AIBallArray;
+    float scale;                  // 缩放参数
+    static Game* sharedGame();    // 游戏场景单例
+    LayerColor *uilayer;          // UI layer
+    StaticBall *staticArray;      // staticball数组
+    Vector<AIBall*> AIBallArray;  // AIBall数组
     
     // setter
     void setState(const int state) { CurState = state; }

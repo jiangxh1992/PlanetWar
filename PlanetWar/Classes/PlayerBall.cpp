@@ -41,7 +41,8 @@ bool PlayerBall::init() {
     // 移动间隔帧数
     speedInterval = 1.0f;
     // 间隔帧数计数器
-    intervalCount = 1.0f;
+    intervalCount = 0.9f;
+    isSpeedUp = false;
     
     // 设置位置
     setPosition(position);
@@ -53,7 +54,7 @@ bool PlayerBall::init() {
     this->scheduleUpdate();
     // 开启定时器
     this->schedule(schedule_selector(PlayerBall::sharedUpdate), Interval);// 继承自父类的更新
-    this->schedule(schedule_selector(PlayerBall::thisUpdate), Interval);
+    this->schedule(schedule_selector(PlayerBall::thisUpdate), Interval/3);
     
     return true;
 }
@@ -69,16 +70,16 @@ void PlayerBall::update(float time) {}
 void PlayerBall::thisUpdate(float delta) {
     
     // 0.延迟检测
-    if (intervalCount < speedInterval) {
-        speedInterval = sqrt(minWeight)/radius;
-        intervalCount += 0.1f;
+    speedInterval = 1+(double)weight/(double)minWeight/30;
+    if (intervalCount < speedInterval && !isSpeedUp) {
+        intervalCount += 0.1*Game::sharedGame()->scale;
         return;
     }else {
-        intervalCount = 1.0f;
+        intervalCount = 1.0;
     }
     
     // 1.移动
-    if (std::abs(direction.x) < 0.1f || std::abs(direction.y) < 0.1f) {
+    if (std::abs(direction.x) < 0.01f || std::abs(direction.y) < 0.01f) {
         return;
     }
     bool isEage = position.x >= maxW-radius || position.x <= radius-maxW || position.y >= maxH-radius || position.y <= radius-maxH;
@@ -138,10 +139,19 @@ void PlayerBall::thisUpdate(float delta) {
 void PlayerBall::scale(float scale) {
     // postion
     position *= scale;
-    // size
-    radius *= scale;
     // speed
-    //speed *= scale;
+    speedInterval /= scale;
+}
+
+/**
+ * 加速
+ */
+void PlayerBall::speedUp() {
+    isSpeedUp = true;
+}
+
+void PlayerBall::endSpeedUp() {
+    isSpeedUp = false;
 }
 
 /**

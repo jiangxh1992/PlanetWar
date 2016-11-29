@@ -28,11 +28,16 @@ public:
 /** 内部变量和函数 **/
 protected:
     
+    // 加速
+    bool isSpeedUp = false;
+    
     // 专用更新
     void thisUpdate(float delta);
     
 /** 对外接口 **/
 public:
+    void speedUp();
+    void endSpeedUp();
     void setDir(const cocos2d::Vec2 newDir) {direction = newDir;};
 	
 };
