@@ -39,7 +39,6 @@ public:
     void speedUp();
     void endSpeedUp();
     void setDir(const cocos2d::Vec2 newDir) {direction = newDir;};
-    void setLabel(const cocos2d::__String label);
 	
 };
 

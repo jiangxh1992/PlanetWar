@@ -175,6 +175,10 @@ void AIBall::scale(float scale) {
     speedInterval /= scale;
 }
 
+void AIBall::setLabel(__String label) {
+    label_tag->setString(label._string);
+}
+
 /**
  * 析构函数
  */

@@ -148,10 +148,6 @@ void PlayerBall::endSpeedUp() {
     isSpeedUp = false;
 }
 
-void PlayerBall::setLabel(const cocos2d::__String label) {
-    label_tag->setString(label._string);
-}
-
 /**
  * 析构函数
  */

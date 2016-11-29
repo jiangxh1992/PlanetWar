@@ -371,11 +371,11 @@ void Game::dash(cocos2d::Ref *pSender) {
  * 缩放
  */
 void Game::scaleup(cocos2d::Ref *pSender) {
-    scaleScreen(0.9);
+    scaleScreen(0.99);
 }
 
 void Game::scaledown(cocos2d::Ref *pSender) {
-    scaleScreen(1.2);
+    scaleScreen(1.01);
 }
 
 #pragma mark -触屏事件
