@@ -50,10 +50,11 @@ private:
     // 工具函数
     void initData();                       // 游戏变量初始化
     void addUI();                          // 添加UI
-    void createBaseBalls(int num);         // BaseBall工厂函数
-    void createAIBAlls(int num);           // AIBall工厂函数
+    void createBallFactory(FACTORY_TYPE type, int num); //Ball工厂函数
+    void createBaseBalls(int num);         // BaseBall工厂
+    void createAIBAlls(int num);           // AIBall工厂
     void createBaseBallTimer(float delta); // 定时生成小球
-    void gameObserver(float delta);        // 游戏观察者（检测吞并情况）
+    void gameObserver(float delta);        // AI调整
     void scaleScreen(float scale);         // 屏幕缩放(0<scale<1)
     
     // 事件函数

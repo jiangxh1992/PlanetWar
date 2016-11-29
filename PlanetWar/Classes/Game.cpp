@@ -57,10 +57,9 @@ bool Game::init() {
     addUI();
     
     // 静态baseball
-    createBaseBalls(maxBaseBallNum);
+    createBallFactory(BALL_BASE, maxBaseBallNum);
     // 动态AIBall
-    createAIBAlls(maxAIBallNum);
-    
+    createBallFactory(BALL_AI, maxAIBallNum);
     // 创建玩家
     player = PlayerBall::create();
     player->setLabel("名字起个啥");
@@ -70,13 +69,12 @@ bool Game::init() {
     // 开启玩家触屏交互
     addTouchListener();
     
+    // 按帧更新
     this->scheduleUpdate();
-    
     // 开启定时器
     this->schedule(schedule_selector(Game::createBaseBallTimer), Interval*30);
-    
-    // 开启观察者
-    this->schedule(schedule_selector(Game::gameObserver), Interval);
+    // 开启AI干预
+    this->schedule(schedule_selector(Game::gameObserver), Interval*10);
     
     return true;
 }
@@ -87,7 +85,6 @@ bool Game::init() {
 void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
     // 清空之前的绘制
     drawNode->clear();
-    
     
     for (int i = 0 ; i < maxBaseBallNum ; i++) {
         StaticBall ball = staticArray[i];
@@ -111,30 +108,7 @@ void Game::update(float time) {
  * 游戏观察者
  */
 void Game::gameObserver(float delta) {
-    //std::cout<<CurState<<std::endl;
-    //    // 死亡球回收池
-    //    Vector<BaseBall*> deadballs = Vector<BaseBall*>();
-    //    // 检测吃小球
-    //    for (Vector<AIBall*>::const_iterator it = AIBallArray.begin(); it != AIBallArray.end(); it++) {
-    //        AIBall *aiball = *it;
-    //        for (Vector<BaseBall*>::const_iterator it2 = baseBallArray.begin(); it2 != baseBallArray.end(); it2++) {
-    //            BaseBall *baseball = *it2;
-    //            double distance = pow(baseball->getPos().x - aiball->getPos().x, 2) + pow(baseball->getPos().y - aiball->getPos().y, 2);
-    //            if (distance <= pow(aiball->getR(), 2)) {
-    //                // 吃掉baseball，获得其体重
-    //                aiball->updateWeight(baseball->getWeight());
-    //                // 移除baseball
-    //                baseBallArray.eraseObject(baseball);
-    //                // 添加到待回收池
-    //                deadballs.pushBack(baseball);
-    //            }
-    //        }
-    //    }
-    //
-    //    // 移除回收池内的死球
-    //    for (Vector<BaseBall*>::const_iterator it = deadballs.begin(); it != deadballs.end(); it++) {
-    //        removeChild(*it);
-    //    }
+
 }
 
 /**
@@ -249,8 +223,23 @@ void Game::addUI() {
 }
 
 /**
- * BaseBall工厂函数
+ * Ball工厂函数
  */
+void Game::createBallFactory(FACTORY_TYPE type, int num) {
+    switch (type) {
+        case BALL_BASE:
+            createBaseBalls(num);
+            break;
+        case BALL_AI:
+            createAIBAlls(num);
+            break;
+        case BALL_ENEMY:
+            break;
+        default:
+            break;
+    }
+}
+
 void Game::createBaseBalls(int num) {
     staticArray = new StaticBall[num];
     for (int i = 0; i<num; i++) {
@@ -258,9 +247,6 @@ void Game::createBaseBalls(int num) {
     }
 }
 
-/**
- * AIBall工厂函数
- */
 void Game::createAIBAlls(int num) {
     for (int i = 0 ; i<num ; i++) {
         auto aiball = AIBall::create();
@@ -281,10 +267,10 @@ void Game::createBaseBallTimer(float delta) {
         }
     }
     // AIBall
-//    int createNum = maxAIBallNum - (int)AIBallArray.size();
-//    if (createNum > 0) {
-//        createAIBAlls(createNum);
-//    }
+    int createNum = maxAIBallNum - (int)AIBallArray.size();
+    if (createNum > 0) {
+        createBallFactory(BALL_AI, createNum);
+    }
 }
 
 

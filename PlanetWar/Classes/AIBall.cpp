@@ -67,8 +67,7 @@ bool AIBall::init() {
     // 开启安帧更新
     this->scheduleUpdate();
     // 开启定时器
-    this->schedule(schedule_selector(AIBall::thisUpdate), Interval/2);
-    this->schedule(schedule_selector(AIBall::sharedUpdate), Interval);
+    this->schedule(schedule_selector(AIBall::thisUpdate), Interval);
     
     return true;
 }
@@ -87,7 +86,9 @@ void AIBall::updateWeight(int addedWeight) {
 /**
  * 安帧更新
  */
-void AIBall::update(float time) {}
+void AIBall::update(float time) {
+    sharedUpdate(time);
+}
 
 /**
  * 本类专用更新
@@ -119,28 +120,7 @@ void AIBall::thisUpdate(float delta) {
         direction.x = CCRANDOM_0_1();
         direction.normalize();
     }
-    
-    // 3.简单AI（躲大追小）
-    //    // 搜索最近的球
-    //    AIBall *nearestball = *Game::sharedGame()->AIBallArray.begin();
-    //    if (!nearestball) return;
-    //    for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin()+1; it != Game::sharedGame()->AIBallArray.end(); it++) {
-    //        AIBall *nextball = *it;
-    //        if(!nextball) return;
-    //        double nearestDis = pow(nearestball->getPos().x-position.x, 2) + pow(nearestball->getPos().y-position.y, 2);
-    //        double newDis = pow(nextball->getPos().x-position.x, 2) + pow(nextball->getPos().y-position.y, 2);
-    //        if (newDis < nearestDis) {
-    //            nearestball = nextball;
-    //        }
-    //    }
-    //    // 躲大追小
-    //    Vec2 dir = nearestball->position - position;
-    //    dir.normalize();
-    //    if (weight > nearestball->weight) {
-    //        direction = dir;
-    //    }else {
-    //        direction = -dir;
-    //    }
+
 }
 
 /**

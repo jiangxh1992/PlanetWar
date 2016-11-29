@@ -59,8 +59,7 @@ bool PlayerBall::init() {
     // 开启安帧更新
     this->scheduleUpdate();
     // 开启定时器
-    this->schedule(schedule_selector(PlayerBall::sharedUpdate), Interval);// 继承自父类的更新
-    this->schedule(schedule_selector(PlayerBall::thisUpdate), Interval/2);
+    this->schedule(schedule_selector(PlayerBall::thisUpdate), Interval);
     
     return true;
 }
@@ -68,7 +67,9 @@ bool PlayerBall::init() {
 /**
  * 安帧更新
  */
-void PlayerBall::update(float time) {}
+void PlayerBall::update(float time) {
+    sharedUpdate(time);
+}
 
 /**
  * 定时更新

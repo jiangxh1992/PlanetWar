@@ -27,12 +27,15 @@ public:
     // 重量
     int weight = 3;
     
-    
+    // 构造
     StaticBall();
     // 重新激活
     void reActive();
     // 缩放
     void scale(float scale);
+    
+    // 析构
+    ~StaticBall();
     
 };
 

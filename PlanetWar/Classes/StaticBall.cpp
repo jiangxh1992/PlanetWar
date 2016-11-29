@@ -34,4 +34,14 @@ void StaticBall::reActive() {
 void StaticBall::scale(float scale) {
     radius *= scale;
     position *= scale;
+    // 更新顶点数组
+    for (int i = 0; i<polyNum; i++) {
+        vertexs[i].x = position.x + radius * cos(2*PI*i/polyNum);
+        vertexs[i].y = position.y + radius * sin(2*PI*i/polyNum);
+    }
+}
+
+StaticBall::~StaticBall(){
+    // 释放堆内存
+    //delete [] vertexs;
 }
