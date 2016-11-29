@@ -350,35 +350,43 @@ void Game::addTouchListener() {
     // 触摸开始
     oneTouch->onTouchBegan = CC_CALLBACK_2(Game::onTouchBegan,this);
     // 触摸拖动
-    //oneTouch->onTouchMoved = CC_CALLBACK_2(Game::onTouchMoved,this);
+    oneTouch->onTouchMoved = CC_CALLBACK_2(Game::onTouchMoved,this);
     // 触摸结束
     oneTouch->onTouchEnded = CC_CALLBACK_2(Game::onTouchEnded,this);
     // 触摸取消
-    //oneTouch->onTouchCancelled = CC_CALLBACK_2(Game::onTouchCancelled,this);
+    oneTouch->onTouchCancelled = CC_CALLBACK_2(Game::onTouchCancelled,this);
     
     eventDispatcher->addEventListenerWithSceneGraphPriority(oneTouch,this);
 
 }
 
 /**
- * 触摸开始事件
+ * 触摸事件
  */
 bool Game::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
     startPoint = touch->getLocation();
     return true;
 }
 
-/**
- * 触摸结束事件
- */
+void Game::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
+    cout<<"moved"<<endl;
+}
+
 void Game::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
     endPoint = touch->getLocation();
     // 更新玩家移动方向
     Vec2 newDir = endPoint - startPoint;
     
-    // RUN_NORMAL -> IDLE_NORMAL
-    if (newDir.isZero() && CurState == RUN_NORMAL) {
-        CurState = IDLE_NORMAL;
+    if (abs(newDir.x) < 0.1f || abs(newDir.y) < 0.1f) {
+        newDir = Vec2::ZERO;
+        // RUN_NORMAL -> IDLE_NORMAL
+        if (CurState == RUN_NORMAL) {
+            CurState = IDLE_NORMAL;
+        }
+        // IDLE_NORMAL -> RUN_NORMAL
+        else if (CurState == IDLE_NORMAL) {
+            CurState = RUN_NORMAL;
+        }
     }
     // IDLE_NORMAL -> RUN_NORMAL
     else if (CurState == IDLE_NORMAL) {
@@ -387,5 +395,8 @@ void Game::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
     
     newDir.normalize();
     player->setDir(newDir);
-    
+}
+
+void Game::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
+    cout<<"cancelled"<<endl;
 }

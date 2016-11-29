@@ -78,6 +78,9 @@ void PlayerBall::thisUpdate(float delta) {
     }
     
     // 1.移动
+    if (std::abs(direction.x) < 0.1f || std::abs(direction.y) < 0.1f) {
+        return;
+    }
     bool isEage = position.x >= maxW-radius || position.x <= radius-maxW || position.y >= maxH-radius || position.y <= radius-maxH;
     if(isEage) {
         position -= direction*speed*2;

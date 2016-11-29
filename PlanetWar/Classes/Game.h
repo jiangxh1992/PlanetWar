@@ -74,7 +74,9 @@ private:
     // 注册屏幕触摸事件
     void addTouchListener();
     bool onTouchBegan(Touch *touch, Event *unused_event);
+    void onTouchMoved(Touch *touch, Event *unused_event);
     void onTouchEnded(Touch *touch, Event *unused_event);
+    void onTouchCancelled(Touch *touch, Event *unused_event);
     
     // 游戏观察者（检测吞并情况）
     void gameObserver(float delta);
