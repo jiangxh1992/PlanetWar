@@ -8,7 +8,6 @@
 
 #include "PlayerBall.h"
 #include "Game.h"
-#include "Ball.h"
 USING_NS_CC;
 
 PlayerBall* PlayerBall::create() {

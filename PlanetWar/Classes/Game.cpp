@@ -87,19 +87,14 @@ bool Game::init() {
 void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
     // 清空之前的绘制
     drawNode->clear();
-    // 生成随机边数
-    //int polyNum = 2 + CCRANDOM_0_1()*3;
+    
     
     for (int i = 0 ; i < maxBaseBallNum ; i++) {
-        if (!staticArray[i].isActive) continue;
+        StaticBall ball = staticArray[i];
+        if (!ball.isActive) continue;
         // 绘制多边形
-        //        Point *vertexs = new Point[polyNum];
-        //        for (int i = 0; i<polyNum; i++) {
-        //            vertexs[i].x = staticArray[i].position.x + staticArray[i].radius * polyData[polyNum-3][i].x;
-        //            vertexs[i].y = staticArray[i].position.y + staticArray[i].radius * polyData[polyNum-3][i].y;
-        //        }
-        //drawNode->drawPoly(vertexs, polyNum, true, staticArray[i].color);
-        drawNode->drawDot(staticArray[i].position, staticArray[i].radius, staticArray[i].color);
+        drawNode->drawPoly(ball.vertexs, ball.polyNum, true, ball.color);
+        //drawNode->drawDot(staticArray[i].position, staticArray[i].radius, staticArray[i].color);
         // 深度
         drawNode->setGlobalZOrder(-1);
     }
@@ -179,7 +174,7 @@ void Game::initData() {
     AIBallArray = Vector<AIBall*>();
 
     // 3,4,5边形
-//    polyData = new Point*[3];
+//    
 //    for (int i = 3; i<=5; i++) {
 //        polyData[i-3] = new Point[i];
 //        for (int j = 0 ; j<i; j++) {

@@ -4,7 +4,7 @@
 //
 //  Created by Xinhou Jiang on 14/11/16.
 //
-//
+//  玩家可以控制的球
 
 #ifndef __PlanetWar__PlayerBall__ 
 #define __PlanetWar__PlayerBall__

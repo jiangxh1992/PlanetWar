@@ -38,7 +38,7 @@ private:
     int CurState;                 // 状态机
     Vec2 startPoint = Vec2::ZERO; // 触摸起始点
     Vec2 endPoint = Vec2::ZERO;   // 触摸结束点
-    Point **polyData;             // baseball 多边形数组
+    //Point* polyData[3];         // baseball 多边形数组
     
     // UI
     Menu *menu;          // 按钮菜单

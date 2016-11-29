@@ -4,7 +4,7 @@
 //
 //  Created by Xinhou Jiang on 8/11/16.
 //
-//
+//  球的虚基类，不用于实例化
 
 #ifndef __PlanetWar__BaseBall__ 
 #define __PlanetWar__BaseBall__

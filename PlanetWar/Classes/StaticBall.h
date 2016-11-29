@@ -4,7 +4,7 @@
 //
 //  Created by Xinhou Jiang on 24/11/16.
 //
-//
+//  静止的球
 
 #ifndef __PlanetWar__StaticBall__ 
 #define __PlanetWar__StaticBall__
@@ -18,6 +18,10 @@ public:
     Vec2 position = cocos2d::Vec2::ZERO;
     // 半径
     float radius = 0;
+    // 边数
+    int polyNum = 3;
+    // 顶点数组
+    Point *vertexs;
     // 颜色
     Color4F color = cocos2d::Color4F::YELLOW;
     // 重量

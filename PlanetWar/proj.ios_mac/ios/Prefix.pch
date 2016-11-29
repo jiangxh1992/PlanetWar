@@ -15,7 +15,7 @@
 #endif
 
 /** 共享数据 **/
-#include "Ball.h"
+#include "Const.h"
 
 // 屏幕尺寸
 #define ScreenSize Director::getInstance()->getWinSize()
