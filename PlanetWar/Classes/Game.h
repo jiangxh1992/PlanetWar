@@ -38,13 +38,14 @@ private:
     int CurState;                 // 状态机
     Vec2 startPoint = Vec2::ZERO; // 触摸起始点
     Vec2 endPoint = Vec2::ZERO;   // 触摸结束点
-    //Point* polyData[3];         // baseball 多边形数组
+    Point Vertexs[4];             // 边界顶点数组
     
     // UI
     Menu *menu;          // 按钮菜单
     Label *debuglabel;   // debug txt
     Label *label_weight;
     Label *label_scale;
+    Label *label_ainum;
     DrawNode *drawNode;  // DrawNode
     
     // 工具函数

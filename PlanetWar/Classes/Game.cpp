@@ -86,6 +86,7 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
     // 清空之前的绘制
     drawNode->clear();
     
+    // 绘制baseball
     for (int i = 0 ; i < maxBaseBallNum ; i++) {
         StaticBall ball = staticArray[i];
         if (!ball.isActive) continue;
@@ -95,13 +96,21 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
         // 深度
         drawNode->setGlobalZOrder(-1);
     }
+    
+    // 绘制边界
+    drawNode->drawPoly(Vertexs, 4, true, Color4F(255*CCRANDOM_0_1(), 0, 0, CCRANDOM_0_1()));
 }
 
 // 安帧更新
 void Game::update(float time) {
+    // left
     debuglabel->setString("interval:"+Convert2String(player->getSpeedInterval()));
     label_weight->setString("wieght:"+Convert2String(player->getWeight()));
     label_scale->setString("scale:"+Convert2String(scale));
+    
+    // right
+    label_ainum->setString("AIBall:"+Convert2String((int)AIBallArray.size()));
+    
 }
 
 /**
@@ -147,14 +156,13 @@ void Game::initData() {
     // 对象容器初始化
     AIBallArray = Vector<AIBall*>();
 
-    // 3,4,5边形
-//    
-//    for (int i = 3; i<=5; i++) {
-//        polyData[i-3] = new Point[i];
-//        for (int j = 0 ; j<i; j++) {
-//            polyData[i-3][j] = Vec2(cos(2*PI*j/i), sin(2*PI*j/i));
-//        }
-//    }
+    // 边界顶点数组
+    int borderX = maxW - 10;
+    int borderY = maxH - 10;
+    Vertexs[0] = Vec2(borderX, borderY);
+    Vertexs[1] = Vec2(borderX, -borderY);
+    Vertexs[2] = Vec2(-borderX, -borderY);
+    Vertexs[3] = Vec2(-borderX, borderY);
 }
 
 /**
@@ -165,7 +173,7 @@ void Game::addUI() {
     uilayer = LayerColor::create(Color4B(255, 255, 255, 0), ScreenWidth, ScreenHeight);
     addChild(uilayer);
     
-    // debug text
+    // left
     debuglabel = Label::create();
     debuglabel->setString("0");
     debuglabel->setAnchorPoint(Vec2(0, 1));
@@ -183,6 +191,13 @@ void Game::addUI() {
     label_scale->setAnchorPoint(Vec2(0, 1));
     label_scale->setPosition(Vec2(5, ScreenHeight - debuglabel->getContentSize().height*2));
     uilayer->addChild(label_scale);
+    
+    // right
+    label_ainum = Label::create();
+    label_ainum->setString("");
+    label_ainum->setAnchorPoint(Vec2(1, 1));
+    label_ainum->setPosition(Vec2(ScreenWidth/2,ScreenHeight));
+    uilayer->addChild(label_ainum);
     
     // 绘制屏幕中心
     auto centerLabel = Label::create();
