@@ -105,19 +105,41 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
 void Game::update(float time) {
     // left
     debuglabel->setString("interval:"+Convert2String(player->getSpeedInterval()));
-    label_weight->setString("wieght:"+Convert2String(player->getWeight()));
+    label_weight->setString("wieght:"+Convert2String(player->getBallWeight()));
     label_scale->setString("scale:"+Convert2String(scale));
     
     // right
     label_ainum->setString("AIBall:"+Convert2String((int)AIBallArray.size()));
-    
+    label_basenum->setString("BaseBall:"+Convert2String(baseNum));
 }
 
 /**
  * 游戏观察者
  */
 void Game::gameObserver(float delta) {
-
+    
+    // AIBall 躲避或追逐player
+    for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
+        AIBall *aiball = *it;
+        AIBall *player = Game::sharedGame()->player;
+        if (aiball == player) {
+            continue;
+        }
+        Point p = player->getPos();
+        int weight = player->getBallWeight();
+        float distance = pow(p.x - aiball->getPos().x, 2.0) + pow(p.y - aiball->getPos().y, 2.0);
+        if (distance < 70*70) {
+            // 降低AI灵敏度
+            if(CCRANDOM_0_1() < 0.9)
+                break;
+            Vec2 dir = aiball->getPos() - p; // 躲避
+            if (aiball->getBallWeight() > weight*3/2) {
+                //dir = -dir; // 追逐
+            }
+            dir.normalize();
+            aiball->setDirection(dir);
+        }
+    }
 }
 
 /**
@@ -146,6 +168,8 @@ Game::~Game(){
  * 游戏变量初始化
  */
 void Game::initData() {
+    
+    baseNum = maxBaseBallNum;
     
     // 默认不缩放
     scale = 1.0f;
@@ -181,23 +205,29 @@ void Game::addUI() {
     uilayer->addChild(debuglabel);
     
     label_weight = Label::create();
-    label_weight->setString("");
+    label_weight->setString("weight");
     label_weight->setAnchorPoint(Vec2(0, 1));
     label_weight->setPosition(Vec2(5, ScreenHeight - debuglabel->getContentSize().height));
     uilayer->addChild(label_weight);
     
     label_scale = Label::create();
-    label_scale->setString("");
+    label_scale->setString("scale");
     label_scale->setAnchorPoint(Vec2(0, 1));
-    label_scale->setPosition(Vec2(5, ScreenHeight - debuglabel->getContentSize().height*2));
+    label_scale->setPosition(Vec2(5, ScreenHeight - label_scale->getContentSize().height*2));
     uilayer->addChild(label_scale);
     
     // right
     label_ainum = Label::create();
-    label_ainum->setString("");
-    label_ainum->setAnchorPoint(Vec2(1, 1));
+    label_ainum->setString("ainum");
+    label_ainum->setAnchorPoint(Vec2(0, 1));
     label_ainum->setPosition(Vec2(ScreenWidth/2,ScreenHeight));
     uilayer->addChild(label_ainum);
+    
+    label_basenum = Label::create();
+    label_basenum->setString("basenum");
+    label_basenum->setAnchorPoint(Vec2(0, 1));
+    label_basenum->setPosition(Vec2(ScreenWidth/2,ScreenHeight - label_basenum->getContentSize().height));
+    uilayer->addChild(label_basenum);
     
     // 绘制屏幕中心
     auto centerLabel = Label::create();
@@ -279,6 +309,7 @@ void Game::createBaseBallTimer(float delta) {
         bool random = CCRANDOM_0_1()>0.5 ? true : false;
         if (random && !staticArray[i].isActive) {
             staticArray[i].reActive();
+            baseNum++;
         }
     }
     // AIBall

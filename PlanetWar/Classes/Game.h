@@ -46,6 +46,7 @@ private:
     Label *label_weight;
     Label *label_scale;
     Label *label_ainum;
+    Label *label_basenum;
     DrawNode *drawNode;  // DrawNode
     
     // 工具函数
@@ -74,6 +75,7 @@ private:
 /** 对外接口 **/
 public:
     
+    int baseNum = maxBaseBallNum; // baseball个数
     float scale;                  // 缩放参数
     static Game* sharedGame();    // 游戏场景单例
     LayerColor *uilayer;          // UI layer

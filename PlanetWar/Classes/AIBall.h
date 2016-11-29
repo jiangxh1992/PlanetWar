@@ -50,6 +50,7 @@ public:
     virtual void updateWeight(int addedWeight);
     void scaleSpeed(float scale){speed *= scale;};
     
+    void setDirection(const cocos2d::Vec2 dir){direction = dir;}
     const float getSpeedInterval(){return speedInterval;}
     
 };

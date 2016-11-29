@@ -138,6 +138,7 @@ void AIBall::sharedUpdate(float delta) {
             updateWeight(baseball.weight);
             // 移除baseball
             Game::sharedGame()->staticArray[i].isActive = false;
+            Game::sharedGame()->baseNum --;
         }
     }
     
@@ -145,13 +146,11 @@ void AIBall::sharedUpdate(float delta) {
     Vector<AIBall*> autoreleasepool = Vector<AIBall*>();
     for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
         AIBall *aiball = *it;
-        if (weight > aiball->getWeight()) {
+        if (weight > aiball->getBallWeight()) {
             double distance = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
             if (distance <= pow(radius - aiball->radius, 2)) {
                 // 获得其体重
-                updateWeight(aiball->getWeight());
-                // 移除
-                Game::sharedGame()->AIBallArray.eraseObject(aiball);
+                updateWeight(aiball->getBallWeight());
                 autoreleasepool.pushBack(aiball);
             }
         }
@@ -159,6 +158,8 @@ void AIBall::sharedUpdate(float delta) {
     // 移除回收池内的死球
     for (Vector<AIBall*>::const_iterator it = autoreleasepool.begin(); it != autoreleasepool.end(); it++) {
         AIBall *ball = *it;
+        // 移除
+        Game::sharedGame()->AIBallArray.eraseObject(ball);
         Game::sharedGame()->removeChild(ball);
     }
 

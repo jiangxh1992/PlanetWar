@@ -38,10 +38,9 @@ public:
     // getter
     const cocos2d::Vec2 getPos(){return position;}
     const float getR(){return radius;}
-    const int getWeight(){return weight;}
+    const int getBallWeight(){return weight;}
     
     // setter
-    void setWeight(const int _weight){weight = _weight;}
     
     // 缩放
     virtual void scale(const float scale){}
