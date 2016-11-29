@@ -43,6 +43,7 @@ Game* Game::sharedGame() {
     return NULL;
 }
 
+# pragma mark -生命周期
 /**
  * 游戏初始化
  */
@@ -83,6 +84,88 @@ bool Game::init() {
 }
 
 /**
+ * 图形绘制
+ */
+void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
+    // 清空之前的绘制
+    drawNode->clear();
+    // 生成随机边数
+    //int polyNum = 2 + CCRANDOM_0_1()*3;
+    
+    for (int i = 0 ; i < maxBaseBallNum ; i++) {
+        if (!staticArray[i].isActive) continue;
+        // 绘制多边形
+        //        Point *vertexs = new Point[polyNum];
+        //        for (int i = 0; i<polyNum; i++) {
+        //            vertexs[i].x = staticArray[i].position.x + staticArray[i].radius * polyData[polyNum-3][i].x;
+        //            vertexs[i].y = staticArray[i].position.y + staticArray[i].radius * polyData[polyNum-3][i].y;
+        //        }
+        //drawNode->drawPoly(vertexs, polyNum, true, staticArray[i].color);
+        drawNode->drawDot(staticArray[i].position, staticArray[i].radius, staticArray[i].color);
+        // 深度
+        drawNode->setGlobalZOrder(-1);
+    }
+}
+
+// 安帧更新
+void Game::update(float time) {
+    debuglabel->setString(Convert2String(player->getWeight()));
+    
+}
+
+/**
+ * 游戏观察者
+ */
+void Game::gameObserver(float delta) {
+    //std::cout<<CurState<<std::endl;
+    //    // 死亡球回收池
+    //    Vector<BaseBall*> deadballs = Vector<BaseBall*>();
+    //    // 检测吃小球
+    //    for (Vector<AIBall*>::const_iterator it = AIBallArray.begin(); it != AIBallArray.end(); it++) {
+    //        AIBall *aiball = *it;
+    //        for (Vector<BaseBall*>::const_iterator it2 = baseBallArray.begin(); it2 != baseBallArray.end(); it2++) {
+    //            BaseBall *baseball = *it2;
+    //            double distance = pow(baseball->getPos().x - aiball->getPos().x, 2) + pow(baseball->getPos().y - aiball->getPos().y, 2);
+    //            if (distance <= pow(aiball->getR(), 2)) {
+    //                // 吃掉baseball，获得其体重
+    //                aiball->updateWeight(baseball->getWeight());
+    //                // 移除baseball
+    //                baseBallArray.eraseObject(baseball);
+    //                // 添加到待回收池
+    //                deadballs.pushBack(baseball);
+    //            }
+    //        }
+    //    }
+    //
+    //    // 移除回收池内的死球
+    //    for (Vector<BaseBall*>::const_iterator it = deadballs.begin(); it != deadballs.end(); it++) {
+    //        removeChild(*it);
+    //    }
+}
+
+/**
+ * 退出场景
+ */
+void Game::onExit() {
+    // 关闭所有回调
+    this->unscheduleUpdate();
+    this->unscheduleAllCallbacks();
+    // 关闭交互监听
+    Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+    Layer::onExit();
+}
+
+/**
+ * 析构函数
+ */
+Game::~Game(){
+    // 销毁所有对象
+    this->removeAllChildren();
+}
+
+#pragma mark -工具函数
+
+/**
  * 游戏变量初始化
  */
 void Game::initData() {
@@ -111,7 +194,7 @@ void Game::initData() {
  */
 void Game::addUI() {
     
-    uilayer = LayerColor::create(Color4B(255, 255, 255, 1.0), ScreenWidth, ScreenHeight);
+    uilayer = LayerColor::create(Color4B(255, 255, 255, 0), ScreenWidth, ScreenHeight);
     addChild(uilayer);
     
     // debug text
@@ -140,8 +223,15 @@ void Game::addUI() {
     auto item_dash = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", CC_CALLBACK_1(Game::dash, this));
     item_dash->setPosition(Vec2(VisiableSize.width - item_dash->getContentSize().width/2, item_dash->getContentSize().height/2));
     
+    // 3.缩放按钮
+    auto item_scaleup = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", CC_CALLBACK_1(Game::scaleup, this));
+    item_scaleup->setPosition(Vec2(item_scaleup->getContentSize().width, item_scaleup->getContentSize().height));
+    
+    auto item_scaledown = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", CC_CALLBACK_1(Game::scaledown, this));
+    item_scaledown->setPosition(Vec2(item_scaledown->getContentSize().width, item_scaledown->getContentSize().height*3));
+    
     // 按钮菜单
-    menu = Menu::create(item_back, item_dash, NULL);
+    menu = Menu::create(item_back, item_dash, item_scaleup, item_scaledown, NULL);
     menu->setPosition(Vec2::ZERO);
     uilayer->addChild(menu,1);
     
@@ -190,64 +280,36 @@ void Game::createBaseBallTimer(float delta) {
 //    }
 }
 
-/**
- * 图形绘制
- */
-void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
-    // 清空之前的绘制
-    drawNode->clear();
-    // 生成随机边数
-    //int polyNum = 2 + CCRANDOM_0_1()*3;
-    
-    for (int i = 0 ; i < maxBaseBallNum ; i++) {
-        if (!staticArray[i].isActive) continue;
-        // 绘制多边形
-//        Point *vertexs = new Point[polyNum];
-//        for (int i = 0; i<polyNum; i++) {
-//            vertexs[i].x = staticArray[i].position.x + staticArray[i].radius * polyData[polyNum-3][i].x;
-//            vertexs[i].y = staticArray[i].position.y + staticArray[i].radius * polyData[polyNum-3][i].y;
-//        }
-        //drawNode->drawPoly(vertexs, polyNum, true, staticArray[i].color);
-        drawNode->drawDot(staticArray[i].position, staticArray[i].radius, staticArray[i].color);
-        // 深度
-        drawNode->setGlobalZOrder(-1);
-    }
-}
 
 /**
  * 屏幕缩放
  */
 void Game::scaleScreen(float scale) {
+    
+    this->scale *= scale;
+    // 场景缩放
     maxW *= scale;
     maxH *= scale;
-    
-    // baseball缩放
-    for (int i = 0; i < maxBaseBallNum ; i++) {
-        StaticBall baseball = Game::sharedGame()->staticArray[i];
-        if (!baseball.isActive) continue;
-        // size
-        baseball.radius *= scale;
-        // position
-        baseball.position *= scale;
-    }
-    
-    // AIBall缩放
-    for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
-        AIBall *aiball = *it;
-        // size
-        aiball->scaleRadius(scale);
-        // position
-        aiball->scalePosition(scale);
-        // speed
-        aiball->scaleSpeed(scale);
-    }
-    
-    // 场景缩放
     setPosition(getPosition()*scale);
     uilayer->setPosition(uilayer->getPosition()*scale);
     
+    // 缩放静止的球
+    for (int i = 0 ; i < maxBaseBallNum ; i++) {
+        staticArray[i].scale(scale);
+    }
+    
+    // 缩放AIBall
+    for (Vector<AIBall*>::const_iterator it = AIBallArray.begin(); it != AIBallArray.end(); it++) {
+        AIBall *aiball = *it;
+        aiball->scale(scale);
+    }
+    
+    // 缩放player
+    player->scale(scale);
+    
 }
 
+# pragma mark -事件函数
 /**
  * 返回到菜单
  */
@@ -259,10 +321,20 @@ void Game::back(cocos2d::Ref* pSender) {
  * 加速
  */
 void Game::dash(cocos2d::Ref *pSender) {
-    scale = 0.5f;
-    scaleScreen(scale);
 }
 
+/**
+ * 缩放
+ */
+void Game::scaleup(cocos2d::Ref *pSender) {
+    scaleScreen(0.9);
+}
+
+void Game::scaledown(cocos2d::Ref *pSender) {
+    scaleScreen(1.2);
+}
+
+#pragma mark -触屏事件
 /**
  * 注册屏幕触摸事件
  */
@@ -316,60 +388,4 @@ void Game::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
     newDir.normalize();
     player->setDir(newDir);
     
-}
-
-// 安帧更新
-void Game::update(float time) {
-    debuglabel->setString(Convert2String(player->getWeight()));
-    
-}
-
-/**
- * 游戏观察者
- */
-void Game::gameObserver(float delta) {
-    //std::cout<<CurState<<std::endl;
-//    // 死亡球回收池
-//    Vector<BaseBall*> deadballs = Vector<BaseBall*>();
-//    // 检测吃小球
-//    for (Vector<AIBall*>::const_iterator it = AIBallArray.begin(); it != AIBallArray.end(); it++) {
-//        AIBall *aiball = *it;
-//        for (Vector<BaseBall*>::const_iterator it2 = baseBallArray.begin(); it2 != baseBallArray.end(); it2++) {
-//            BaseBall *baseball = *it2;
-//            double distance = pow(baseball->getPos().x - aiball->getPos().x, 2) + pow(baseball->getPos().y - aiball->getPos().y, 2);
-//            if (distance <= pow(aiball->getR(), 2)) {
-//                // 吃掉baseball，获得其体重
-//                aiball->updateWeight(baseball->getWeight());
-//                // 移除baseball
-//                baseBallArray.eraseObject(baseball);
-//                // 添加到待回收池
-//                deadballs.pushBack(baseball);
-//            }
-//        }
-//    }
-//    
-//    // 移除回收池内的死球
-//    for (Vector<BaseBall*>::const_iterator it = deadballs.begin(); it != deadballs.end(); it++) {
-//        removeChild(*it);
-//    }
-}
-
-/**
- * 退出场景
- */
-void Game::onExit() {
-    // 关闭所有回调
-    this->unscheduleUpdate();
-    this->unscheduleAllCallbacks();
-    // 关闭交互监听
-    Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
-    Layer::onExit();
-}
-
-/**
- * 析构函数
- */
-Game::~Game(){
-    // 销毁所有对象
-    this->removeAllChildren();
 }

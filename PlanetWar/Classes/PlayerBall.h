@@ -20,6 +20,8 @@ public:
 	virtual bool init();
     // 安帧更新
     virtual void update(float time);
+    // 缩放
+    virtual void scale(float scale);
     // 析构函数
     virtual ~PlayerBall();
 

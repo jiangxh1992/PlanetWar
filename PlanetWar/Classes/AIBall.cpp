@@ -34,6 +34,8 @@ bool AIBall::init() {
     if (!Sprite::init()) {
         return false;
     }
+    // 步长
+    speed = maxSpeed;
     // 随机位置
     position = Vec2((CCRANDOM_0_1()-0.5) * maxW, (CCRANDOM_0_1()-0.5) * maxH);
     // 初始重量
@@ -45,6 +47,11 @@ bool AIBall::init() {
     direction.normalize();
     // 随机图片
     //initWithFile("CloseNormal.png");
+    
+    // 移动间隔帧数
+    speedInterval = 1.0f;
+    // 间隔帧数计数器
+    intervalCount = 1.0f;
     
     // 设置位置
     setPosition(position);
@@ -66,10 +73,8 @@ bool AIBall::init() {
  */
 void AIBall::updateWeight(int addedWeight) {
     weight += addedWeight;
-    // 速度(>=1)
-    speed = 3;
     // 半径
-    radius = sqrt(weight)*Game::sharedGame()->scale;
+    radius = sqrt(weight) * Game::sharedGame()->scale;
 }
 
 /**
@@ -81,6 +86,15 @@ void AIBall::update(float time) {}
  * 本类专用更新
  */
 void AIBall::thisUpdate(float delta) {
+    
+    // 0.延迟检测
+    if (intervalCount < speedInterval) {
+        speedInterval = sqrt(minWeight)/radius;
+        intervalCount += 0.1f;
+        return;
+    }else {
+        intervalCount = 1.0f;
+    }
     
     // 1.移动
     position += direction * speed;
@@ -162,6 +176,18 @@ void AIBall::sharedUpdate(float delta) {
         Game::sharedGame()->removeChild(ball);
     }
 
+}
+
+/**
+ * 缩放
+ */
+void AIBall::scale(float scale) {
+    // postion
+    position *= scale;
+    // size
+    radius *= scale;
+    // speed
+    //speed *= scale;
 }
 
 /**

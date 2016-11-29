@@ -31,7 +31,7 @@ protected:
     // 是否启动图形绘制
     bool isDraw = true;
     // DrawNode
-    cocos2d::DrawNode *drawNode;
+    cocos2d::DrawNode *drawNode = NULL;
     
 /** 对外接口 **/
 public:
@@ -42,8 +42,9 @@ public:
     
     // setter
     void setWeight(const int _weight){weight = _weight;}
-    void scaleRadius(const float scale){radius *= scale;}
-    void scalePosition(const float scale){position *= scale;}
+    
+    // 缩放
+    virtual void scale(const float scale){}
 };
 
 #endif /* defined(__PlanetWar__BaseBall__) */

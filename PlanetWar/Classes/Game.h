@@ -47,11 +47,11 @@ private:
     Label *debuglabel;
     // 按钮菜单
     Menu *menu;
-    
     // baseball 多边形数组
     Point **polyData;
 
     
+    // 工具函数
     // 游戏变量初始化
     void initData();
     // 添加UI
@@ -64,10 +64,13 @@ private:
     void createBaseBallTimer(float delta);
     // 屏幕缩放(0<scale<1)
     void scaleScreen(float scale);
-    // 返回到菜单页面
+    
+    // 事件函数
     void back(Ref* pSender);
-    // 加速
     void dash(Ref* pSender);
+    void scaleup(Ref* pSender);
+    void scaledown(Ref* pSender);
+    
     // 注册屏幕触摸事件
     void addTouchListener();
     bool onTouchBegan(Touch *touch, Event *unused_event);

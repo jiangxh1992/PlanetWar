@@ -13,6 +13,8 @@
 // 游戏场景边界
 extern int maxW;
 extern int maxH;
+extern const int maxWidth;
+extern const int maxHeight;
 
 // 设计分辨率
 extern const int designW;
@@ -32,6 +34,8 @@ extern const int maxWeight;
 extern const int maxBaseBallNum;
 // AI球的数量上限
 extern const int maxAIBallNum;
+// 最大speed
+extern const int maxSpeed;
 
 /** 状态机状态 **/
 typedef enum{

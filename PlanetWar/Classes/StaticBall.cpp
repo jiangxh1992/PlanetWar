@@ -10,6 +10,7 @@
 #include "Game.h"
 
 StaticBall::StaticBall() {
+    radius = 5;
     reActive();
 }
 
@@ -18,8 +19,11 @@ void StaticBall::reActive() {
     isActive = true;
     // 随机位置
     position = Vec2((CCRANDOM_0_1()*2-1) * maxW, (CCRANDOM_0_1()*2-1) * maxH);
-    // 半径
-    radius = 5*Game::sharedGame()->scale;
     // 随机颜色
     color = Color4F(255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 1.0);
+}
+
+void StaticBall::scale(float scale) {
+    radius *= scale;
+    position *= scale;
 }

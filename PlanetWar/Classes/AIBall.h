@@ -21,6 +21,8 @@ public:
 	virtual bool init();
     // 安帧更新
     virtual void update(float time);
+    // 缩放
+    virtual void scale(const float scale);
     // 析构函数
     virtual ~AIBall();
 
@@ -30,6 +32,10 @@ protected:
     cocos2d::Vec2 direction = cocos2d::Vec2::ZERO;
     // 移动速度
     int speed = 0;
+    // 移动间隔帧数
+    float speedInterval = 1.0f;
+    // 间隔帧数计数器
+    float intervalCount = 1;
     
     // 专用更新(禁止子类重用)
     void thisUpdate(float delta);
