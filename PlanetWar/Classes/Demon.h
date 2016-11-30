@@ -1,0 +1,28 @@
+//
+//  Demon.h
+//  PlanetWar
+//
+//  Created by Xinhou Jiang on 30/11/16.
+//
+//
+
+#ifndef __PlanetWar__Demon__ 
+#define __PlanetWar__Demon__
+#include "AIBall.h"
+
+class Demon : public AIBall {
+public:
+    // 绘制图形
+    virtual void draw(cocos2d::Renderer*renderer, const cocos2d::Mat4& transform, uint32_t flags);
+	// 创建类对象
+	static Demon* create();
+	// 对象初始化
+	virtual bool init();
+	// 析构函数
+    virtual ~Demon();
+    
+    // 碰撞检测重写
+    virtual void sharedUpdate(float delta);
+};
+
+#endif /* defined(__PlanetWar__Demon__) */

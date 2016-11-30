@@ -62,6 +62,8 @@
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
+		D2092D431DEF177D001E5801 /* Const.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2092D411DEF177D001E5801 /* Const.cpp */; };
+		D2092D471DEF17B2001E5801 /* Demon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2092D451DEF17B2001E5801 /* Demon.cpp */; };
 		D22CDAF61DD1D721004AAADC /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D22CDAF41DD1D721004AAADC /* MenuScene.cpp */; };
 		D22CDAFD1DD1ECBB004AAADC /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D22CDAFB1DD1ECBB004AAADC /* Game.cpp */; };
 		D22CDB101DD1F9A9004AAADC /* menu_bg.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D22CDB0F1DD1F9A9004AAADC /* menu_bg.mp3 */; };
@@ -172,6 +174,10 @@
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		D2092D411DEF177D001E5801 /* Const.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Const.cpp; sourceTree = "<group>"; };
+		D2092D421DEF177D001E5801 /* Const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Const.h; sourceTree = "<group>"; };
+		D2092D451DEF17B2001E5801 /* Demon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Demon.cpp; sourceTree = "<group>"; };
+		D2092D461DEF17B2001E5801 /* Demon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Demon.h; sourceTree = "<group>"; };
 		D22CDAF41DD1D721004AAADC /* MenuScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuScene.cpp; sourceTree = "<group>"; };
 		D22CDAF51DD1D721004AAADC /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
 		D22CDAFB1DD1ECBB004AAADC /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
@@ -334,6 +340,8 @@
 		46880B8319C43A87006E1F66 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D2092D411DEF177D001E5801 /* Const.cpp */,
+				D2092D421DEF177D001E5801 /* Const.h */,
 				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
 				D22CDAF91DD1D7B5004AAADC /* Game */,
@@ -429,6 +437,8 @@
 		D2FE3A661DED8ADC007B03E6 /* Ball */ = {
 			isa = PBXGroup;
 			children = (
+				D2092D451DEF17B2001E5801 /* Demon.cpp */,
+				D2092D461DEF17B2001E5801 /* Demon.h */,
 				D2ADBBCC1DD0C0BD00B3954E /* BaseBall.cpp */,
 				D2ADBBCD1DD0C0BD00B3954E /* BaseBall.h */,
 				D2CACF091DD36E90006C671E /* AIBall.cpp */,
@@ -603,9 +613,11 @@
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				D2ADBBCE1DD0C0BD00B3954E /* BaseBall.cpp in Sources */,
 				D22CDAFD1DD1ECBB004AAADC /* Game.cpp in Sources */,
+				D2092D471DEF17B2001E5801 /* Demon.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
+				D2092D431DEF177D001E5801 /* Const.cpp in Sources */,
 				D22CDAF61DD1D721004AAADC /* MenuScene.cpp in Sources */,
 				D29202601DD9AA3000D5F00E /* PlayerBall.cpp in Sources */,
 			);
