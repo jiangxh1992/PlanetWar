@@ -44,9 +44,9 @@ protected:
     
     // 通用初始化
     virtual void commenInit();
-    // 专用更新(禁止子类重用)
-    void thisUpdate(float delta);
-    // 通用更新(用于子类重用)
+    // 专用更新
+    virtual void thisUpdate(float delta);
+    // 通用更新
     virtual void sharedUpdate(float delta);
     
 /** 对外接口 **/

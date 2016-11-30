@@ -10,6 +10,7 @@
 #define __PlanetWar__Game__
 #include "PlayerBall.h"
 #include "StaticBall.h"
+#include "Demon.h"
 USING_NS_CC;
 
 class Game : public Layer {
@@ -49,6 +50,7 @@ private:
     Label *label_scale;
     Label *label_ainum;
     Label *label_basenum;
+    Label *label_demon;
     Label *label_time;
     
     DrawNode *drawNode;  // DrawNode
@@ -60,6 +62,7 @@ private:
     void createBallFactory(FACTORY_TYPE type, int num); //Ball工厂函数
     void createBaseBalls(int num);         // BaseBall工厂
     void createAIBAlls(int num);           // AIBall工厂
+    void createDemonBalls(int num);        // Demonball工厂
     void createBaseBallTimer(float delta); // 定时生成小球
     void gameObserver(float delta);        // AI调整
     void gametimer(float delta);           // 计时器
@@ -88,6 +91,7 @@ public:
     LayerColor *uilayer;          // UI layer
     StaticBall *staticArray;      // staticball数组
     Vector<AIBall*> AIBallArray;  // AIBall数组
+    Vector<Demon*> DemonArray;    // DemonBall数组
     
     // setter
     void setState(const int state) { CurState = state; }

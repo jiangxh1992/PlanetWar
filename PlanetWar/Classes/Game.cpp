@@ -58,7 +58,6 @@ bool Game::init() {
     addUI();
     // 添加角色
     addRoles();
-
     
     // 开启玩家触屏交互
     addTouchListener();
@@ -68,9 +67,9 @@ bool Game::init() {
     // 开启计时器
     this->schedule(schedule_selector(Game::gametimer), 1.0);
     // 开启定时器
-    this->schedule(schedule_selector(Game::createBaseBallTimer), Interval*30);
+    this->schedule(schedule_selector(Game::createBaseBallTimer), 5.0);
     // 开启AI干预
-    this->schedule(schedule_selector(Game::gameObserver), Interval*10);
+    this->schedule(schedule_selector(Game::gameObserver), 1.0);
     
     return true;
 }
@@ -108,7 +107,8 @@ void Game::update(float time) {
     // right
     label_ainum->setString("AIBall:"+Convert2String(player->getEatAINum())+" <- "+Convert2String((int)AIBallArray.size()));
     label_basenum->setString("BaseBall:"+Convert2String(player->getEatBaseNum())+" <- "+Convert2String(baseNum));
-
+    label_demon->setString("Demon:"+Convert2String((int)DemonArray.size()));
+    
 }
 
 /**
@@ -129,10 +129,9 @@ void Game::gameObserver(float delta) {
         float distance = sqrt(distance2) - player->getR() - aiball->getR();
         if (distance < 30) {
             // 降低AI灵敏度
-            if(CCRANDOM_0_1() < 0.95)
+            if(CCRANDOM_0_1() < 0.5)
                 break;
             Vec2 dir = aiball->getPos() - p;
-            
             
             if (aiball->getBallWeight() > weight*3/2) {
                 dir = -dir + aiball->getDirection(); // 追逐
@@ -144,7 +143,6 @@ void Game::gameObserver(float delta) {
             aiball->setDirection(dir);
         }
     }
-    
 }
 
 /**
@@ -201,7 +199,9 @@ Game::~Game(){
  */
 void Game::initData() {
     
+    // 游戏时间
     timeCount = maxSeconds;
+    // baball个数
     baseNum = maxBaseBallNum;
     
     // 默认不缩放
@@ -212,6 +212,7 @@ void Game::initData() {
     
     // 对象容器初始化
     AIBallArray = Vector<AIBall*>();
+    DemonArray = Vector<Demon*>();
 
     // 边界顶点数组
     int borderX = maxW;
@@ -269,6 +270,12 @@ void Game::addUI() {
     label_basenum->setPosition(Vec2(ScreenWidth/3*2,ScreenHeight - label_basenum->getContentSize().height));
     uilayer->addChild(label_basenum);
     
+    label_demon = Label::create();
+    label_demon->setString("demon");
+    label_demon->setAnchorPoint(Vec2(0, 1));
+    label_demon->setPosition(ScreenWidth/3*2,ScreenHeight - label_basenum->getContentSize().height*2);
+    uilayer->addChild(label_demon);
+    
     // 绘制屏幕中心
     auto centerLabel = Label::create();
     centerLabel->setString("+++++++++++");
@@ -312,6 +319,9 @@ void Game::addRoles() {
     createBallFactory(BALL_BASE, maxBaseBallNum);
     // 动态AIBall
     createBallFactory(BALL_AI, maxAIBallNum);
+    // Demon
+    createBallFactory(BALL_DEMON, 2);
+    
     // 创建玩家
     player = PlayerBall::create();
     player->setLabel("名字起个啥");
@@ -330,7 +340,8 @@ void Game::createBallFactory(FACTORY_TYPE type, int num) {
         case BALL_AI:
             createAIBAlls(num);
             break;
-        case BALL_ENEMY:
+        case BALL_DEMON:
+            createDemonBalls(num);
             break;
         default:
             break;
@@ -352,14 +363,24 @@ void Game::createAIBAlls(int num) {
     }
 }
 
+void Game::createDemonBalls(int num) {
+    for (int i = 0; i < num ; i++) {
+        auto demon = Demon::create();
+        addChild(demon);
+        DemonArray.pushBack(demon);
+    }
+}
+
 /**
  * 定时生成小球和AIBall
  */
 void Game::createBaseBallTimer(float delta) {
+    // 随机数
+    float random = CCRANDOM_0_1();
     // 小球随机激活
     for (int i = 0; i<maxBaseBallNum; i++) {
-        bool random = CCRANDOM_0_1()>0.5 ? true : false;
-        if (random && !staticArray[i].isActive) {
+        bool pass = (random > 0.2) ? true : false;
+        if (pass && !staticArray[i].isActive) {
             staticArray[i].reActive();
             baseNum++;
         }
@@ -368,6 +389,11 @@ void Game::createBaseBallTimer(float delta) {
     int createNum = maxAIBallNum - (int)AIBallArray.size();
     if (createNum > 0) {
         createBallFactory(BALL_AI, createNum);
+    }
+    
+    // Demon
+    if (random < 0.1) {
+        createBallFactory(BALL_DEMON, 1);
     }
 }
 

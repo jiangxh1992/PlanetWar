@@ -68,6 +68,7 @@
 		D22CDAFD1DD1ECBB004AAADC /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D22CDAFB1DD1ECBB004AAADC /* Game.cpp */; };
 		D22CDB101DD1F9A9004AAADC /* menu_bg.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D22CDB0F1DD1F9A9004AAADC /* menu_bg.mp3 */; };
 		D28B67C61DEE87BB006F63C4 /* plaerydata.plist in Resources */ = {isa = PBXBuildFile; fileRef = D28B67C51DEE87BB006F63C4 /* plaerydata.plist */; };
+		D28B67CF1DEEC319006F63C4 /* Demon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D28B67CD1DEEC319006F63C4 /* Demon.cpp */; };
 		D28C2AAE1DE6B96F0010A5B2 /* StaticBall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D28C2AAC1DE6B96F0010A5B2 /* StaticBall.cpp */; };
 		D29202601DD9AA3000D5F00E /* PlayerBall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D292025E1DD9AA3000D5F00E /* PlayerBall.cpp */; };
 		D29ACA9E1DE7E72C00286533 /* Const.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D29ACA9D1DE7E72C00286533 /* Const.cpp */; };
@@ -184,6 +185,8 @@
 		D22CDAFC1DD1ECBB004AAADC /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		D22CDB0F1DD1F9A9004AAADC /* menu_bg.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = menu_bg.mp3; sourceTree = "<group>"; };
 		D28B67C51DEE87BB006F63C4 /* plaerydata.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = plaerydata.plist; sourceTree = "<group>"; };
+		D28B67CD1DEEC319006F63C4 /* Demon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Demon.cpp; sourceTree = "<group>"; };
+		D28B67CE1DEEC319006F63C4 /* Demon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Demon.h; sourceTree = "<group>"; };
 		D28C2AAC1DE6B96F0010A5B2 /* StaticBall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticBall.cpp; sourceTree = "<group>"; };
 		D28C2AAD1DE6B96F0010A5B2 /* StaticBall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticBall.h; sourceTree = "<group>"; };
 		D28C2AB01DE6C2E50010A5B2 /* Const.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Const.h; sourceTree = "<group>"; };
@@ -453,6 +456,8 @@
 				D292025F1DD9AA3000D5F00E /* PlayerBall.h */,
 				D28C2AAC1DE6B96F0010A5B2 /* StaticBall.cpp */,
 				D28C2AAD1DE6B96F0010A5B2 /* StaticBall.h */,
+				D28B67CD1DEEC319006F63C4 /* Demon.cpp */,
+				D28B67CE1DEEC319006F63C4 /* Demon.h */,
 			);
 			name = Ball;
 			sourceTree = "<group>";
@@ -623,6 +628,7 @@
 				D22CDAFD1DD1ECBB004AAADC /* Game.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
+				D28B67CF1DEEC319006F63C4 /* Demon.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				D29ACAA61DE85D7E00286533 /* WellCome.cpp in Sources */,
 				D22CDAF61DD1D721004AAADC /* MenuScene.cpp in Sources */,

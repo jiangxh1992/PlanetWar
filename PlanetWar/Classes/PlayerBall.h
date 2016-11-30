@@ -30,7 +30,7 @@ protected:
     bool isSpeedUp = false;
     
     // 专用更新
-    void thisUpdate(float delta);
+    virtual void thisUpdate(float delta);
     
 /** 对外接口 **/
 public:
