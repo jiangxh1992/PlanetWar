@@ -125,15 +125,21 @@ void Game::gameObserver(float delta) {
         }
         Point p = player->getPos();
         int weight = player->getBallWeight();
-        float distance = pow(p.x - aiball->getPos().x, 2.0) + pow(p.y - aiball->getPos().y, 2.0);
-        if (distance < 70*70) {
+        float distance2 = pow(p.x - aiball->getPos().x, 2.0) + pow(p.y - aiball->getPos().y, 2.0);
+        float distance = sqrt(distance2) - player->getR() - aiball->getR();
+        if (distance < 30) {
             // 降低AI灵敏度
-            if(CCRANDOM_0_1() < 0.9)
+            if(CCRANDOM_0_1() < 0.95)
                 break;
-            Vec2 dir = aiball->getPos() - p; // 躲避
+            Vec2 dir = aiball->getPos() - p;
+            
+            
             if (aiball->getBallWeight() > weight*3/2) {
-                //dir = -dir; // 追逐
+                dir = -dir + aiball->getDirection(); // 追逐
+            }else {
+                dir += aiball->getDirection(); // 躲避
             }
+            
             dir.normalize();
             aiball->setDirection(dir);
         }
