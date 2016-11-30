@@ -69,7 +69,7 @@ bool Game::init() {
     // 开启定时器
     this->schedule(schedule_selector(Game::createBaseBallTimer), 5.0);
     // 开启AI干预
-    this->schedule(schedule_selector(Game::gameObserver), 1.0);
+    this->schedule(schedule_selector(Game::gameObserver), 2.0);
     
     return true;
 }
@@ -117,7 +117,7 @@ void Game::update(float time) {
 void Game::gameObserver(float delta) {
     
     // AIBall 躲避或追逐player
-    for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
+    for (Vector<AIBall*>::const_iterator it = AIBallArray.begin(); it != AIBallArray.end(); it++) {
         AIBall *aiball = *it;
         AIBall *player = Game::sharedGame()->player;
         if (aiball == player) {
@@ -127,9 +127,9 @@ void Game::gameObserver(float delta) {
         int weight = player->getBallWeight();
         float distance2 = pow(p.x - aiball->getPos().x, 2.0) + pow(p.y - aiball->getPos().y, 2.0);
         float distance = sqrt(distance2) - player->getR() - aiball->getR();
-        if (distance < 30) {
+        if (distance < 40) {
             // 降低AI灵敏度
-            if(CCRANDOM_0_1() < 0.5)
+            if(CCRANDOM_0_1() < 0.3)
                 break;
             Vec2 dir = aiball->getPos() - p;
             
@@ -141,6 +141,17 @@ void Game::gameObserver(float delta) {
             
             dir.normalize();
             aiball->setDirection(dir);
+        }
+    }
+    
+    // DemonBall主动攻击player
+    for (Vector<Demon*>::const_iterator it = DemonArray.begin(); it != DemonArray.end(); it++) {
+        Demon *demon = *it;
+        if(CCRANDOM_0_1() < 0.8) {
+            Vec2 target = player->getPos() - demon->getPos();
+            Vec2 newDir = target + demon->getDirection();
+            newDir.normalize();
+            demon->setDirection(newDir);
         }
     }
 }
@@ -324,7 +335,7 @@ void Game::addRoles() {
     
     // 创建玩家
     player = PlayerBall::create();
-    player->setLabel("名字起个啥");
+    player->setLabel("名字起个啥😁");
     addChild(player);
     AIBallArray.pushBack(player);
 }
@@ -358,6 +369,7 @@ void Game::createBaseBalls(int num) {
 void Game::createAIBAlls(int num) {
     for (int i = 0 ; i<num ; i++) {
         auto aiball = AIBall::create();
+        
         addChild(aiball);
         AIBallArray.pushBack(aiball);
     }
@@ -366,6 +378,7 @@ void Game::createAIBAlls(int num) {
 void Game::createDemonBalls(int num) {
     for (int i = 0; i < num ; i++) {
         auto demon = Demon::create();
+        demon->setLabel("😈恶魔😈");
         addChild(demon);
         DemonArray.pushBack(demon);
     }

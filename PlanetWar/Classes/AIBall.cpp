@@ -50,7 +50,7 @@ void AIBall::commenInit() {
     eatBaseNum = 0;
     // label
     label_tag = Label::create();
-    label_tag->setString("unknown");
+    label_tag->setString("😜智多星☺️");
     label_tag->setPosition(Vec2(0, radius+label_tag->getContentSize().height));
     addChild(label_tag);
     // 步长

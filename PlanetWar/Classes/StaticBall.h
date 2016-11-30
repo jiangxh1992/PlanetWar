@@ -25,7 +25,7 @@ public:
     // 颜色
     Color4F color = cocos2d::Color4F::YELLOW;
     // 重量
-    int weight = 3;
+    int weight = 5;
     
     // 构造
     StaticBall();
