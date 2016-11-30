@@ -19,7 +19,7 @@ const int designW = 568;
 const int designH = 320;
 
 // 移动间隔时间
-const float Interval = 0.002;
+const float Interval = 0.004;
 // PI
 const double PI = 3.1415926;
 // 能量常量

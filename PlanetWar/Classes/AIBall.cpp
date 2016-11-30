@@ -77,17 +77,6 @@ void AIBall::commenInit() {
 }
 
 /**
- * 更新重量
- */
-void AIBall::updateWeight(int addedWeight) {
-    weight += addedWeight;
-    // 半径
-    radius = sqrt(weight*Game::sharedGame()->scale);
-    
-    label_tag->setPosition(Vec2(0, radius+label_tag->getContentSize().height));
-}
-
-/**
  * 安帧更新
  */
 void AIBall::update(float time) {
@@ -153,7 +142,7 @@ void AIBall::sharedUpdate(float delta) {
         AIBall *aiball = *it;
         if (weight > aiball->getBallWeight()) {
             double distance = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
-            if (distance <= pow(radius - aiball->radius, 2)) {
+            if (distance <= pow(radius - aiball->radius*0.8, 2)) {
                 // 获得其体重
                 updateWeight(aiball->getBallWeight());
                 eatAINum++;
@@ -170,6 +159,16 @@ void AIBall::sharedUpdate(float delta) {
     }
 }
 
+#pragma mark -工具函数
+
+void AIBall::updateWeight(int addedWeight) {
+    weight += addedWeight;
+    // 半径
+    radius = sqrt(weight*Game::sharedGame()->scale);
+    
+    label_tag->setPosition(Vec2(0, radius+label_tag->getContentSize().height));
+}
+
 /**
  * 缩放
  */
@@ -184,6 +183,13 @@ void AIBall::scale(float scale) {
 
 void AIBall::setLabel(__String label) {
     label_tag->setString(label._string);
+}
+
+void AIBall::setWeightBySub(const int sub) {
+    if (weight - sub >= minWeight) {
+        weight -= sub;
+        updateWeight(0);
+    }
 }
 
 /**

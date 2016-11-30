@@ -340,12 +340,12 @@
 		46880B8319C43A87006E1F66 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D22CDAF91DD1D7B5004AAADC /* Game */,
+				D22CDAF81DD1D7AA004AAADC /* Menu */,
 				D2092D411DEF177D001E5801 /* Const.cpp */,
 				D2092D421DEF177D001E5801 /* Const.h */,
 				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
-				D22CDAF91DD1D7B5004AAADC /* Game */,
-				D22CDAF81DD1D7AA004AAADC /* Menu */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -437,14 +437,14 @@
 		D2FE3A661DED8ADC007B03E6 /* Ball */ = {
 			isa = PBXGroup;
 			children = (
-				D2092D451DEF17B2001E5801 /* Demon.cpp */,
-				D2092D461DEF17B2001E5801 /* Demon.h */,
 				D2ADBBCC1DD0C0BD00B3954E /* BaseBall.cpp */,
 				D2ADBBCD1DD0C0BD00B3954E /* BaseBall.h */,
 				D2CACF091DD36E90006C671E /* AIBall.cpp */,
 				D2CACF0A1DD36E90006C671E /* AIBall.h */,
 				D292025E1DD9AA3000D5F00E /* PlayerBall.cpp */,
 				D292025F1DD9AA3000D5F00E /* PlayerBall.h */,
+				D2092D451DEF17B2001E5801 /* Demon.cpp */,
+				D2092D461DEF17B2001E5801 /* Demon.h */,
 				D28C2AAC1DE6B96F0010A5B2 /* StaticBall.cpp */,
 				D28C2AAD1DE6B96F0010A5B2 /* StaticBall.h */,
 			);

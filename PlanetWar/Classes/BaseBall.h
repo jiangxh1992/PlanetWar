@@ -41,7 +41,6 @@ public:
     const int getBallWeight()const{return weight;}
     
     // setter
-    void setWeightBySub(const int sub);
     
     // 缩放
     virtual void scale(const float scale){}

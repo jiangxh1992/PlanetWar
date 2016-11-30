@@ -51,12 +51,12 @@ protected:
     
 /** 对外接口 **/
 public:
-    // 更新重量
     virtual void updateWeight(int addedWeight);
     void scaleSpeed(float scale){speed *= scale;};
     virtual void setLabel(const cocos2d::__String label);
     
     void setDirection(const cocos2d::Vec2 dir){direction = dir;}
+    void setWeightBySub(const int sub);
     
     const cocos2d::Vec2 getDirection()const{return direction;}
     const float getSpeedInterval()const{return speedInterval;}

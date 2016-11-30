@@ -5,6 +5,7 @@
 //  Created by Xinhou Jiang on 8/11/16.
 //
 //
+#define dashTime 5 // 加速时间
 
 #include "Game.h"
 #include "BaseBall.h"
@@ -86,7 +87,8 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
         StaticBall ball = staticArray[i];
         if (!ball.isActive) continue;
         // 绘制多边形
-        drawNode->drawPoly(ball.vertexs, ball.polyNum, true, ball.color);
+        //drawNode->drawPoly(ball.vertexs, ball.polyNum, true, ball.color);           // 空心
+        drawNode->drawPolygon(ball.vertexs, ball.polyNum, ball.color, 1, ball.color); // 实心
         //drawNode->drawDot(staticArray[i].position, staticArray[i].radius, staticArray[i].color);
         // 深度
         drawNode->setGlobalZOrder(-1);
@@ -127,13 +129,13 @@ void Game::gameObserver(float delta) {
         int weight = player->getBallWeight();
         float distance2 = pow(p.x - aiball->getPos().x, 2.0) + pow(p.y - aiball->getPos().y, 2.0);
         float distance = sqrt(distance2) - player->getR() - aiball->getR();
-        if (distance < 40) {
+        if (distance < 80) {
             // 降低AI灵敏度
             if(CCRANDOM_0_1() < 0.3)
                 break;
             Vec2 dir = aiball->getPos() - p;
             
-            if (aiball->getBallWeight() > weight*3/2) {
+            if (aiball->getBallWeight() > weight) {
                 dir = -dir + aiball->getDirection(); // 追逐
             }else {
                 dir += aiball->getDirection(); // 躲避
@@ -147,9 +149,10 @@ void Game::gameObserver(float delta) {
     // DemonBall主动攻击player
     for (Vector<Demon*>::const_iterator it = DemonArray.begin(); it != DemonArray.end(); it++) {
         Demon *demon = *it;
+        
         if(CCRANDOM_0_1() < 0.8) {
-            Vec2 target = player->getPos() - demon->getPos();
-            Vec2 newDir = target + demon->getDirection();
+            Vec2 newDir = player->getPos() - demon->getPos();
+            if(newDir.x*newDir.x + newDir.y*newDir.y > maxH*maxH/4) continue;
             newDir.normalize();
             demon->setDirection(newDir);
         }
@@ -240,7 +243,7 @@ void Game::initData() {
 void Game::addUI() {
     
     uilayer = LayerColor::create(Color4B(255, 255, 255, 0), ScreenWidth, ScreenHeight);
-    addChild(uilayer);
+    addChild(uilayer, 100000);
     
     // left
     debuglabel = Label::create();
@@ -405,6 +408,7 @@ void Game::createBaseBallTimer(float delta) {
     }
     
     // Demon
+    if (DemonArray.size() > 5) return;
     if (random < 0.1) {
         createBallFactory(BALL_DEMON, 1);
     }
@@ -450,7 +454,7 @@ void Game::back(cocos2d::Ref* pSender) {
  */
 void Game::dash(cocos2d::Ref *pSender) {
     player->speedUp();
-    DelayTime *delay = DelayTime::create(3.0f);
+    DelayTime *delay = DelayTime::create(dashTime);
     CallFunc *fun = CallFunc::create(CC_CALLBACK_0(PlayerBall::endSpeedUp, player));
     Sequence *action = Sequence::create(delay,fun, NULL);
     runAction(action);

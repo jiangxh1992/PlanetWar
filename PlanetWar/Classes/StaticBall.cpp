@@ -10,7 +10,7 @@
 #include "Game.h"
 
 StaticBall::StaticBall() {
-    radius = 5;
+    radius = 3;
     reActive();
 }
 
