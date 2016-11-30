@@ -83,15 +83,18 @@ void PlayerBall::thisUpdate(float delta) {
     setPosition(position);// 本地坐标
     
     // 3.屏幕跟随
-    Vec2 offset_p = position - Vec2(ScreenWidth/2, ScreenHeight/2);
-    Vec2 offset_l = Game::sharedGame()->getPosition();
-    Vec2 dir = offset_l + offset_p;
-    int factor = dir.x + dir.y > 2 ? 1.2 : 1;
-    dir.normalize();
-    // 游戏场景移动
-    Game::sharedGame()->setPosition(Game::sharedGame()->getPosition() - dir*factor*speed);
-    // UILayer移动恢复
-    Game::sharedGame()->uilayer->setPosition(Game::sharedGame()->uilayer->getPosition() + dir*factor*speed);
+    Game::sharedGame()->getScene()->getDefaultCamera()->setPosition(position);
+    // uilayer跟随相机
+    Game::sharedGame()->uilayer->setPosition(position - Vec2(ScreenWidth/2, ScreenHeight/2));
+//    Vec2 offset_p = position - Vec2(ScreenWidth/2, ScreenHeight/2);
+//    Vec2 offset_l = Game::sharedGame()->getPosition();
+//    Vec2 dir = offset_l + offset_p;
+//    int factor = dir.x + dir.y > 2 ? 1.2 : 1;
+//    dir.normalize();
+//    // 游戏场景移动
+//    Game::sharedGame()->setPosition(Game::sharedGame()->getPosition() - dir*factor*speed);
+//    // UILayer移动恢复
+//    Game::sharedGame()->uilayer->setPosition(Game::sharedGame()->uilayer->getPosition() + dir*factor*speed);
     
     // 4.OVER_MAP -> RUN_NORMAL
     bool isNormal = position.x < maxW || position.x > -maxW || position.y < maxH || position.y > -maxH;

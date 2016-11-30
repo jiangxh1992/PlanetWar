@@ -27,6 +27,7 @@ string Convert2String(const T &value)
 Scene* Game::createScene() {
     auto scene = Scene::create();
     auto layer = Game::create();
+    layer->curScene = scene;
     scene->addChild(layer);
     return scene;
 }
@@ -98,6 +99,7 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
 
 // 安帧更新
 void Game::update(float time) {
+    
     // left
     debuglabel->setString("interval:"+Convert2String(player->getSpeedInterval()));
     label_weight->setString("wieght:"+Convert2String(player->getBallWeight()));
@@ -106,6 +108,7 @@ void Game::update(float time) {
     // right
     label_ainum->setString("AIBall:"+Convert2String(player->getEatAINum())+" <- "+Convert2String((int)AIBallArray.size()));
     label_basenum->setString("BaseBall:"+Convert2String(player->getEatBaseNum())+" <- "+Convert2String(baseNum));
+
 }
 
 /**
@@ -135,6 +138,7 @@ void Game::gameObserver(float delta) {
             aiball->setDirection(dir);
         }
     }
+    
 }
 
 /**

@@ -34,6 +34,7 @@ public:
 private:
     
     // 游戏数据
+    Scene *curScene;              // 场景引用
     PlayerBall *player;           // 玩家
     int CurState;                 // 状态机
     Vec2 startPoint = Vec2::ZERO; // 触摸起始点
@@ -94,6 +95,7 @@ public:
     // getter
     const int getState() { return CurState; }
     const PlayerBall* getPlayer() { return player; }
+    const Scene* getScene(){return curScene;}
 
 };
 
