@@ -44,9 +44,9 @@ protected:
     
     // 通用初始化
     virtual void commenInit();
-    // 专用更新
+    // 移动
     virtual void thisUpdate(float delta);
-    // 通用更新
+    // 碰撞检测
     virtual void sharedUpdate(float delta);
     
 /** 对外接口 **/
@@ -58,10 +58,10 @@ public:
     
     void setDirection(const cocos2d::Vec2 dir){direction = dir;}
     
-    const cocos2d::Vec2 getDirection(){return direction;}
-    const float getSpeedInterval(){return speedInterval;}
-    const int getEatAINum(){return eatAINum;};
-    const int getEatBaseNum(){return eatBaseNum;}
+    const cocos2d::Vec2 getDirection()const{return direction;}
+    const float getSpeedInterval()const{return speedInterval;}
+    const int getEatAINum()const{return eatAINum;};
+    const int getEatBaseNum()const{return eatBaseNum;}
     
 };
 

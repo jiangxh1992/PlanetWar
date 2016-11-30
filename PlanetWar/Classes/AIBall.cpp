@@ -128,7 +128,7 @@ void AIBall::thisUpdate(float delta) {
 }
 
 /**
- * 共享更新
+ * 碰撞检测
  */
 void AIBall::sharedUpdate(float delta) {
     
@@ -146,7 +146,7 @@ void AIBall::sharedUpdate(float delta) {
             Game::sharedGame()->baseNum --;
         }
     }
-    
+
     // 2.检测吞并
     Vector<AIBall*> autoreleasepool = Vector<AIBall*>();
     for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
@@ -168,7 +168,6 @@ void AIBall::sharedUpdate(float delta) {
         Game::sharedGame()->AIBallArray.eraseObject(ball);
         Game::sharedGame()->removeChild(ball);
     }
-
 }
 
 /**

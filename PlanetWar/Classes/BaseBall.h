@@ -36,11 +36,12 @@ protected:
 /** 对外接口 **/
 public:
     // getter
-    const cocos2d::Vec2 getPos(){return position;}
-    const float getR(){return radius;}
-    const int getBallWeight(){return weight;}
+    const cocos2d::Vec2 getPos()const{return position;}
+    const float getR()const{return radius;}
+    const int getBallWeight()const{return weight;}
     
     // setter
+    void setWeightBySub(const int sub);
     
     // 缩放
     virtual void scale(const float scale){}

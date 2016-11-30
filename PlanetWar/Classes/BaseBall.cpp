@@ -27,6 +27,12 @@ void BaseBall::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform,
     }
 }
 
+void BaseBall::setWeightBySub(const int sub) {
+    if (weight - sub >= minWeight) {
+        weight -= sub;
+    }
+}
+
 /**
  * 析构
  */

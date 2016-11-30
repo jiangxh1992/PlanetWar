@@ -97,8 +97,8 @@ public:
     void setState(const int state) { CurState = state; }
 
     // getter
-    const int getState() { return CurState; }
-    const PlayerBall* getPlayer() { return player; }
+    int getState(){ return CurState; }
+    PlayerBall* getPlayer()const{ return player; }
     const Scene* getScene(){return curScene;}
 
 };
