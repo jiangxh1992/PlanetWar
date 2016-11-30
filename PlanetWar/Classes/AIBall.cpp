@@ -179,6 +179,8 @@ void AIBall::scale(float scale) {
     position *= scale;
     // speed
     speedInterval /= scale;
+    // radius
+    updateWeight(0);
 }
 
 void AIBall::setLabel(__String label) {

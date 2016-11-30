@@ -373,10 +373,8 @@ void Game::scaleScreen(float scale) {
     
     this->scale *= scale;
     // 场景缩放
-    //maxW *= scale;
-    //maxH *= scale;
-    setPosition(getPosition()*scale);
-    uilayer->setPosition(uilayer->getPosition()*scale);
+    maxW *= scale;
+    maxH *= scale;
     
     // 缩放静止的球
     for (int i = 0 ; i < maxBaseBallNum ; i++) {
