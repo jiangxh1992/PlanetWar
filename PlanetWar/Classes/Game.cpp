@@ -55,22 +55,17 @@ bool Game::init() {
     initData();
     // 添加UI
     addUI();
-    
-    // 静态baseball
-    createBallFactory(BALL_BASE, maxBaseBallNum);
-    // 动态AIBall
-    createBallFactory(BALL_AI, maxAIBallNum);
-    // 创建玩家
-    player = PlayerBall::create();
-    player->setLabel("名字起个啥");
-    addChild(player);
-    AIBallArray.pushBack(player);
+    // 添加角色
+    addRoles();
+
     
     // 开启玩家触屏交互
     addTouchListener();
     
     // 按帧更新
     this->scheduleUpdate();
+    // 开启计时器
+    this->schedule(schedule_selector(Game::gametimer), 1.0);
     // 开启定时器
     this->schedule(schedule_selector(Game::createBaseBallTimer), Interval*30);
     // 开启AI干预
@@ -98,7 +93,7 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
     }
     
     // 绘制边界
-    drawNode->drawPoly(Vertexs, 4, true, Color4F(255*CCRANDOM_0_1(), 0, 0, CCRANDOM_0_1()));
+    drawNode->drawPoly(Vertexs, 4, true, Color4F(255*CCRANDOM_0_1(), 0, 0, 1.0));
 }
 
 // 安帧更新
@@ -109,8 +104,8 @@ void Game::update(float time) {
     label_scale->setString("scale:"+Convert2String(scale));
     
     // right
-    label_ainum->setString("AIBall:"+Convert2String((int)AIBallArray.size()));
-    label_basenum->setString("BaseBall:"+Convert2String(baseNum));
+    label_ainum->setString("AIBall:"+Convert2String(player->getEatAINum())+" <- "+Convert2String((int)AIBallArray.size()));
+    label_basenum->setString("BaseBall:"+Convert2String(player->getEatBaseNum())+" <- "+Convert2String(baseNum));
 }
 
 /**
@@ -143,14 +138,41 @@ void Game::gameObserver(float delta) {
 }
 
 /**
+ * 计时器
+ */
+void Game::gametimer(float delta) {
+    --timeCount;
+    int minute = timeCount/60;
+    int seconds = timeCount%60;
+    __String s;
+    s.initWithFormat("%02d:%02d",minute,seconds);
+    label_time->setString(s._string);
+    
+    // 游戏结束
+    if(timeCount <= 0)
+        gameOver();
+}
+
+/**
+ * 游戏结束
+ */
+void Game::gameOver() {
+    // 停止交互
+    Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+    // 游戏结束音效
+    // ...
+    // 显示游戏结束对话框
+    // ...
+}
+
+/**
  * 退出场景
  */
 void Game::onExit() {
     // 关闭所有回调
     this->unscheduleUpdate();
     this->unscheduleAllCallbacks();
-    // 关闭交互监听
-    Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+    
     Layer::onExit();
 }
 
@@ -169,6 +191,7 @@ Game::~Game(){
  */
 void Game::initData() {
     
+    timeCount = maxSeconds;
     baseNum = maxBaseBallNum;
     
     // 默认不缩放
@@ -181,8 +204,8 @@ void Game::initData() {
     AIBallArray = Vector<AIBall*>();
 
     // 边界顶点数组
-    int borderX = maxW - 10;
-    int borderY = maxH - 10;
+    int borderX = maxW;
+    int borderY = maxH;
     Vertexs[0] = Vec2(borderX, borderY);
     Vertexs[1] = Vec2(borderX, -borderY);
     Vertexs[2] = Vec2(-borderX, -borderY);
@@ -216,17 +239,24 @@ void Game::addUI() {
     label_scale->setPosition(Vec2(5, ScreenHeight - label_scale->getContentSize().height*2));
     uilayer->addChild(label_scale);
     
+    // center
+    label_time = Label::create();
+    label_time->setString("00:00");
+    label_time->setAnchorPoint(Vec2(0.5, 1));
+    label_time->setPosition(ScreenWidth/2, ScreenHeight);
+    uilayer->addChild(label_time);
+    
     // right
     label_ainum = Label::create();
     label_ainum->setString("ainum");
     label_ainum->setAnchorPoint(Vec2(0, 1));
-    label_ainum->setPosition(Vec2(ScreenWidth/2,ScreenHeight));
+    label_ainum->setPosition(Vec2(ScreenWidth/3*2,ScreenHeight));
     uilayer->addChild(label_ainum);
     
     label_basenum = Label::create();
     label_basenum->setString("basenum");
     label_basenum->setAnchorPoint(Vec2(0, 1));
-    label_basenum->setPosition(Vec2(ScreenWidth/2,ScreenHeight - label_basenum->getContentSize().height));
+    label_basenum->setPosition(Vec2(ScreenWidth/3*2,ScreenHeight - label_basenum->getContentSize().height));
     uilayer->addChild(label_basenum);
     
     // 绘制屏幕中心
@@ -265,6 +295,18 @@ void Game::addUI() {
     drawNode = DrawNode::create();
     addChild(drawNode);
     
+}
+
+void Game::addRoles() {
+    // 静态baseball
+    createBallFactory(BALL_BASE, maxBaseBallNum);
+    // 动态AIBall
+    createBallFactory(BALL_AI, maxAIBallNum);
+    // 创建玩家
+    player = PlayerBall::create();
+    player->setLabel("名字起个啥");
+    addChild(player);
+    AIBallArray.pushBack(player);
 }
 
 /**

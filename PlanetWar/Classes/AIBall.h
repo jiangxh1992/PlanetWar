@@ -36,9 +36,14 @@ protected:
     double speedInterval;
     // 间隔帧数计数器
     double intervalCount;
+    // 吃球数量
+    int eatAINum = 0;
+    int eatBaseNum = 0;
     
     cocos2d::Label *label_tag;
     
+    // 通用初始化
+    virtual void commenInit();
     // 专用更新(禁止子类重用)
     void thisUpdate(float delta);
     // 通用更新(用于子类重用)
@@ -53,6 +58,8 @@ public:
     
     void setDirection(const cocos2d::Vec2 dir){direction = dir;}
     const float getSpeedInterval(){return speedInterval;}
+    const int getEatAINum(){return eatAINum;};
+    const int getEatBaseNum(){return eatBaseNum;}
     
 };
 

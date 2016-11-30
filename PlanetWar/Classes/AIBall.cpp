@@ -35,12 +35,24 @@ bool AIBall::init() {
         return false;
     }
     
+    commenInit();
+    
+    // 开启安帧更新
+    this->scheduleUpdate();
+    // 开启定时器
+    this->schedule(schedule_selector(AIBall::thisUpdate), Interval);
+    
+    return true;
+}
+
+void AIBall::commenInit() {
+    eatAINum = 0;
+    eatBaseNum = 0;
     // label
     label_tag = Label::create();
-    label_tag->setString("enemy");
+    label_tag->setString("unknown");
     label_tag->setPosition(Vec2(0, radius+label_tag->getContentSize().height));
     addChild(label_tag);
-    
     // 步长
     speed = maxSpeed;
     // 随机位置
@@ -57,19 +69,11 @@ bool AIBall::init() {
     speedInterval = 1.0f;
     // 间隔帧数计数器
     intervalCount = 0.9f;
-    
     // 设置位置
     setPosition(position);
     // drawnode
     drawNode = DrawNode::create();
     this->addChild(drawNode);
-    
-    // 开启安帧更新
-    this->scheduleUpdate();
-    // 开启定时器
-    this->schedule(schedule_selector(AIBall::thisUpdate), Interval);
-    
-    return true;
 }
 
 /**
@@ -136,6 +140,7 @@ void AIBall::sharedUpdate(float delta) {
         if (distance <= radius*radius) {
             // 吃掉baseball，获得其体重
             updateWeight(baseball.weight);
+            eatBaseNum++;
             // 移除baseball
             Game::sharedGame()->staticArray[i].isActive = false;
             Game::sharedGame()->baseNum --;
@@ -151,6 +156,7 @@ void AIBall::sharedUpdate(float delta) {
             if (distance <= pow(radius - aiball->radius, 2)) {
                 // 获得其体重
                 updateWeight(aiball->getBallWeight());
+                eatAINum++;
                 autoreleasepool.pushBack(aiball);
             }
         }

@@ -25,36 +25,14 @@ bool PlayerBall::init() {
     if (!Sprite::init()) {
         return false;
     }
-    
-    // label
-    label_tag = Label::create();
-    label_tag->setString("player");
-    label_tag->setPosition(Vec2(0, radius+label_tag->getContentSize().height));
-    addChild(label_tag);
+    commenInit();
     
     // 位置初始化在屏幕中心
     position = Vec2(VisiableSize.width/2, VisiableSize.height/2);
-    // 初始重量
-    updateWeight(minWeight);
-    // 随机颜色
-    color = Color4F(255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 255*CCRANDOM_0_1(), 1.0);
-    // 随机图片
-    // initWithFile("CloseNormal.png");
-    // isDraw = false;
-    
-    // 步长
-    speed = maxSpeed;
-    // 移动间隔帧数
-    speedInterval = 1.0f;
-    // 间隔帧数计数器
-    intervalCount = 0.9f;
-    isSpeedUp = false;
-    
     // 设置位置
     setPosition(position);
-    // drawnode
-    drawNode = DrawNode::create();
-    this->addChild(drawNode);
+
+    isSpeedUp = false;
     
     // 开启安帧更新
     this->scheduleUpdate();
@@ -85,45 +63,39 @@ void PlayerBall::thisUpdate(float delta) {
         intervalCount = 1.0;
     }
     
-    // 1.移动
+    // 1.RUN_NORMAL -> OVER_MAP
+    if (position.x > maxW || position.x < -maxW || position.y > maxH || position.y < -maxH) {
+        Game::sharedGame()->setState(OVER_MAP);
+        // 矫正
+        if(position.x >= maxW) position.x = maxW;
+        if(position.x <= -maxW) position.x = -maxW;
+        if(position.y >= maxH) position.y = maxH;
+        if(position.y <= -maxH) position.y = -maxH;
+        // 停止运动
+        direction = Vec2::ZERO;
+    }
+    
+    // 2.移动
     if (std::abs(direction.x) < 0.01f || std::abs(direction.y) < 0.01f) {
         return;
     }
-    bool isEage = position.x >= maxW-radius || position.x <= radius-maxW || position.y >= maxH-radius || position.y <= radius-maxH;
-    if(isEage) {
-        position -= direction*speed*2;
-        direction = Vec2::ZERO;
-        setPosition(position);// 本地坐标
-    }else {
-        position += direction*speed;
-        setPosition(position);// 本地坐标
-    }
+    position += direction * speed;
+    setPosition(position);// 本地坐标
     
-    // 2.RUN_NORMAL -> OVER_MAP
-    if(Game::sharedGame()->getState() == RUN_NORMAL) {
-        if (position.x >= maxW || position.x <= -maxW || position.y >= maxH || position.y <= -maxH) {
-            Game::sharedGame()->setState(OVER_MAP);
-        }
-    }
     // 3.屏幕跟随
-    //if (Game::sharedGame()->getState() != OVER_MAP) {
-        Vec2 offset_p = position - Vec2(ScreenWidth/2, ScreenHeight/2);
-        Vec2 offset_l = Game::sharedGame()->getPosition();
-        Vec2 dir = offset_l + offset_p;
-        int factor = dir.x + dir.y > 2 ? 1.2 : 1;
-        dir.normalize();
-        // 游戏场景移动
-        Game::sharedGame()->setPosition(Game::sharedGame()->getPosition() - dir*factor*speed);
-        // UILayer移动恢复
-        Game::sharedGame()->uilayer->setPosition(Game::sharedGame()->uilayer->getPosition() + dir*factor*speed);
-    //}
+    Vec2 offset_p = position - Vec2(ScreenWidth/2, ScreenHeight/2);
+    Vec2 offset_l = Game::sharedGame()->getPosition();
+    Vec2 dir = offset_l + offset_p;
+    int factor = dir.x + dir.y > 2 ? 1.2 : 1;
+    dir.normalize();
+    // 游戏场景移动
+    Game::sharedGame()->setPosition(Game::sharedGame()->getPosition() - dir*factor*speed);
+    // UILayer移动恢复
+    Game::sharedGame()->uilayer->setPosition(Game::sharedGame()->uilayer->getPosition() + dir*factor*speed);
     
     // 4.OVER_MAP -> RUN_NORMAL
-    int curState = Game::sharedGame()->getState();
-    bool isOverMap = position.x >= maxW || position.x <= -maxW || position.y >= maxH || position.y <= -maxH;
-    if(curState == OVER_MAP && !isOverMap) {
-        Game::sharedGame()->setState(RUN_NORMAL);
-    }
+    bool isNormal = position.x < maxW || position.x > -maxW || position.y < maxH || position.y > -maxH;
+    if(isNormal) Game::sharedGame()->setState(RUN_NORMAL);
 
 }
 

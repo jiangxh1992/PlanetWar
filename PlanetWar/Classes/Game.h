@@ -33,12 +33,13 @@ public:
 /** 内部变量和函数 **/
 private:
     
-    // 数据
+    // 游戏数据
     PlayerBall *player;           // 玩家
     int CurState;                 // 状态机
     Vec2 startPoint = Vec2::ZERO; // 触摸起始点
     Vec2 endPoint = Vec2::ZERO;   // 触摸结束点
     Point Vertexs[4];             // 边界顶点数组
+    int timeCount = 0;            // 游戏倒计时
     
     // UI
     Menu *menu;          // 按钮菜单
@@ -47,17 +48,22 @@ private:
     Label *label_scale;
     Label *label_ainum;
     Label *label_basenum;
+    Label *label_time;
+    
     DrawNode *drawNode;  // DrawNode
     
     // 工具函数
     void initData();                       // 游戏变量初始化
     void addUI();                          // 添加UI
+    void addRoles();                       // 添加游戏角色
     void createBallFactory(FACTORY_TYPE type, int num); //Ball工厂函数
     void createBaseBalls(int num);         // BaseBall工厂
     void createAIBAlls(int num);           // AIBall工厂
     void createBaseBallTimer(float delta); // 定时生成小球
     void gameObserver(float delta);        // AI调整
+    void gametimer(float delta);           // 计时器
     void scaleScreen(float scale);         // 屏幕缩放(0<scale<1)
+    void gameOver();                       // 游戏结束
     
     // 事件函数
     void back(Ref* pSender);
