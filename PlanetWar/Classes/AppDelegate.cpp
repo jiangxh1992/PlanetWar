@@ -1,7 +1,6 @@
 #include "AppDelegate.h"
 #include "SimpleAudioEngine.h"
 #include "MenuScene.h"
-#include "WellCome.h"
 #include "Game.h"
 
 USING_NS_CC;
