@@ -12,7 +12,6 @@
 #include "AIBall.h"
 #include "MenuScene.h"
 #include <SimpleAudioEngine.h>
-using namespace std;
 
 //转换成string类型
 template<typename T>
@@ -97,6 +96,38 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
     
     // 绘制边界
     drawNode->drawPoly(Vertexs, 4, true, Color4F(255*CCRANDOM_0_1(), 0, 0, 1.0));
+    
+    // 绘制子弹
+    for (int i =0; i < bulletArray.size(); i++) {
+        if (bulletArray[i].getPos().x >= maxW || bulletArray[i].getPos().x <= -maxW || bulletArray[i].getPos().y >= maxH || bulletArray[i].getPos().y <= -maxH) {
+            // 销毁子弹
+            //autoreleasepool.push_back(bullet);
+            bulletArray.erase(bulletArray.begin() + i);
+        }else {
+            // 绘制
+            drawNode->drawDot(bulletArray[i].getPos(), bulletArray[i].getRadius(), bulletArray[i].getColor());
+            // 移动
+            bulletArray[i].move();
+        }
+    }
+    //vector<PlayerBullet> autoreleasepool;
+//    for (vector<PlayerBullet>::iterator it = bulletArray.begin(); it != bulletArray.end(); it++) {
+//        if (*it->getPos().x >= maxW || *it->getPos().x <= -maxW || *it->getPos().y >= maxH || *it->getPos().y <= -maxH) {
+//            // 销毁子弹
+//            //autoreleasepool.push_back(bullet);
+//            bulletArray.erase(it);
+//        }else {
+//            // 绘制
+//            drawNode->drawDot(bullet.getPos(), bullet.getRadius(), bullet.getColor());
+//            // 移动
+//            bullet.move();
+//        }
+//    }
+    // 移除回收池内的死球
+//    for (vector<PlayerBullet>::iterator it = autoreleasepool.begin(); it != autoreleasepool.end(); it++) {
+//        PlayerBullet bullet = *it;
+//        // 移除
+//    }
 }
 
 // 安帧更新
@@ -311,9 +342,14 @@ void Game::addUI() {
     
     // 2.加速按钮
     auto item_dash = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", CC_CALLBACK_1(Game::dash, this));
-    item_dash->setPosition(Vec2(VisiableSize.width - item_dash->getContentSize().width/2, item_dash->getContentSize().height/2));
+    item_dash->setAnchorPoint(Vec2(1,0));
+    item_dash->setPosition(Vec2(VisiableSize.width, 0));
+    // 3.发射按钮
+    auto item_shoot = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", CC_CALLBACK_1(Game::shoot, this));
+    item_shoot->setAnchorPoint(Vec2(1,0));
+    item_shoot->setPosition(Vec2(VisiableSize.width, item_dash->getContentSize().height*3));
     
-    // 3.缩放按钮
+    // 4.缩放按钮
     auto item_scaleup = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", CC_CALLBACK_1(Game::scaleup, this));
     item_scaleup->setPosition(Vec2(item_scaleup->getContentSize().width, item_scaleup->getContentSize().height));
     
@@ -321,7 +357,7 @@ void Game::addUI() {
     item_scaledown->setPosition(Vec2(item_scaledown->getContentSize().width, item_scaledown->getContentSize().height*3));
     
     // 按钮菜单
-    menu = Menu::create(item_back, item_dash, item_scaleup, item_scaledown, NULL);
+    menu = Menu::create(item_back, item_dash, item_shoot, item_scaleup, item_scaledown, NULL);
     menu->setPosition(Vec2::ZERO);
     uilayer->addChild(menu,1);
     
@@ -360,6 +396,8 @@ void Game::createBallFactory(FACTORY_TYPE type, int num) {
         case BALL_DEMON:
             createDemonBalls(num);
             break;
+        case BALL_BULLET:
+            createBullet();
         default:
             break;
     }
@@ -370,6 +408,21 @@ void Game::createBaseBalls(int num) {
     for (int i = 0; i<num; i++) {
         staticArray[i] = StaticBall();
     }
+}
+
+void Game::createBullet() {
+    Vec2 position = player->getPos();
+    Vec2 direction = player->getDirection();
+    int power = 2;
+    Color4F color = player->getBallColor();
+    PlayerBullet bullet;
+    bullet.setPosition(position);
+    bullet.setDirction(direction);
+    bullet.setPower(power);
+    bullet.setColor(color);
+    bullet.setSpeed(5);
+    bullet.setRadius(5);
+    bulletArray.push_back(bullet);
 }
 
 void Game::createAIBAlls(int num) {
@@ -461,6 +514,10 @@ void Game::dash(cocos2d::Ref *pSender) {
     CallFunc *fun = CallFunc::create(CC_CALLBACK_0(PlayerBall::endSpeedUp, player));
     Sequence *action = Sequence::create(delay,fun, NULL);
     runAction(action);
+}
+
+void Game::shoot(cocos2d::Ref *pSender) {
+    createBallFactory(BALL_BULLET, 0);
 }
 
 /**

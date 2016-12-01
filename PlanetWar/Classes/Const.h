@@ -48,7 +48,8 @@ typedef enum {
 typedef enum {
     BALL_BASE,
     BALL_AI,
-    BALL_DEMON
+    BALL_DEMON,
+    BALL_BULLET
 }FACTORY_TYPE;
 
 

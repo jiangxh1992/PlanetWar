@@ -11,6 +11,9 @@
 #include "PlayerBall.h"
 #include "StaticBall.h"
 #include "Demon.h"
+#include "PlayerBullet.h"
+#include <vector>
+using namespace std;
 USING_NS_CC;
 
 class Game : public Layer {
@@ -61,6 +64,7 @@ private:
     void addRoles();                       // 添加游戏角色
     void createBallFactory(FACTORY_TYPE type, int num); //Ball工厂函数
     void createBaseBalls(int num);         // BaseBall工厂
+    void createBullet();                   // 子弹工厂
     void createAIBAlls(int num);           // AIBall工厂
     void createDemonBalls(int num);        // Demonball工厂
     void createBaseBallTimer(float delta); // 定时生成小球
@@ -72,6 +76,7 @@ private:
     // 事件函数
     void back(Ref* pSender);
     void dash(Ref* pSender);
+    void shoot(Ref* pSender);
     void scaleup(Ref* pSender);
     void scaledown(Ref* pSender);
     
@@ -86,13 +91,14 @@ private:
 public:
     
     bool isGameOver = false;
-    int baseNum = maxBaseBallNum; // baseball个数
-    float scale;                  // 缩放参数
-    static Game* sharedGame();    // 游戏场景单例
-    LayerColor *uilayer;          // UI layer
-    StaticBall *staticArray;      // staticball数组
-    Vector<AIBall*> AIBallArray;  // AIBall数组
-    Vector<Demon*> DemonArray;    // DemonBall数组
+    int baseNum = maxBaseBallNum;      // baseball个数
+    float scale;                       // 缩放参数
+    static Game* sharedGame();         // 游戏场景单例
+    LayerColor *uilayer;               // UI layer
+    StaticBall *staticArray;           // staticball数组
+    vector<PlayerBullet> bulletArray;  // 子弹数组
+    Vector<AIBall*> AIBallArray;       // AIBall数组
+    Vector<Demon*> DemonArray;         // DemonBall数组
     
     // setter
     void setState(const int state) { CurState = state; }
@@ -100,7 +106,7 @@ public:
     // getter
     int getState(){ return CurState; }
     PlayerBall* getPlayer()const{ return player; }
-    const Scene* getScene(){return curScene;}
+    Scene* getScene()const{return curScene;}
 
 };
 

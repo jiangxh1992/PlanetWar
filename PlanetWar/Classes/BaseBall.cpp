@@ -8,7 +8,6 @@
 
 #include "BaseBall.h"
 #include "Game.h"
-USING_NS_CC;
 
 /**
  * 绘图
