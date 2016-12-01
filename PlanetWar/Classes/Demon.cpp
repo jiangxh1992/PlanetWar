@@ -9,6 +9,7 @@
 #include "Demon.h"
 #include "StaticBall.h"
 #include "Game.h"
+#include <SimpleAudioEngine.h>
 USING_NS_CC;
 
 Demon* Demon::create() {
@@ -62,7 +63,7 @@ void Demon::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, ui
  * 碰撞检测重写
  */
 void Demon::sharedUpdate(float delta) {
-    
+    if(Game::sharedGame()->isGameOver) return;
     // 1.检测吃小球
     for (int i = 0; i < maxBaseBallNum ; i++) {
         StaticBall baseball = Game::sharedGame()->staticArray[i];
@@ -84,12 +85,34 @@ void Demon::sharedUpdate(float delta) {
     float R2 = pow(radius + pr, 2.0);
     float D2 = pow((p.x - position.x), 2.0) + pow(p.y - position.y, 2.0);
     if (D2 < R2) {
-        Game::sharedGame()->getPlayer()->setWeightBySub(3);
+        // player减体重
+        Game::sharedGame()->getPlayer()->updateWeight(-3);
+        // 自己减体重
+        updateWeight(-6);
+        // 震动
+        CocosDenshion::SimpleAudioEngine::getInstance()->vibrate();
     }
     
     // 3.检测子弹碰撞
     
 
+}
+
+void Demon::updateWeight(int addedWeight) {
+    weight += addedWeight;
+    // 半径
+    radius = sqrt(weight*Game::sharedGame()->scale);
+    
+    label_tag->setPosition(Vec2(0, radius*2+label_tag->getContentSize().height));
+    
+    // 死亡
+    if (weight < 50) {
+        Game::sharedGame()->DemonArray.eraseObject(this);
+        this->removeFromParent();
+    }
+    
+    // 爆炸粒子特效
+    // 。。。
 }
 
 Demon::~Demon() {

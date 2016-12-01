@@ -11,6 +11,7 @@
 #include "BaseBall.h"
 #include "AIBall.h"
 #include "MenuScene.h"
+#include <SimpleAudioEngine.h>
 using namespace std;
 
 //转换成string类型
@@ -179,12 +180,14 @@ void Game::gametimer(float delta) {
  * 游戏结束
  */
 void Game::gameOver() {
+    isGameOver = true;
     // 停止交互
     Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
     // 游戏结束音效
     // ...
     // 显示游戏结束对话框
     // ...
+    
 }
 
 /**

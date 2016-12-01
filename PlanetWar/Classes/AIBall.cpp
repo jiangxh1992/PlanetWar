@@ -120,7 +120,7 @@ void AIBall::thisUpdate(float delta) {
  * 碰撞检测
  */
 void AIBall::sharedUpdate(float delta) {
-    
+    if(Game::sharedGame()->isGameOver) return;
     // 1.检测吃小球
     for (int i = 0; i < maxBaseBallNum ; i++) {
         StaticBall baseball = Game::sharedGame()->staticArray[i];
@@ -162,6 +162,7 @@ void AIBall::sharedUpdate(float delta) {
 #pragma mark -工具函数
 
 void AIBall::updateWeight(int addedWeight) {
+    if (weight + addedWeight < minWeight) return;
     weight += addedWeight;
     // 半径
     radius = sqrt(weight*Game::sharedGame()->scale);
@@ -183,13 +184,6 @@ void AIBall::scale(float scale) {
 
 void AIBall::setLabel(__String label) {
     label_tag->setString(label._string);
-}
-
-void AIBall::setWeightBySub(const int sub) {
-    if (weight - sub >= minWeight) {
-        weight -= sub;
-        updateWeight(0);
-    }
 }
 
 /**

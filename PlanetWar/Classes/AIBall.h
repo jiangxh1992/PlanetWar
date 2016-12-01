@@ -56,7 +56,6 @@ public:
     virtual void setLabel(const cocos2d::__String label);
     
     void setDirection(const cocos2d::Vec2 dir){direction = dir;}
-    void setWeightBySub(const int sub);
     
     const cocos2d::Vec2 getDirection()const{return direction;}
     const float getSpeedInterval()const{return speedInterval;}

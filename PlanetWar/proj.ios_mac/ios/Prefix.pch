@@ -12,10 +12,8 @@
     #include <iostream>
     #include <math.h>
     #include <string.h>
+    #include "Const.h" /** 共享变量 **/
 #endif
-
-/** 共享数据 **/
-#include "Const.h"
 
 // 屏幕尺寸
 #define ScreenSize Director::getInstance()->getWinSize()

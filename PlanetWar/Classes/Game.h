@@ -85,6 +85,7 @@ private:
 /** 对外接口 **/
 public:
     
+    bool isGameOver = false;
     int baseNum = maxBaseBallNum; // baseball个数
     float scale;                  // 缩放参数
     static Game* sharedGame();    // 游戏场景单例

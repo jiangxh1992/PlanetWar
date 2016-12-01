@@ -248,6 +248,9 @@ public:
      * @param filePath The path of the effect file.
      */
     virtual void unloadEffect(const char* filePath);
+    
+    //播放振动
+    virtual void vibrate();
 
 protected:
     /**

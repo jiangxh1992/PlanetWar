@@ -11,6 +11,8 @@
 #include "AIBall.h"
 
 class Demon : public AIBall {
+    int power; // 攻击力
+    int life;  // 生命值
 public:
     // 绘制图形
     virtual void draw(cocos2d::Renderer*renderer, const cocos2d::Mat4& transform, uint32_t flags);
@@ -23,6 +25,8 @@ public:
     
     // 碰撞检测重写
     virtual void sharedUpdate(float delta);
+    
+    virtual void updateWeight(int addedWeight);
 };
 
 #endif /* defined(__PlanetWar__Demon__) */

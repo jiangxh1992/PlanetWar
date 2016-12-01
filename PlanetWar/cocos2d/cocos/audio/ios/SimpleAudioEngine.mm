@@ -290,5 +290,11 @@ void SimpleAudioEngine::stopAllEffects()
 {
     static_stopAllEffects();
 }
+    
+//播放振动
+void SimpleAudioEngine::vibrate()
+{
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+}
 
 } // endof namespace CocosDenshion {
