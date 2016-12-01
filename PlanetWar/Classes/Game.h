@@ -45,6 +45,7 @@ private:
     Vec2 endPoint = Vec2::ZERO;   // 触摸结束点
     Point Vertexs[4];             // 边界顶点数组
     int timeCount = 0;            // 游戏倒计时
+    int kill = 0;                 // 杀死demon数量
     
     // UI
     Menu *menu;          // 按钮菜单
@@ -107,6 +108,9 @@ public:
     int getState(){ return CurState; }
     PlayerBall* getPlayer()const{ return player; }
     Scene* getScene()const{return curScene;}
+    
+    // 杀死demon事件
+    void demonKilled(Demon *demon);
 
 };
 

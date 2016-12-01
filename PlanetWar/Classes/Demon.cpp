@@ -88,13 +88,24 @@ void Demon::sharedUpdate(float delta) {
         // player减体重
         Game::sharedGame()->getPlayer()->updateWeight(-3);
         // 自己减体重
-        updateWeight(-6);
+        //updateWeight(-6);
         // 震动
         CocosDenshion::SimpleAudioEngine::getInstance()->vibrate();
     }
     
     // 3.检测子弹碰撞
-    
+    for (int i =0; i < Game::sharedGame()->bulletArray.size(); i++) {
+        Point p = Game::sharedGame()->bulletArray[i].getPos();
+        float r = Game::sharedGame()->bulletArray[i].getRadius();
+        double D2 = pow(p.x - position.x, 2.0) + pow(p.y - position.y, 2.0);
+        double R2 = pow((r + radius), 2.0);
+        if (D2 < R2) {
+            // 减血
+            updateWeight(-Game::sharedGame()->bulletArray[i].getPower());
+            // 销毁子弹
+            Game::sharedGame()->bulletArray.erase(Game::sharedGame()->bulletArray.begin() + i);
+        }
+    }
 
 }
 
@@ -107,8 +118,8 @@ void Demon::updateWeight(int addedWeight) {
     
     // 死亡
     if (weight < 50) {
-        Game::sharedGame()->DemonArray.eraseObject(this);
-        this->removeFromParent();
+        // 通知Game
+        Game::sharedGame()->demonKilled(this);
     }
     
     // 爆炸粒子特效

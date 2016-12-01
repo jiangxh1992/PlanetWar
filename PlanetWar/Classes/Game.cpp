@@ -110,24 +110,6 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
             bulletArray[i].move();
         }
     }
-    //vector<PlayerBullet> autoreleasepool;
-//    for (vector<PlayerBullet>::iterator it = bulletArray.begin(); it != bulletArray.end(); it++) {
-//        if (*it->getPos().x >= maxW || *it->getPos().x <= -maxW || *it->getPos().y >= maxH || *it->getPos().y <= -maxH) {
-//            // 销毁子弹
-//            //autoreleasepool.push_back(bullet);
-//            bulletArray.erase(it);
-//        }else {
-//            // 绘制
-//            drawNode->drawDot(bullet.getPos(), bullet.getRadius(), bullet.getColor());
-//            // 移动
-//            bullet.move();
-//        }
-//    }
-    // 移除回收池内的死球
-//    for (vector<PlayerBullet>::iterator it = autoreleasepool.begin(); it != autoreleasepool.end(); it++) {
-//        PlayerBullet bullet = *it;
-//        // 移除
-//    }
 }
 
 // 安帧更新
@@ -139,9 +121,9 @@ void Game::update(float time) {
     label_scale->setString("scale:"+Convert2String(scale));
     
     // right
-    label_ainum->setString("AIBall:"+Convert2String(player->getEatAINum())+" <- "+Convert2String((int)AIBallArray.size()));
-    label_basenum->setString("BaseBall:"+Convert2String(player->getEatBaseNum())+" <- "+Convert2String(baseNum));
-    label_demon->setString("Demon:"+Convert2String((int)DemonArray.size()));
+    label_ainum->setString("AIBall:"+Convert2String(player->getEatAINum())+" < "+Convert2String((int)AIBallArray.size()));
+    label_basenum->setString("BaseBall:"+Convert2String(player->getEatBaseNum())+" < "+Convert2String(baseNum));
+    label_demon->setString("Demon:"+Convert2String(kill)+" < "+Convert2String((int)DemonArray.size()));
     
 }
 
@@ -413,15 +395,15 @@ void Game::createBaseBalls(int num) {
 void Game::createBullet() {
     Vec2 position = player->getPos();
     Vec2 direction = player->getDirection();
-    int power = 2;
+    int power = 50;
     Color4F color = player->getBallColor();
     PlayerBullet bullet;
     bullet.setPosition(position);
     bullet.setDirction(direction);
     bullet.setPower(power);
     bullet.setColor(color);
-    bullet.setSpeed(5);
-    bullet.setRadius(5);
+    bullet.setSpeed(6);
+    bullet.setRadius(3);
     bulletArray.push_back(bullet);
 }
 
@@ -529,6 +511,14 @@ void Game::scaleup(cocos2d::Ref *pSender) {
 
 void Game::scaledown(cocos2d::Ref *pSender) {
     scaleScreen(1.01);
+}
+
+void Game::demonKilled(Demon *demon) {
+    kill++;          //  杀死一个demon
+    timeCount += 20; // 游戏时间增加
+    
+    DemonArray.eraseObject(demon);
+    removeChild(demon);
 }
 
 #pragma mark -触屏事件
