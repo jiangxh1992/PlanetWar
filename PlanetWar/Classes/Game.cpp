@@ -47,12 +47,14 @@ Game* Game::sharedGame() {
  * 游戏初始化
  */
 bool Game::init() {
-
+    
     if (!Layer::init()) {
         return false;
     }
     game = this;
     
+    // 添加颜色库
+    initColorArray();
     // 游戏变量初始化
     initData();
     // 添加UI
@@ -143,7 +145,7 @@ void Game::gameObserver(float delta) {
         int weight = player->getBallWeight();
         float distance2 = pow(p.x - aiball->getPos().x, 2.0) + pow(p.y - aiball->getPos().y, 2.0);
         float distance = sqrt(distance2) - player->getR() - aiball->getR();
-        if (distance < 80) {
+        if (distance < ScreenHeight) {
             // 降低AI灵敏度
             if(CCRANDOM_0_1() < 0.3)
                 break;
@@ -166,7 +168,7 @@ void Game::gameObserver(float delta) {
         
         if(CCRANDOM_0_1() < 0.8) {
             Vec2 newDir = player->getPos() - demon->getPos();
-            if(newDir.x*newDir.x + newDir.y*newDir.y > maxH*maxH/4) continue;
+            if(newDir.x*newDir.x + newDir.y*newDir.y > ScreenWidth*ScreenWidth*4) continue;
             newDir.normalize();
             demon->setDirection(newDir);
         }
@@ -224,6 +226,20 @@ Game::~Game(){
 
 #pragma mark -工具函数
 
+void Game::initColorArray() {
+    ColorArray[0] = Color4F(228, 96, 132, 1);
+    ColorArray[1] = Color4F(153, 153, 255, 1);
+    ColorArray[2] = Color4F(252, 210, 0, 1);
+    ColorArray[3] = Color4F(161, 109, 53, 1);
+    ColorArray[4] = Color4F(254, 76, 64, 1);
+    ColorArray[5] = Color4F(0, 133, 115, 1);
+    ColorArray[6] = Color4F(42, 92, 170, 1);
+    ColorArray[7] = Color4F(253, 185, 51, 1);
+    ColorArray[8] = Color4F(111, 89, 156, 1);
+    ColorArray[9] = Color4F(0, 235, 192, 1);
+    
+}
+
 /**
  * 游戏变量初始化
  */
@@ -243,7 +259,7 @@ void Game::initData() {
     // 对象容器初始化
     AIBallArray = Vector<AIBall*>();
     DemonArray = Vector<Demon*>();
-
+    
     // 边界顶点数组
     int borderX = maxW;
     int borderY = maxH;
@@ -258,7 +274,11 @@ void Game::initData() {
  */
 void Game::addUI() {
     
-    uilayer = LayerColor::create(Color4B(255, 255, 255, 0), ScreenWidth, ScreenHeight);
+    // drawnode
+    drawNode = DrawNode::create();//708090
+    addChild(drawNode);
+    
+    uilayer = LayerColor::create(Color4B(102, 102, 153, 100), ScreenWidth, ScreenHeight);
     addChild(uilayer, 100000);
     
     // left
@@ -343,10 +363,6 @@ void Game::addUI() {
     menu->setPosition(Vec2::ZERO);
     uilayer->addChild(menu,1);
     
-    // drawnode
-    drawNode = DrawNode::create();
-    addChild(drawNode);
-    
 }
 
 void Game::addRoles() {
@@ -360,6 +376,7 @@ void Game::addRoles() {
     // 创建玩家
     player = PlayerBall::create();
     player->setLabel("名字起个啥😁");
+    player->setSpeedFactor(0);
     addChild(player);
     AIBallArray.pushBack(player);
 }
@@ -433,7 +450,7 @@ void Game::createBaseBallTimer(float delta) {
     float random = CCRANDOM_0_1();
     // 小球随机激活
     for (int i = 0; i<maxBaseBallNum; i++) {
-        bool pass = (random > 0.2) ? true : false;
+        bool pass = (random < 0.2) ? true : false;
         if (pass && !staticArray[i].isActive) {
             staticArray[i].reActive();
             baseNum++;
@@ -544,7 +561,7 @@ void Game::addTouchListener() {
     oneTouch->onTouchCancelled = CC_CALLBACK_2(Game::onTouchCancelled,this);
     
     eventDispatcher->addEventListenerWithSceneGraphPriority(oneTouch,this);
-
+    
 }
 
 /**
@@ -564,24 +581,14 @@ void Game::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
     // 更新玩家移动方向
     Vec2 newDir = endPoint - startPoint;
     
-    if (abs(newDir.x) < 0.01f || abs(newDir.y) < 0.01f) {
-        newDir = Vec2::ZERO;
-        // RUN_NORMAL -> IDLE_NORMAL
-        if (CurState == RUN_NORMAL) {
-            CurState = IDLE_NORMAL;
-        }
-        // IDLE_NORMAL -> RUN_NORMAL
-        else if (CurState == IDLE_NORMAL) {
-            CurState = RUN_NORMAL;
-        }
+    if (abs(newDir.x) > 0.01f && abs(newDir.y) > 0.01f) {
+        newDir.normalize();
+        player->setDir(newDir);
+        player->setSpeedFactor(1.0);
+    }else {
+        player->setSpeedFactor(0);
     }
-    // IDLE_NORMAL -> RUN_NORMAL
-    else if (CurState == IDLE_NORMAL) {
-        CurState = RUN_NORMAL;
-    }
-    
-    newDir.normalize();
-    player->setDir(newDir);
+
 }
 
 void Game::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *unused_event) {

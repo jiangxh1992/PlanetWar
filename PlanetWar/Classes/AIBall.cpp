@@ -60,7 +60,9 @@ void AIBall::commenInit() {
     // 初始重量
     updateWeight(minWeight);
     // 随机颜色
-    color = Color4F(10+245*CCRANDOM_0_1(), 10+245*CCRANDOM_0_1(), 10+245*CCRANDOM_0_1(), 1.0);
+    //int index = (colorNum-1)*CCRANDOM_0_1();
+    //color = Game::sharedGame()->ColorArray[index];
+    color = Color4F(10+CCRANDOM_0_1()*245, 10+CCRANDOM_0_1()*245, 10+CCRANDOM_0_1()*245, 1);
     // 随机方向
     direction = Vec2((CCRANDOM_0_1()*2-1), (CCRANDOM_0_1()*2-1));
     direction.normalize();
@@ -74,6 +76,26 @@ void AIBall::commenInit() {
     // drawnode
     drawNode = DrawNode::create();
     this->addChild(drawNode);
+
+}
+
+/**
+ * 绘图
+ */
+void AIBall::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
+    if (isDraw) {
+        // 清空之前的绘制
+        drawNode->clear();
+        //启用混合
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+        glEnable(GL_BLEND);
+        // 绘制实心圆形
+        drawNode->drawDot(Vec2(0, 0), radius, color);
+        drawNode->drawDot(Vec2(0, 0), radius*0.8, Color4F(255, 255, 255, 0.1));
+        drawNode->drawCircle(Vec2(0, 0), radius, 360, radius, false, Color4F(color.r, color.g, color.b, 0.5));
+        // 根据球的半径更新当前球的绘制深度，半径越大的绘制在前面覆盖更小的球
+        drawNode->setGlobalZOrder(radius);
+    }
 }
 
 /**
@@ -98,7 +120,7 @@ void AIBall::thisUpdate(float delta) {
     }
     
     // 1.移动
-    position += direction * speed;
+    position += direction * speed *speedFactor;
     setPosition(position);
     
     // 2.检测边界

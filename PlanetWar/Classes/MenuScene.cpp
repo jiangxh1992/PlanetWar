@@ -60,9 +60,6 @@ bool MenuScene::init() {
  * 跳转到游戏场景
  */
 void MenuScene::startGame(cocos2d::Ref* pSender) {
-    
-    
-    
     Director::getInstance()->replaceScene(TransitionFade::create(0.5, Game::createScene()));
 }
 

@@ -14,8 +14,6 @@ class BaseBall : public Sprite {
 
 /** 重写函数 **/
 public:
-    // 绘制图形
-    virtual void draw(Renderer*renderer, const Mat4& transform, uint32_t flags);
     // 析构函数
     virtual ~BaseBall();
 

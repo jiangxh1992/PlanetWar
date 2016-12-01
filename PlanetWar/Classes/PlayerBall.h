@@ -18,6 +18,7 @@ public:
 	static PlayerBall* create();
 	// 对象初始化
 	virtual bool init();
+
     // 安帧更新
     virtual void update(float time);
     // 析构函数

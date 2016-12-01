@@ -9,8 +9,8 @@
 #include <Const.h>
 
 // 游戏场景边界
-const int maxWidth = 2000;
-const int maxHeight = 1500;
+const int maxWidth = 1800;
+const int maxHeight = 1300;
 int maxW = maxWidth;
 int maxH = maxHeight;
 
@@ -34,3 +34,5 @@ const int maxAIBallNum = 20;
 const int maxSpeed = 1;
 // 游戏时间
 const int maxSeconds = 5*60;
+// 颜色个数
+const int colorNum = 10;

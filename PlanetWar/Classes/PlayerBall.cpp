@@ -72,14 +72,14 @@ void PlayerBall::thisUpdate(float delta) {
         if(position.y >= maxH) position.y = maxH;
         if(position.y <= -maxH) position.y = -maxH;
         // 停止运动
-        direction = Vec2::ZERO;
+        speedFactor = 0;
     }
     
     // 2.移动
     if (std::abs(direction.x) < 0.01f || std::abs(direction.y) < 0.01f) {
         return;
     }
-    position += direction * speed;
+    position += direction * speed * speedFactor;
     setPosition(position);// 本地坐标
     
     // 3.屏幕跟随

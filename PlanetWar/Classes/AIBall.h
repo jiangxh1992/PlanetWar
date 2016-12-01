@@ -19,6 +19,8 @@ public:
     static AIBall* create();
 	// 对象初始化
 	virtual bool init();
+    // 绘制图形
+    virtual void draw(Renderer*renderer, const Mat4& transform, uint32_t flags);
     // 安帧更新
     virtual void update(float time);
     // 缩放
@@ -32,6 +34,8 @@ protected:
     cocos2d::Vec2 direction = cocos2d::Vec2::ZERO;
     // 移动速度
     int speed = 0;
+    // 速度控制因子
+    float speedFactor = 1;
     // 移动间隔帧数
     double speedInterval;
     // 间隔帧数计数器
@@ -56,11 +60,13 @@ public:
     virtual void setLabel(const cocos2d::__String label);
     
     void setDirection(const cocos2d::Vec2 dir){direction = dir;}
+    void setSpeedFactor(float factor){speedFactor = factor;};
     
-    const cocos2d::Vec2 getDirection()const{return direction;}
-    const float getSpeedInterval()const{return speedInterval;}
-    const int getEatAINum()const{return eatAINum;};
-    const int getEatBaseNum()const{return eatBaseNum;}
+    cocos2d::Vec2 getDirection(){return direction;}
+    float getSpeedFactor(){return speedFactor;}
+    float getSpeedInterval(){return speedInterval;}
+    int getEatAINum(){return eatAINum;};
+    int getEatBaseNum(){return eatBaseNum;}
     
 };
 

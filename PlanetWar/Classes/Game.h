@@ -6,7 +6,7 @@
 //
 //
 
-#ifndef __PlanetWar__Game__ 
+#ifndef __PlanetWar__Game__
 #define __PlanetWar__Game__
 #include "PlayerBall.h"
 #include "StaticBall.h"
@@ -16,14 +16,22 @@
 using namespace std;
 USING_NS_CC;
 
+/* 背景星星数据结构 */
+typedef struct {
+    Vec2 position;
+    float radius;
+    Color4F color;
+}STAR;
+
+
 class Game : public Layer {
-  
-/** 重写函数 **/
+    
+    /** 重写函数 **/
 public:
-	// 创建类对象
-	static Scene* createScene();
-	// 对象初始化
-	virtual bool init();
+    // 创建类对象
+    static Scene* createScene();
+    // 对象初始化
+    virtual bool init();
     CREATE_FUNC(Game);
     // 安帧更新
     virtual void update(float time);
@@ -34,7 +42,7 @@ public:
     // 析构函数
     virtual ~Game();
     
-/** 内部变量和函数 **/
+    /** 内部变量和函数 **/
 private:
     
     // 游戏数据
@@ -58,8 +66,12 @@ private:
     Label *label_time;
     
     DrawNode *drawNode;  // DrawNode
+    DrawNode *drawNodebg1;
+    DrawNode *drawNodebg2;
+    
     
     // 工具函数
+    void initColorArray();
     void initData();                       // 游戏变量初始化
     void addUI();                          // 添加UI
     void addRoles();                       // 添加游戏角色
@@ -87,15 +99,18 @@ private:
     void onTouchMoved(Touch *touch, Event *unused_event);
     void onTouchEnded(Touch *touch, Event *unused_event);
     void onTouchCancelled(Touch *touch, Event *unused_event);
-
-/** 对外接口 **/
+    
+    /** 对外接口 **/
 public:
     
+    Color4F ColorArray[10];            // 颜色库
     bool isGameOver = false;
     int baseNum = maxBaseBallNum;      // baseball个数
     float scale;                       // 缩放参数
     static Game* sharedGame();         // 游戏场景单例
     LayerColor *uilayer;               // UI layer
+    LayerColor *bglayer1;              // 背景层1
+    LayerColor *bglayer2;              // 背景层2
     StaticBall *staticArray;           // staticball数组
     vector<PlayerBullet> bulletArray;  // 子弹数组
     Vector<AIBall*> AIBallArray;       // AIBall数组
@@ -103,7 +118,7 @@ public:
     
     // setter
     void setState(const int state) { CurState = state; }
-
+    
     // getter
     int getState(){ return CurState; }
     PlayerBall* getPlayer()const{ return player; }
@@ -111,7 +126,7 @@ public:
     
     // 杀死demon事件
     void demonKilled(Demon *demon);
-
+    
 };
 
 #endif /* defined(__PlanetWar__Game__) */

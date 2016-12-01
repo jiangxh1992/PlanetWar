@@ -8,7 +8,6 @@
 
 #ifndef Const_h
 #define Const_h
-
 /** 常量 **/
 // 游戏场景边界
 extern int maxW;
@@ -36,6 +35,9 @@ extern const int maxAIBallNum;
 extern const int maxSpeed;
 // 游戏时间
 extern const int maxSeconds;
+// 颜色个数
+extern const int colorNum;
+
 
 /** 状态机状态 **/
 typedef enum {
@@ -51,7 +53,5 @@ typedef enum {
     BALL_DEMON,
     BALL_BULLET
 }FACTORY_TYPE;
-
-
 
 #endif /* Const_h */

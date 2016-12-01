@@ -51,6 +51,7 @@ void Demon::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, ui
         glEnable(GL_BLEND);
         // 绘制实心圆形
         drawNode->drawDot(Vec2(0, 0), radius, color);
+        drawNode->drawDot(Vec2(0, 0), radius*0.8, Color4F(255, 255, 255, 0.1));
         // 随机颜色
         Color4F eagecolor = Color4F(10+245*CCRANDOM_0_1(), 10+245*CCRANDOM_0_1(), 10+245*CCRANDOM_0_1(), 1.0);
         drawNode->drawCircle(Vec2(0, 0), radius*2, 360, radius*2, true, eagecolor);
