@@ -24,6 +24,8 @@ public:
     
     // 开始游戏
     void startGame(cocos2d::Ref* pSender);
+    // 记录
+    void openHistory(cocos2d::Ref* pSender);
 };
 
 #endif /* defined(__PlanetWar__MenuScene__) */

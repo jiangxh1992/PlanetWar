@@ -93,6 +93,9 @@
 		D2C8CDCE1DF1B309000A83F0 /* menu_cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C8CDCD1DF1B309000A83F0 /* menu_cloud.png */; };
 		D2C8CDD01DF1B33F000A83F0 /* menu_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D2C8CDCF1DF1B33F000A83F0 /* menu_bg.jpg */; };
 		D2C8CDD21DF1B6B5000A83F0 /* effect_click.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D2C8CDD11DF1B6B5000A83F0 /* effect_click.mp3 */; };
+		D2C8CDD41DF1B959000A83F0 /* effect_dash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D2C8CDD31DF1B959000A83F0 /* effect_dash.mp3 */; };
+		D2C8CDD71DF1BBF9000A83F0 /* btn_history_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C8CDD51DF1BBF9000A83F0 /* btn_history_normal.png */; };
+		D2C8CDD81DF1BBF9000A83F0 /* btn_history_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C8CDD61DF1BBF9000A83F0 /* btn_history_pressed.png */; };
 		D2CACF0B1DD36E90006C671E /* AIBall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2CACF091DD36E90006C671E /* AIBall.cpp */; };
 		D44C620C132DFF330009C878 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620B132DFF330009C878 /* OpenAL.framework */; };
 		D44C620E132DFF430009C878 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620D132DFF430009C878 /* AVFoundation.framework */; };
@@ -233,6 +236,9 @@
 		D2C8CDCD1DF1B309000A83F0 /* menu_cloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu_cloud.png; path = png/menu_cloud.png; sourceTree = "<group>"; };
 		D2C8CDCF1DF1B33F000A83F0 /* menu_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = menu_bg.jpg; path = png/menu_bg.jpg; sourceTree = "<group>"; };
 		D2C8CDD11DF1B6B5000A83F0 /* effect_click.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = effect_click.mp3; path = mp3/effect_click.mp3; sourceTree = "<group>"; };
+		D2C8CDD31DF1B959000A83F0 /* effect_dash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = effect_dash.mp3; path = mp3/effect_dash.mp3; sourceTree = "<group>"; };
+		D2C8CDD51DF1BBF9000A83F0 /* btn_history_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_history_normal.png; sourceTree = "<group>"; };
+		D2C8CDD61DF1BBF9000A83F0 /* btn_history_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_history_pressed.png; sourceTree = "<group>"; };
 		D2CACF091DD36E90006C671E /* AIBall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AIBall.cpp; sourceTree = "<group>"; };
 		D2CACF0A1DD36E90006C671E /* AIBall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIBall.h; sourceTree = "<group>"; };
 		D44C620B132DFF330009C878 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
@@ -462,7 +468,8 @@
 		D22CDB0C1DD1F977004AAADC /* png */ = {
 			isa = PBXGroup;
 			children = (
-				D2C8CDD11DF1B6B5000A83F0 /* effect_click.mp3 */,
+				D2C8CDD51DF1BBF9000A83F0 /* btn_history_normal.png */,
+				D2C8CDD61DF1BBF9000A83F0 /* btn_history_pressed.png */,
 				D2C8CDCD1DF1B309000A83F0 /* menu_cloud.png */,
 				D2C8CDCF1DF1B33F000A83F0 /* menu_bg.jpg */,
 				D2C8CDAF1DF1A439000A83F0 /* btn_start_normal.png */,
@@ -481,6 +488,8 @@
 		D22CDB0E1DD1F984004AAADC /* mp3 */ = {
 			isa = PBXGroup;
 			children = (
+				D2C8CDD11DF1B6B5000A83F0 /* effect_click.mp3 */,
+				D2C8CDD31DF1B959000A83F0 /* effect_dash.mp3 */,
 				D2C8CDB91DF1AC5B000A83F0 /* effect_bullet.mp3 */,
 				D2C8CDBA1DF1AC5B000A83F0 /* effect_explode.mp3 */,
 				D2C8CDBB1DF1AC5B000A83F0 /* music_game_bg.mp3 */,
@@ -634,6 +643,7 @@
 				D2C8CDC11DF1AC5B000A83F0 /* music_gameover.mp3 in Resources */,
 				D2C8CD9E1DF1722D000A83F0 /* button_add.jpg in Resources */,
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
+				D2C8CDD41DF1B959000A83F0 /* effect_dash.mp3 in Resources */,
 				D2C8CD401DF1628F000A83F0 /* particle_touch.plist in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
 				D2C8CDA41DF17259000A83F0 /* button_dash_normal.jpg in Resources */,
@@ -648,7 +658,9 @@
 				D2C8CDBF1DF1AC5B000A83F0 /* effect_explode.mp3 in Resources */,
 				D2C8CDB21DF1A439000A83F0 /* btn_start_normal.png in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
+				D2C8CDD81DF1BBF9000A83F0 /* btn_history_pressed.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
+				D2C8CDD71DF1BBF9000A83F0 /* btn_history_normal.png in Resources */,
 				D2C8CD3F1DF1628F000A83F0 /* particle_player.plist in Resources */,
 				D2C8CDC41DF1AECA000A83F0 /* particle_galaxy.plist in Resources */,
 				D2C8CDA61DF17259000A83F0 /* button_shoot_normal.jpg in Resources */,

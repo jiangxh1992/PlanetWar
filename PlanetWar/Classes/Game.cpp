@@ -74,7 +74,7 @@ bool Game::init() {
     // 开启定时器
     this->schedule(schedule_selector(Game::createBaseBallTimer), 5.0);
     // 开启AI干预
-    this->schedule(schedule_selector(Game::gameObserver), 1.0);
+    this->schedule(schedule_selector(Game::gameObserver), 0.5);
     
     return true;
 }
@@ -214,7 +214,6 @@ void Game::gameOver() {
     int new_demon = kill;                             // 杀死demon数量
     int new_base = baseNum;                           // 吞并baseball数量
     int new_ai =  player->getEatAINum();              // 吞并AIBall数量
-    
     
     // 3.显示游戏结束对话框
     LayerColor *gameover_layer = LayerColor::create(Color4B(0, 0, 0, 50), ScreenWidth, ScreenHeight);
@@ -585,6 +584,7 @@ void Game::back(cocos2d::Ref* pSender) {
  * 加速
  */
 void Game::dash(cocos2d::Ref *pSender) {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_dash.mp3");
     player->speedUp();
     DelayTime *delay = DelayTime::create(dashTime);
     CallFunc *fun = CallFunc::create(CC_CALLBACK_0(PlayerBall::endSpeedUp, player));

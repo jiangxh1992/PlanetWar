@@ -57,6 +57,8 @@ bool MenuScene::init() {
     auto item_startgame = MenuItemImage::create("btn_start_normal.png", "btn_start_pressed.png", CC_CALLBACK_1(MenuScene::startGame, this));
     item_startgame->setPosition(Vec2::ZERO);
     // 历史记录按钮
+    auto item_history = MenuItemImage::create("btn_history_normal.png","btn_history_pressed.png", CC_CALLBACK_1(MenuScene::openHistory, this));
+    item_history->setPosition(Vec2(0, -50));
     
     // 按钮菜单
     auto menu = Menu::create(item_startgame, NULL);
@@ -72,6 +74,13 @@ bool MenuScene::init() {
 void MenuScene::startGame(cocos2d::Ref* pSender) {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
     Director::getInstance()->replaceScene(TransitionFade::create(0.5, Game::createScene()));
+}
+
+/**
+ * 历史记录
+ */
+void MenuScene::openHistory(cocos2d::Ref *pSender) {
+    
 }
 
 /**
