@@ -27,6 +27,13 @@ bool PlayerBall::init() {
     }
     commenInit();
     
+    // 添加粒子
+    particle = ParticleSystemQuad::create("particle_player.plist");
+    particle->setPosition(0,0);
+    //particle->setStartSize(radius);
+    //particle->setStartColor(color);
+    //addChild(particle);
+    
     // 位置初始化在屏幕中心
     position = Vec2(VisiableSize.width/2, VisiableSize.height/2);
     // 设置位置
@@ -91,6 +98,27 @@ void PlayerBall::thisUpdate(float delta) {
     bool isNormal = position.x < maxW || position.x > -maxW || position.y < maxH || position.y > -maxH;
     if(isNormal) Game::sharedGame()->setState(RUN_NORMAL);
 
+}
+
+/**
+ * 碰撞检测
+ */
+void PlayerBall::sharedUpdate(float delta) {
+    if(Game::sharedGame()->isGameOver) return;
+    // 检测吃小球
+    for (int i = 0; i < maxBaseBallNum ; i++) {
+        StaticBall baseball = Game::sharedGame()->staticArray[i];
+        if (!baseball.isActive) continue;
+        double distance = pow(baseball.position.x -  position.x, 2) + pow(baseball.position.y - position.y, 2);
+        if (distance <= radius*radius) {
+            // 吃掉baseball，获得其体重
+            updateWeight(baseball.weight);
+            eatBaseNum++;
+            // 移除baseball
+            Game::sharedGame()->staticArray[i].isActive = false;
+            Game::sharedGame()->baseNum --;
+        }
+    }
 }
 
 /**

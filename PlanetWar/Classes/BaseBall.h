@@ -35,12 +35,14 @@ protected:
 /** 对外接口 **/
 public:
     // getter
+    const bool getIsDraw()const{return isDraw;}
     const Vec2 getPos()const{return position;}
     const float getR()const{return radius;}
     const int getBallWeight()const{return weight;}
     const Color4F getBallColor()const{return color;}
     
     // setter
+    void setIsDraw(bool isdraw){isDraw = isdraw;}
     
     // 缩放
     virtual void scale(const float scale){}

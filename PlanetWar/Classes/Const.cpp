@@ -9,8 +9,8 @@
 #include <Const.h>
 
 // 游戏场景边界
-const int maxWidth = 1800;
-const int maxHeight = 1300;
+const int maxWidth = 1500;
+const int maxHeight = 1000;
 int maxW = maxWidth;
 int maxH = maxHeight;
 

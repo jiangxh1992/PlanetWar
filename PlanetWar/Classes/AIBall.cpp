@@ -46,6 +46,7 @@ bool AIBall::init() {
 }
 
 void AIBall::commenInit() {
+    
     eatAINum = 0;
     eatBaseNum = 0;
     // label
@@ -57,8 +58,6 @@ void AIBall::commenInit() {
     speed = maxSpeed;
     // 随机位置
     position = Vec2((CCRANDOM_0_1()-0.5) * maxW, (CCRANDOM_0_1()-0.5) * maxH);
-    // 初始重量
-    updateWeight(minWeight);
     // 随机颜色
     //int index = (colorNum-1)*CCRANDOM_0_1();
     //color = Game::sharedGame()->ColorArray[index];
@@ -66,6 +65,8 @@ void AIBall::commenInit() {
     // 随机方向
     direction = Vec2((CCRANDOM_0_1()*2-1), (CCRANDOM_0_1()*2-1));
     direction.normalize();
+    // 初始重量
+    updateWeight(minWeight);
     
     // 移动间隔帧数
     speedInterval = 1.0f;
@@ -83,15 +84,12 @@ void AIBall::commenInit() {
  * 绘图
  */
 void AIBall::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
+    // 清空之前的绘制
+    drawNode->clear();
     if (isDraw) {
-        // 清空之前的绘制
-        drawNode->clear();
-        //启用混合
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-        glEnable(GL_BLEND);
         // 绘制实心圆形
         drawNode->drawDot(Vec2(0, 0), radius, color);
-        drawNode->drawDot(Vec2(0, 0), radius*0.8, Color4F(255, 255, 255, 0.1));
+        drawNode->drawDot(Vec2(0, 0), radius*0.9, Color4F(1, 1, 1, 0.2));
         drawNode->drawCircle(Vec2(0, 0), radius, 360, radius, false, Color4F(color.r, color.g, color.b, 0.5));
         // 根据球的半径更新当前球的绘制深度，半径越大的绘制在前面覆盖更小的球
         drawNode->setGlobalZOrder(radius);
@@ -158,17 +156,25 @@ void AIBall::sharedUpdate(float delta) {
         }
     }
 
-    // 2.检测吞并
+    // 回收池
     Vector<AIBall*> autoreleasepool = Vector<AIBall*>();
+    // 2.检测AIBall互相吞并
     for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
         AIBall *aiball = *it;
-        if (weight > aiball->getBallWeight()) {
-            double distance = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
-            if (distance <= pow(radius - aiball->radius*0.8, 2)) {
+        if (weight == aiball->getBallWeight()) continue; // 排除和自身吞并
+        // 距离的平方
+        double distance = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
+        
+        if (distance <= pow(radius - aiball->radius*0.8, 2)) {
+            if (weight > aiball->getBallWeight()) {
                 // 获得其体重
                 updateWeight(aiball->getBallWeight());
                 eatAINum++;
                 autoreleasepool.pushBack(aiball);
+            }else {
+                aiball->updateWeight(weight);
+                aiball->eatAINum++;
+                autoreleasepool.pushBack(this);
             }
         }
     }
@@ -179,6 +185,24 @@ void AIBall::sharedUpdate(float delta) {
         Game::sharedGame()->AIBallArray.eraseObject(ball);
         Game::sharedGame()->removeChild(ball);
     }
+    
+    // 3.检测与player的吞并
+    if(!Game::sharedGame()->getPlayer()->isVisible()) return;
+    double D2 = pow(Game::sharedGame()->getPlayer()->getPos().x -  position.x, 2) + pow(Game::sharedGame()->getPlayer()->getPos().y - position.y, 2);
+    if(D2 >= pow(radius - Game::sharedGame()->getPlayer()->radius*0.8, 2)) return;
+    if(weight < Game::sharedGame()->getPlayer()->getBallWeight()) {
+        // 被player吃掉
+        Game::sharedGame()->getPlayer()->updateWeight(weight);
+        Game::sharedGame()->getPlayer()->eatAINum++;
+        Game::sharedGame()->AIBallArray.eraseObject(this);
+        Game::sharedGame()->removeChild(this);
+    }else if (weight > Game::sharedGame()->getPlayer()->getBallWeight()) {
+        updateWeight(Game::sharedGame()->getPlayer()->getBallWeight());
+        eatAINum++;
+        // 主角死亡,通知Game
+        Game::sharedGame()->playerKilled();
+    }
+    
 }
 
 #pragma mark -工具函数

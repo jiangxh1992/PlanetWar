@@ -69,6 +69,8 @@ private:
     DrawNode *drawNodebg1;
     DrawNode *drawNodebg2;
     
+    ParticleSystemQuad *particle_touch;
+    
     
     // 工具函数
     void initColorArray();
@@ -92,6 +94,7 @@ private:
     void shoot(Ref* pSender);
     void scaleup(Ref* pSender);
     void scaledown(Ref* pSender);
+    void playerReactive();
     
     // 注册屏幕触摸事件
     void addTouchListener();
@@ -126,6 +129,8 @@ public:
     
     // 杀死demon事件
     void demonKilled(Demon *demon);
+    // 主角死亡事件
+    void playerKilled();
     
 };
 

@@ -32,6 +32,7 @@ protected:
     
     // 专用更新
     virtual void thisUpdate(float delta);
+    virtual void sharedUpdate(float delta);
     
 /** 对外接口 **/
 public:

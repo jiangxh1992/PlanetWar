@@ -55,6 +55,8 @@ protected:
     
 /** 对外接口 **/
 public:
+    ParticleSystemQuad *particle;
+    
     virtual void updateWeight(int addedWeight);
     void scaleSpeed(float scale){speed *= scale;};
     virtual void setLabel(const cocos2d::__String label);

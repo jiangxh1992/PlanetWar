@@ -133,22 +133,18 @@ void Game::update(float time) {
  * 游戏观察者
  */
 void Game::gameObserver(float delta) {
-    
+    if(!player->isVisible()) return;
     // AIBall 躲避或追逐player
     for (Vector<AIBall*>::const_iterator it = AIBallArray.begin(); it != AIBallArray.end(); it++) {
         AIBall *aiball = *it;
         AIBall *player = Game::sharedGame()->player;
-        if (aiball == player) {
-            continue;
-        }
         Point p = player->getPos();
         int weight = player->getBallWeight();
         float distance2 = pow(p.x - aiball->getPos().x, 2.0) + pow(p.y - aiball->getPos().y, 2.0);
         float distance = sqrt(distance2) - player->getR() - aiball->getR();
         if (distance < ScreenHeight) {
             // 降低AI灵敏度
-            if(CCRANDOM_0_1() < 0.3)
-                break;
+            if(CCRANDOM_0_1() < 0.1) break;
             Vec2 dir = aiball->getPos() - p;
             
             if (aiball->getBallWeight() > weight) {
@@ -165,13 +161,12 @@ void Game::gameObserver(float delta) {
     // DemonBall主动攻击player
     for (Vector<Demon*>::const_iterator it = DemonArray.begin(); it != DemonArray.end(); it++) {
         Demon *demon = *it;
-        
-        if(CCRANDOM_0_1() < 0.8) {
-            Vec2 newDir = player->getPos() - demon->getPos();
-            if(newDir.x*newDir.x + newDir.y*newDir.y > ScreenWidth*ScreenWidth*4) continue;
-            newDir.normalize();
-            demon->setDirection(newDir);
-        }
+        // 降低AI灵敏度
+        if(CCRANDOM_0_1() < 0.4) break;
+        Vec2 newDir = player->getPos() - demon->getPos();
+        if(newDir.x*newDir.x + newDir.y*newDir.y > ScreenWidth*ScreenWidth*4) continue;
+        newDir.normalize();
+        demon->setDirection(newDir);
     }
 }
 
@@ -274,6 +269,15 @@ void Game::initData() {
  */
 void Game::addUI() {
     
+    //ParticleSystemQuad *particle = ParticleSystemQuad::create("particle_bg.plist");
+    //particle->setPosition(-maxW,maxH);
+    //addChild(particle);
+    
+    //particle_touch = ParticleSystemQuad::create("particle_touch.plist");
+    //particle_touch->setVisible(false);
+    //particle_touch->setPosition(Vec2::ZERO);
+    //addChild(particle_touch);
+    
     // drawnode
     drawNode = DrawNode::create();//708090
     addChild(drawNode);
@@ -328,7 +332,8 @@ void Game::addUI() {
     
     // 绘制屏幕中心
     auto centerLabel = Label::create();
-    centerLabel->setString("+++++++++++");
+    centerLabel->setString("+");
+    centerLabel->setTextColor(Color4B(255, 255, 255, 100));
     centerLabel->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
     uilayer->addChild(centerLabel);
     
@@ -378,7 +383,6 @@ void Game::addRoles() {
     player->setLabel("名字起个啥😁");
     player->setSpeedFactor(0);
     addChild(player);
-    AIBallArray.pushBack(player);
 }
 
 /**
@@ -533,9 +537,29 @@ void Game::scaledown(cocos2d::Ref *pSender) {
 void Game::demonKilled(Demon *demon) {
     kill++;          //  杀死一个demon
     timeCount += 20; // 游戏时间增加
+    // 爆炸粒子
+    ParticleSystemQuad *explode = ParticleSystemQuad::create("particle_explode.plist");
+    explode->setPosition(demon->getPos());
+    addChild(explode);
     
     DemonArray.eraseObject(demon);
     removeChild(demon);
+}
+
+void Game::playerKilled() {
+    player->setVisible(false);
+    player->setSpeedFactor(0);
+    // 延迟复活
+    DelayTime *delay = DelayTime::create(3);
+    CallFunc *fun = CallFunc::create(CC_CALLBACK_0(Game::playerReactive, this));
+    Sequence *action = Sequence::create(delay,fun, NULL);
+    runAction(action);
+}
+
+void Game::playerReactive() {
+    player->updateWeight(minWeight);
+    player->setVisible(true);
+    player->setIsDraw(true);
 }
 
 #pragma mark -触屏事件
@@ -569,10 +593,14 @@ void Game::addTouchListener() {
  */
 bool Game::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
     startPoint = touch->getLocation();
+    
+    //particle_touch->setVisible(true);
+    //particle_touch->setPosition(touch->getLocation());
     return true;
 }
 
 void Game::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
+    //particle_touch->setPosition(touch->getLocation());
     cout<<"moved"<<endl;
 }
 
@@ -588,6 +616,8 @@ void Game::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
     }else {
         player->setSpeedFactor(0);
     }
+    
+    //particle_touch->setVisible(false);
 
 }
 
