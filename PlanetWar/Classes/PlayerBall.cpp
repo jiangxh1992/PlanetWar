@@ -27,13 +27,6 @@ bool PlayerBall::init() {
     }
     commenInit();
     
-    // 添加粒子
-    particle = ParticleSystemQuad::create("particle_player.plist");
-    particle->setPosition(0,0);
-    //particle->setStartSize(radius);
-    //particle->setStartColor(color);
-    //addChild(particle);
-    
     // 位置初始化在屏幕中心
     position = Vec2(VisiableSize.width/2, VisiableSize.height/2);
     // 设置位置

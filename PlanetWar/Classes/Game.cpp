@@ -110,6 +110,7 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
         }else {
             // 绘制
             drawNode->drawDot(bulletArray[i].getPos(), bulletArray[i].getRadius(), bulletArray[i].getColor());
+            drawNode->drawDot(bulletArray[i].getPos(), bulletArray[i].getRadius(), Color4F(1.0, 1.0, 1.0, 0.2));
             // 移动
             bulletArray[i].move();
         }
@@ -206,7 +207,7 @@ void Game::gameOver() {
     // 停止计时
     this->unschedule(schedule_selector(Game::gametimer));
     // 游戏结束音效
-    // ...
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music_gameover.mp3", true);
     
     // 2.游戏数据提取整理
     int new_weight = player->getBallWeight();         // 体重
@@ -330,6 +331,9 @@ void Game::initData() {
  * 添加UI
  */
 void Game::addUI() {
+    
+    // 开场背景音乐
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music_game_bg.mp3", true);
     
     //ParticleSystemQuad *particle = ParticleSystemQuad::create("particle_bg.plist");
     //particle->setPosition(-maxW,maxH);
@@ -573,6 +577,7 @@ void Game::scaleScreen(float scale) {
  * 返回到菜单
  */
 void Game::back(cocos2d::Ref* pSender) {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
     Director::getInstance()->replaceScene(TransitionFade::create(0.5, MenuScene::createScene()));
 }
 
@@ -588,6 +593,8 @@ void Game::dash(cocos2d::Ref *pSender) {
 }
 
 void Game::shoot(cocos2d::Ref *pSender) {
+    // 子弹音效
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_bullet.mp3");
     createBallFactory(BALL_BULLET, 0);
 }
 
@@ -608,6 +615,8 @@ void Game::demonKilled(Demon *demon) {
     if (gameType == GAME_TIMER) {
         timeCount += 20;
     }
+    // 音效
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_explode.mp3");
     // 爆炸粒子
     ParticleSystemQuad *explode = ParticleSystemQuad::create("particle_explode.plist");
     explode->setPosition(demon->getPos());
