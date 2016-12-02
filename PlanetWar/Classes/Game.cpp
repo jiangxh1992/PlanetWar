@@ -337,31 +337,28 @@ void Game::addUI() {
     centerLabel->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
     uilayer->addChild(centerLabel);
     
-    // 背景图片
-    auto game_bg = Sprite::create("game_bg.jpg");
-    game_bg->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
-    //gameLayer->addChild(game_bg);
-    
     // 按钮菜单
     // 1.返回按钮
-    auto item_back = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", CC_CALLBACK_1(Game::back, this));
+    auto item_back = MenuItemImage::create("button_back.jpg", "button_back.jpg", CC_CALLBACK_1(Game::back, this));
     item_back->setPosition(Vec2(VisiableSize.width - item_back->getContentSize().width/2, VisiableSize.height - item_back->getContentSize().height/2));
     
     // 2.加速按钮
-    auto item_dash = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", CC_CALLBACK_1(Game::dash, this));
+    auto item_dash = MenuItemImage::create("button_dash_normal.jpg", "button_dash_pressed.jpg", CC_CALLBACK_1(Game::dash, this));
     item_dash->setAnchorPoint(Vec2(1,0));
-    item_dash->setPosition(Vec2(VisiableSize.width, 0));
+    item_dash->setPosition(Vec2(VisiableSize.width, 20));
     // 3.发射按钮
-    auto item_shoot = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", CC_CALLBACK_1(Game::shoot, this));
+    auto item_shoot = MenuItemImage::create("button_shoot_normal.jpg", "button_shoot_pressed.jpg", CC_CALLBACK_1(Game::shoot, this));
     item_shoot->setAnchorPoint(Vec2(1,0));
-    item_shoot->setPosition(Vec2(VisiableSize.width, item_dash->getContentSize().height*3));
+    item_shoot->setPosition(Vec2(VisiableSize.width - item_dash->getContentSize().width -10, 20));
     
     // 4.缩放按钮
-    auto item_scaleup = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", CC_CALLBACK_1(Game::scaleup, this));
-    item_scaleup->setPosition(Vec2(item_scaleup->getContentSize().width, item_scaleup->getContentSize().height));
+    auto item_scaleup = MenuItemImage::create("button_add.jpg", "button_add.jpg", CC_CALLBACK_1(Game::scaleup, this));
+    item_scaleup->setAnchorPoint(Vec2(0, 0));
+    item_scaleup->setPosition(Vec2(0, 0));
     
-    auto item_scaledown = MenuItemImage::create("CloseNormal.png", "CloseSelected.png", CC_CALLBACK_1(Game::scaledown, this));
-    item_scaledown->setPosition(Vec2(item_scaledown->getContentSize().width, item_scaledown->getContentSize().height*3));
+    auto item_scaledown = MenuItemImage::create("button_sub.jpg", "button_add.jpg", CC_CALLBACK_1(Game::scaledown, this));
+    item_scaledown->setAnchorPoint(Vec2(0, 0));
+    item_scaledown->setPosition(Vec2(0, item_scaledown->getContentSize().height));
     
     // 按钮菜单
     menu = Menu::create(item_back, item_dash, item_shoot, item_scaleup, item_scaledown, NULL);
