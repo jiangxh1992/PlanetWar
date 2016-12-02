@@ -46,14 +46,16 @@ public:
 private:
     
     // 游戏数据
-    Scene *curScene;              // 场景引用
-    PlayerBall *player;           // 玩家
-    int CurState;                 // 状态机
-    Vec2 startPoint = Vec2::ZERO; // 触摸起始点
-    Vec2 endPoint = Vec2::ZERO;   // 触摸结束点
-    Point Vertexs[4];             // 边界顶点数组
-    int timeCount = 0;            // 游戏倒计时
-    int kill = 0;                 // 杀死demon数量
+    Scene *curScene;                  // 场景引用
+    PlayerBall *player;               // 玩家
+    int CurState;                     // 状态机
+    Vec2 startPoint = Vec2::ZERO;     // 触摸起始点
+    Vec2 endPoint = Vec2::ZERO;       // 触摸结束点
+    Point Vertexs[4];                 // 边界顶点数组
+    int timeCount = 0;                // 游戏倒计时
+    int kill = 0;                     // 杀死demon数量
+    GAME_TYPE gameType = GAME_TIMER;  // 游戏模式（默认倒计时模式）
+    float gameLevel = 1.0;            // 游戏难度
     
     // UI
     Menu *menu;          // 按钮菜单

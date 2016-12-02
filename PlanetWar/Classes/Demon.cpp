@@ -43,12 +43,12 @@ bool Demon::init() {
  * 绘图
  */
 void Demon::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
+    // 清空之前的绘制
+    drawNode->clear();
+    //启用混合
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glEnable(GL_BLEND);
     if (isDraw) {
-        // 清空之前的绘制
-        drawNode->clear();
-        //启用混合
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-        glEnable(GL_BLEND);
         // 绘制实心圆形
         drawNode->drawDot(Vec2(0, 0), radius, color);
         drawNode->drawDot(Vec2(0, 0), radius*0.9, Color4F(1.0, 1.0, 1.0, 0.2));
@@ -56,7 +56,8 @@ void Demon::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, ui
         Color4F eagecolor = Color4F(10+245*CCRANDOM_0_1(), 10+245*CCRANDOM_0_1(), 10+245*CCRANDOM_0_1(), 1.0);
         drawNode->drawCircle(Vec2(0, 0), radius*2, 360, radius*2, true, eagecolor);
         // 根据球的半径更新当前球的绘制深度，半径越大的绘制在前面覆盖更小的球
-        drawNode->setGlobalZOrder(radius);
+        // drawNode->setGlobalZOrder(radius);
+        drawNode->setLocalZOrder(radius);
     }
 }
 
@@ -91,7 +92,7 @@ void Demon::sharedUpdate(float delta) {
         // 自己减体重
         //updateWeight(-6);
         // 震动
-        CocosDenshion::SimpleAudioEngine::getInstance()->vibrate();
+        //CocosDenshion::SimpleAudioEngine::getInstance()->vibrate();
     }
     
     // 3.检测子弹碰撞

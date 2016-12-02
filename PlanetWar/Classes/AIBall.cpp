@@ -49,35 +49,32 @@ void AIBall::commenInit() {
     
     eatAINum = 0;
     eatBaseNum = 0;
+    speed = maxSpeed; // 步长
+    position = Vec2((CCRANDOM_0_1()-0.5) * maxW, (CCRANDOM_0_1()-0.5) * maxH);// 随机位置
+    
+    // 随机颜色
+    int index = (colorNum-1)*CCRANDOM_0_1();
+    color = Game::sharedGame()->ColorArray[index];
+    //color = Color4F(CCRANDOM_0_1(), CCRANDOM_0_1(), CCRANDOM_0_1(), 1);
+    
+    // 随机方向
+    direction = Vec2((CCRANDOM_0_1()*2-1), (CCRANDOM_0_1()*2-1));
+    direction.normalize();
+    
+    weight = minWeight;       // 初始重量
+    radius = sqrt(weight);    // 半径
+    speedInterval = 1.0f;     // 移动间隔帧数
+    intervalCount = 0.9f;     // 间隔帧数计数器
+    setPosition(position);    // 设置位置
+    
     // label
     label_tag = Label::create();
     label_tag->setString("😜智多星☺️");
     label_tag->setPosition(Vec2(0, radius+label_tag->getContentSize().height));
     addChild(label_tag);
-    // 步长
-    speed = maxSpeed;
-    // 随机位置
-    position = Vec2((CCRANDOM_0_1()-0.5) * maxW, (CCRANDOM_0_1()-0.5) * maxH);
-    // 随机颜色
-    //int index = (colorNum-1)*CCRANDOM_0_1();
-    //color = Game::sharedGame()->ColorArray[index];
-    color = Color4F(10+CCRANDOM_0_1()*245, 10+CCRANDOM_0_1()*245, 10+CCRANDOM_0_1()*245, 1);
-    // 随机方向
-    direction = Vec2((CCRANDOM_0_1()*2-1), (CCRANDOM_0_1()*2-1));
-    direction.normalize();
-    // 初始重量
-    updateWeight(minWeight);
-    
-    // 移动间隔帧数
-    speedInterval = 1.0f;
-    // 间隔帧数计数器
-    intervalCount = 0.9f;
-    // 设置位置
-    setPosition(position);
     // drawnode
     drawNode = DrawNode::create();
     this->addChild(drawNode);
-
 }
 
 /**
@@ -86,13 +83,17 @@ void AIBall::commenInit() {
 void AIBall::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
     // 清空之前的绘制
     drawNode->clear();
+    //启用混合
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glEnable(GL_BLEND);
     if (isDraw) {
         // 绘制实心圆形
         drawNode->drawDot(Vec2(0, 0), radius, color);
-        drawNode->drawDot(Vec2(0, 0), radius*0.9, Color4F(1, 1, 1, 0.2));
+        drawNode->drawDot(Vec2(0, 0), radius*0.9, Color4F(1.0, 1.0, 1.0, 0.2));
         drawNode->drawCircle(Vec2(0, 0), radius, 360, radius, false, Color4F(color.r, color.g, color.b, 0.5));
         // 根据球的半径更新当前球的绘制深度，半径越大的绘制在前面覆盖更小的球
-        drawNode->setGlobalZOrder(radius);
+        //drawNode->setGlobalZOrder(radius);
+        drawNode->setLocalZOrder(radius);
     }
 }
 
@@ -163,20 +164,19 @@ void AIBall::sharedUpdate(float delta) {
         AIBall *aiball = *it;
         if (weight == aiball->getBallWeight()) continue; // 排除和自身吞并
         // 距离的平方
-        double distance = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
-        
-        if (distance <= pow(radius - aiball->radius*0.8, 2)) {
+        double distance2 = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
+        if(distance2 >= pow(radius - aiball->radius, 2)*1.2) continue; // 还没有吞并
             if (weight > aiball->getBallWeight()) {
-                // 获得其体重
+                // 当前AIBall吞并对方
                 updateWeight(aiball->getBallWeight());
                 eatAINum++;
                 autoreleasepool.pushBack(aiball);
             }else {
+                // 对方吞并当前AIBall
                 aiball->updateWeight(weight);
                 aiball->eatAINum++;
                 autoreleasepool.pushBack(this);
             }
-        }
     }
     // 移除回收池内的死球
     for (Vector<AIBall*>::const_iterator it = autoreleasepool.begin(); it != autoreleasepool.end(); it++) {
@@ -188,8 +188,9 @@ void AIBall::sharedUpdate(float delta) {
     
     // 3.检测与player的吞并
     if(!Game::sharedGame()->getPlayer()->isVisible()) return;
+    // AIBall与player的距离的平方
     double D2 = pow(Game::sharedGame()->getPlayer()->getPos().x -  position.x, 2) + pow(Game::sharedGame()->getPlayer()->getPos().y - position.y, 2);
-    if(D2 >= pow(radius - Game::sharedGame()->getPlayer()->radius*0.8, 2)) return;
+    if(D2 >= pow(radius - Game::sharedGame()->getPlayer()->radius, 2)*1.2) return; // 没有吞并
     if(weight < Game::sharedGame()->getPlayer()->getBallWeight()) {
         // 被player吃掉
         Game::sharedGame()->getPlayer()->updateWeight(weight);

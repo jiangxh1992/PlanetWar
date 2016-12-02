@@ -54,4 +54,10 @@ typedef enum {
     BALL_BULLET
 }FACTORY_TYPE;
 
+/* 游戏模式 */
+typedef enum {
+    GAME_TIMER,    // 计时模式
+    GAME_UNLIMITED // 无限模式
+}GAME_TYPE;
+
 #endif /* Const_h */

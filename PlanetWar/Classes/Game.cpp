@@ -4,6 +4,8 @@
 //
 //  Created by Xinhou Jiang on 8/11/16.
 //
+//  1.层级说明：UI层（100000），Ball层（0~100000）， 背景层（<0）
+//
 //
 #define dashTime 5 // 加速时间
 
@@ -72,7 +74,7 @@ bool Game::init() {
     // 开启定时器
     this->schedule(schedule_selector(Game::createBaseBallTimer), 5.0);
     // 开启AI干预
-    this->schedule(schedule_selector(Game::gameObserver), 2.0);
+    this->schedule(schedule_selector(Game::gameObserver), 1.0);
     
     return true;
 }
@@ -144,7 +146,7 @@ void Game::gameObserver(float delta) {
         float distance = sqrt(distance2) - player->getR() - aiball->getR();
         if (distance < ScreenHeight) {
             // 降低AI灵敏度
-            if(CCRANDOM_0_1() < 0.1) break;
+            if(CCRANDOM_0_1() < 0.2) break;
             Vec2 dir = aiball->getPos() - p;
             
             if (aiball->getBallWeight() > weight) {
@@ -162,7 +164,7 @@ void Game::gameObserver(float delta) {
     for (Vector<Demon*>::const_iterator it = DemonArray.begin(); it != DemonArray.end(); it++) {
         Demon *demon = *it;
         // 降低AI灵敏度
-        if(CCRANDOM_0_1() < 0.4) break;
+        if(CCRANDOM_0_1() < 0.5) break;
         Vec2 newDir = player->getPos() - demon->getPos();
         if(newDir.x*newDir.x + newDir.y*newDir.y > ScreenWidth*ScreenWidth*4) continue;
         newDir.normalize();
@@ -174,29 +176,56 @@ void Game::gameObserver(float delta) {
  * 计时器
  */
 void Game::gametimer(float delta) {
-    --timeCount;
+    
+    if (gameType == GAME_TIMER) {
+        --timeCount;
+        // 游戏结束
+        if(timeCount <= 0)
+            gameOver();
+    }else if (gameType == GAME_UNLIMITED) {
+        ++timeCount;
+    }
+    
     int minute = timeCount/60;
     int seconds = timeCount%60;
     __String s;
     s.initWithFormat("%02d:%02d",minute,seconds);
     label_time->setString(s._string);
     
-    // 游戏结束
-    if(timeCount <= 0)
-        gameOver();
 }
 
 /**
  * 游戏结束
  */
 void Game::gameOver() {
+    
+    // 1.游戏结束处理工作
     isGameOver = true;
     // 停止交互
     Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+    // 停止计时
+    this->unschedule(schedule_selector(Game::gametimer));
     // 游戏结束音效
     // ...
-    // 显示游戏结束对话框
-    // ...
+    
+    // 2.游戏数据提取整理
+    int new_weight = player->getBallWeight();         // 体重
+    int new_demon = kill;                             // 杀死demon数量
+    int new_base = baseNum;                           // 吞并baseball数量
+    int new_ai =  player->getEatAINum();              // 吞并AIBall数量
+    
+    
+    // 3.显示游戏结束对话框
+    LayerColor *gameover_layer = LayerColor::create(Color4B(0, 0, 0, 50), ScreenWidth, ScreenHeight);
+    gameover_layer->setPosition(Vec2(0, 0));
+    uilayer->addChild(gameover_layer, 100001);
+    
+    Label *gameover = Label::create();
+    gameover->setString("GAME OVER!");
+    gameover->setSystemFontSize(30);
+    gameover->setAnchorPoint(Vec2(0.5, 0.5));
+    gameover->setPosition(ScreenWidth/2, ScreenHeight/2);
+    gameover_layer->addChild(gameover);
     
 }
 
@@ -221,18 +250,48 @@ Game::~Game(){
 
 #pragma mark -工具函数
 
+Color4F convert2F(Color4B colorb) {
+    return Color4F(colorb.r, colorb.g, colorb.b, 1);
+}
+
 void Game::initColorArray() {
-    ColorArray[0] = Color4F(228, 96, 132, 1);
-    ColorArray[1] = Color4F(153, 153, 255, 1);
-    ColorArray[2] = Color4F(252, 210, 0, 1);
-    ColorArray[3] = Color4F(161, 109, 53, 1);
-    ColorArray[4] = Color4F(254, 76, 64, 1);
-    ColorArray[5] = Color4F(0, 133, 115, 1);
-    ColorArray[6] = Color4F(42, 92, 170, 1);
-    ColorArray[7] = Color4F(253, 185, 51, 1);
-    ColorArray[8] = Color4F(111, 89, 156, 1);
-    ColorArray[9] = Color4F(0, 235, 192, 1);
-    
+    ColorArray[0] = convert2F(Color4B(244, 170, 83, 1));
+    ColorArray[1] = convert2F(Color4B(240, 135, 70, 1));
+    ColorArray[2] = convert2F(Color4B(73, 180, 162, 1));
+    ColorArray[3] = convert2F(Color4B(222, 93, 255, 1));
+    ColorArray[4] = convert2F(Color4B(251, 79, 251, 1));
+    ColorArray[5] = convert2F(Color4B(244, 188, 53, 1));
+    ColorArray[6] = convert2F(Color4B(253, 80, 108, 1));
+    ColorArray[7] = convert2F(Color4B(89, 205, 124, 1));
+    ColorArray[8] = convert2F(Color4B(245, 173, 88, 1));
+    ColorArray[9] = convert2F(Color4B(255, 70, 144, 1));
+    ColorArray[10] = convert2F(Color4B(91, 212, 81, 1));
+    /*
+    242, 83, 80
+    166, 214, 76
+    237, 98, 67
+    255, 136, 194
+    255, 136, 136
+    255, 164, 136
+    255, 187, 102
+    255, 221, 85
+    255, 255, 119
+    221, 255, 119
+    187, 255, 102
+    102, 255, 102
+    119, 255, 204
+    119, 221, 255
+    176, 136, 255
+    210, 142, 255
+    227, 119, 255
+    255, 119, 255
+    228, 96, 132
+    153, 153, 255
+    252, 210, 0
+    254, 76, 64
+    253, 185, 51
+    0, 235, 192
+    */
 }
 
 /**
@@ -240,8 +299,11 @@ void Game::initColorArray() {
  */
 void Game::initData() {
     
+    // 判断游戏模式
+    gameType = GAME_UNLIMITED;
+    
     // 游戏时间
-    timeCount = maxSeconds;
+    timeCount = gameType == GAME_TIMER ? maxSeconds : 0;
     // baball个数
     baseNum = maxBaseBallNum;
     
@@ -282,7 +344,15 @@ void Game::addUI() {
     drawNode = DrawNode::create();//708090
     addChild(drawNode);
     
-    uilayer = LayerColor::create(Color4B(102, 102, 153, 100), ScreenWidth, ScreenHeight);
+    // 背景层
+    bglayer1 = LayerColor::create(Color4B(102, 102, 153, 100), maxW*3, maxH*3);
+    bglayer1->setIgnoreAnchorPointForPosition(false);
+    bglayer1->setAnchorPoint(Vec2(0.5, 0.5));
+    bglayer1->setPosition(Vec2(0, 0));
+    addChild(bglayer1, -1);
+    
+    // UI层
+    uilayer = LayerColor::create(Color4B(0, 0, 0, 0), ScreenWidth, ScreenHeight);
     addChild(uilayer, 100000);
     
     // left
@@ -290,52 +360,52 @@ void Game::addUI() {
     debuglabel->setString("0");
     debuglabel->setAnchorPoint(Vec2(0, 1));
     debuglabel->setPosition(Vec2(5,ScreenHeight));
-    uilayer->addChild(debuglabel);
+    uilayer->addChild(debuglabel, 100000);
     
     label_weight = Label::create();
     label_weight->setString("weight");
     label_weight->setAnchorPoint(Vec2(0, 1));
     label_weight->setPosition(Vec2(5, ScreenHeight - debuglabel->getContentSize().height));
-    uilayer->addChild(label_weight);
+    uilayer->addChild(label_weight,100000);
     
     label_scale = Label::create();
     label_scale->setString("scale");
     label_scale->setAnchorPoint(Vec2(0, 1));
     label_scale->setPosition(Vec2(5, ScreenHeight - label_scale->getContentSize().height*2));
-    uilayer->addChild(label_scale);
+    uilayer->addChild(label_scale,100000);
     
     // center
     label_time = Label::create();
     label_time->setString("00:00");
     label_time->setAnchorPoint(Vec2(0.5, 1));
     label_time->setPosition(ScreenWidth/2, ScreenHeight);
-    uilayer->addChild(label_time);
+    uilayer->addChild(label_time,100000);
     
     // right
     label_ainum = Label::create();
     label_ainum->setString("ainum");
     label_ainum->setAnchorPoint(Vec2(0, 1));
     label_ainum->setPosition(Vec2(ScreenWidth/3*2,ScreenHeight));
-    uilayer->addChild(label_ainum);
+    uilayer->addChild(label_ainum,100000);
     
     label_basenum = Label::create();
     label_basenum->setString("basenum");
     label_basenum->setAnchorPoint(Vec2(0, 1));
     label_basenum->setPosition(Vec2(ScreenWidth/3*2,ScreenHeight - label_basenum->getContentSize().height));
-    uilayer->addChild(label_basenum);
+    uilayer->addChild(label_basenum,100000);
     
     label_demon = Label::create();
     label_demon->setString("demon");
     label_demon->setAnchorPoint(Vec2(0, 1));
     label_demon->setPosition(ScreenWidth/3*2,ScreenHeight - label_basenum->getContentSize().height*2);
-    uilayer->addChild(label_demon);
+    uilayer->addChild(label_demon,100000);
     
     // 绘制屏幕中心
     auto centerLabel = Label::create();
     centerLabel->setString("+");
     centerLabel->setTextColor(Color4B(255, 255, 255, 100));
     centerLabel->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
-    uilayer->addChild(centerLabel);
+    uilayer->addChild(centerLabel,-1);
     
     // 按钮菜单
     // 1.返回按钮
@@ -362,8 +432,9 @@ void Game::addUI() {
     
     // 按钮菜单
     menu = Menu::create(item_back, item_dash, item_shoot, item_scaleup, item_scaledown, NULL);
+    menu->setOpacity(200);
     menu->setPosition(Vec2::ZERO);
-    uilayer->addChild(menu,1);
+    uilayer->addChild(menu,100000);
     
 }
 
@@ -533,24 +604,36 @@ void Game::scaledown(cocos2d::Ref *pSender) {
 
 void Game::demonKilled(Demon *demon) {
     kill++;          //  杀死一个demon
-    timeCount += 20; // 游戏时间增加
+    // 游戏时间增加
+    if (gameType == GAME_TIMER) {
+        timeCount += 20;
+    }
     // 爆炸粒子
     ParticleSystemQuad *explode = ParticleSystemQuad::create("particle_explode.plist");
     explode->setPosition(demon->getPos());
     addChild(explode);
-    
+    // 移除demon
     DemonArray.eraseObject(demon);
     removeChild(demon);
 }
 
 void Game::playerKilled() {
+    // 震动
+    CocosDenshion::SimpleAudioEngine::getInstance()->vibrate();
+    // 隐藏
     player->setVisible(false);
     player->setSpeedFactor(0);
-    // 延迟复活
-    DelayTime *delay = DelayTime::create(3);
-    CallFunc *fun = CallFunc::create(CC_CALLBACK_0(Game::playerReactive, this));
-    Sequence *action = Sequence::create(delay,fun, NULL);
-    runAction(action);
+    // 复活或者游戏结束
+    if(gameType == GAME_TIMER) {
+        // 延迟复活
+        DelayTime *delay = DelayTime::create(3);
+        CallFunc *fun = CallFunc::create(CC_CALLBACK_0(Game::playerReactive, this));
+        Sequence *action = Sequence::create(delay,fun, NULL);
+        runAction(action);
+    }else {
+        gameOver();
+    }
+    
 }
 
 void Game::playerReactive() {

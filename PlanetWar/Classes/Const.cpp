@@ -25,7 +25,7 @@ const double PI = 3.1415926;
 // 能量常量
 const int Energy = 3000;
 // 重量下限(初始重量)
-const int minWeight = 225;
+const int minWeight = 300;
 // 屏幕小球的数量上限
 const int maxBaseBallNum = 1000;
 // AI球的数量上限
