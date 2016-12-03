@@ -8,16 +8,14 @@
 
 #ifndef __PlanetWar__AIBall__ 
 #define __PlanetWar__AIBall__
-
 #include "BaseBall.h"
+USING_NS_CC;
 
 class AIBall : public BaseBall {
 
 /** 重写函数 **/
 public:
-    // 创建类对象
     static AIBall* create();
-	// 对象初始化
 	virtual bool init();
     // 绘制图形
     virtual void draw(Renderer*renderer, const Mat4& transform, uint32_t flags);
@@ -30,21 +28,15 @@ public:
 
 /** 内部变量和函数 **/
 protected:
-    // 移动方向
-    cocos2d::Vec2 direction = cocos2d::Vec2::ZERO;
-    // 移动速度
-    int speed = 0;
-    // 速度控制因子
-    float speedFactor = 1;
-    // 移动间隔帧数
-    double speedInterval;
-    // 间隔帧数计数器
-    double intervalCount;
-    // 吃球数量
-    int eatAINum = 0;
-    int eatBaseNum = 0;
+    Vec2 direction = Vec2::ZERO;    // 移动方向
+    int speed = 0;                  // 移动速度
+    float speedFactor = 1;          // 速度控制因子
+    double speedInterval;           // 移动间隔帧数
+    double intervalCount;           // 间隔帧数计数器
+    int eatAINum = 0;               // 吃AI球数量
+    int eatBaseNum = 0;             // 吃base球数量
     
-    // 通用初始化
+    // 子类通用初始化
     virtual void commenInit();
     // 移动
     virtual void thisUpdate(float delta);
@@ -55,16 +47,17 @@ protected:
     
 /** 对外接口 **/
 public:
-    
+    // 名字标签
     cocos2d::Label *label_tag;
     
+    // setter
     virtual void updateWeight(int addedWeight);
     void scaleSpeed(float scale){speed *= scale;};
-    virtual void setLabel(const cocos2d::__String label);
-    
-    void setDirection(const cocos2d::Vec2 dir){direction = dir;}
+    virtual void setLabel(__String label);
+    void setDirection(Vec2 dir){direction = dir;}
+    void setIntervalCount(float interval){intervalCount = interval>1.0 ? interval : 1.0;}
     void setSpeedFactor(float factor){speedFactor = factor;};
-    
+    // getter
     cocos2d::Vec2 getDirection(){return direction;}
     float getSpeedFactor(){return speedFactor;}
     float getSpeedInterval(){return speedInterval;}

@@ -39,9 +39,6 @@ bool Demon::init() {
     return true;
 }
 
-/**
- * 绘图
- */
 void Demon::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
     // 清空之前的绘制
     drawNode->clear();

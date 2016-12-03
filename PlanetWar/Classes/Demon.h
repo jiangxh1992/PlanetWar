@@ -9,6 +9,7 @@
 #ifndef __PlanetWar__Demon__ 
 #define __PlanetWar__Demon__
 #include "AIBall.h"
+USING_NS_CC;
 
 class Demon : public AIBall {
     int power; // 攻击力
@@ -25,7 +26,6 @@ public:
     
     // 碰撞检测重写
     virtual void sharedUpdate(float delta);
-    
     virtual void updateWeight(int addedWeight);
 };
 

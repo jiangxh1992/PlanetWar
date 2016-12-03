@@ -14,23 +14,15 @@ class BaseBall : public Sprite {
 
 /** 重写函数 **/
 public:
-    // 析构函数
-    virtual ~BaseBall();
 
 /** 内部变量和函数 **/
 protected:
-    // 坐标
-    Vec2 position = Vec2::ZERO;
-    // 半径
-    double radius = 0;
-    // 颜色
-    Color4F color = Color4F::YELLOW;
-    // 重量
-    int weight = 1;
-    // 是否启动图形绘制
-    bool isDraw = true;
-    // DrawNode
-    DrawNode *drawNode = NULL;
+    Vec2 position = Vec2::ZERO;        // 坐标
+    double radius = 0;                 // 半径
+    Color4F color = Color4F::YELLOW;   // 颜色
+    int weight = 1;                    // 重量
+    bool isDraw = true;                // 是否启动图形绘制
+    DrawNode *drawNode = NULL;         // DrawNode
     
 /** 对外接口 **/
 public:

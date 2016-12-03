@@ -158,8 +158,5 @@ void PlayerBall::speedUp() {
     speedUpCount = 0;
 }
 
-/**
- * 析构函数
- */
 PlayerBall::~PlayerBall() {
 }

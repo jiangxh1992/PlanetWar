@@ -7,8 +7,3 @@
 //
 
 #include "BaseBall.h"
-#include "Game.h"
-/**
- * 析构
- */
-BaseBall::~BaseBall() {}

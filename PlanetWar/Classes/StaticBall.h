@@ -11,21 +11,14 @@
 USING_NS_CC;
 
 class StaticBall {
-public:    
-    // 是否存活
-    bool isActive;
-    // 坐标
-    Vec2 position = cocos2d::Vec2::ZERO;
-    // 半径
-    float radius = 0;
-    // 边数
-    int polyNum = 3;
-    // 顶点数组
-    Point *vertexs;
-    // 颜色
-    Color4F color = cocos2d::Color4F::YELLOW;
-    // 重量
-    int weight = 5;
+public:
+    bool isActive;                   // 是否存活
+    Vec2 position = Vec2::ZERO;      // 坐标
+    float radius = 0;                // 半径
+    int polyNum = 3;                 // 边数
+    Point *vertexs;                  // 顶点数组
+    Color4F color = Color4F::YELLOW; // 颜色
+    int weight = 5;                  // 重量
     
     // 构造
     StaticBall();
@@ -33,7 +26,6 @@ public:
     void reActive();
     // 缩放
     void scale(float scale);
-    
     // 析构
     ~StaticBall();
     

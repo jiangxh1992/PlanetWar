@@ -9,16 +9,13 @@
 #ifndef __PlanetWar__PlayerBall__ 
 #define __PlanetWar__PlayerBall__
 #include "AIBall.h"
+USING_NS_CC;
 
 class PlayerBall : public AIBall {
-    
 /** 重写函数 **/
 public:
-	// 创建类对象
 	static PlayerBall* create();
-	// 对象初始化
 	virtual bool init();
-
     // 安帧更新
     virtual void update(float time);
     // 析构函数
@@ -26,12 +23,9 @@ public:
 
 /** 内部变量和函数 **/
 protected:
-    
     // 加速
     bool isSpeedUp = false;
     int speedUpCount = 0;
-    
-    // 专用更新
     virtual void thisUpdate(float delta);
     virtual void sharedUpdate(float delta);
     
@@ -39,7 +33,6 @@ protected:
 public:
     void speedUp();
     void setDir(const cocos2d::Vec2 newDir) {direction = newDir;};
-	
 };
 
 #endif /* defined(__PlanetWar__PlayerBall__) */

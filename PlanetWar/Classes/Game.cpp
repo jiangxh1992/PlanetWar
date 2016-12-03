@@ -83,7 +83,7 @@ bool Game::init() {
     // 开启计时器
     this->schedule(schedule_selector(Game::gametimer), 1.0);
     // 开启定时器
-    this->schedule(schedule_selector(Game::createBaseBallTimer), 5.0);
+    this->schedule(schedule_selector(Game::createBaseBallTimer), 3.0);
     // 开启AI干预
     this->schedule(schedule_selector(Game::gameObserver), 1.0);
     
@@ -631,7 +631,7 @@ void Game::createBaseBallTimer(float delta) {
     float random = CCRANDOM_0_1();
     // 小球随机激活
     for (int i = 0; i<maxBaseBallNum; i++) {
-        bool pass = (random < 0.2) ? true : false;
+        bool pass = (random < 0.3) ? true : false;
         if (pass && !staticArray[i].isActive) {
             staticArray[i].reActive();
             baseNum++;
@@ -644,8 +644,7 @@ void Game::createBaseBallTimer(float delta) {
     }
     
     // Demon
-    if (DemonArray.size() > 4) return;
-    if (random < 0.3) {
+    if (random < 0.2 && DemonArray.size()<4) {
         createBallFactory(BALL_DEMON, 1);
     }
 }

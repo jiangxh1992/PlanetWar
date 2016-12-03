@@ -35,8 +35,6 @@ extern const int maxAIBallNum;
 extern const int maxSpeed;
 // 游戏时间
 extern const int maxSeconds;
-// 颜色个数
-//extern const int colorNum;
 
 
 /** 状态机状态 **/

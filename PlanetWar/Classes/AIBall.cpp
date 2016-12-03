@@ -12,9 +12,6 @@
 #include <math.h>
 USING_NS_CC;
 
-/**
- * 创建对象
- */
 AIBall* AIBall::create() {
     AIBall *sprite = new AIBall();
     
@@ -27,9 +24,6 @@ AIBall* AIBall::create() {
     return NULL;
 }
 
-/**
- * 初始化
- */
 bool AIBall::init() {
     if (!Sprite::init()) {
         return false;
@@ -207,6 +201,11 @@ void AIBall::sharedUpdate(float delta) {
     
 }
 
+AIBall::~AIBall() {
+    this->unscheduleUpdate();
+    this->unscheduleAllCallbacks();
+}
+
 #pragma mark -工具函数
 
 void AIBall::updateWeight(int addedWeight) {
@@ -221,9 +220,6 @@ void AIBall::updateWeight(int addedWeight) {
     label_tag->setPosition(Vec2(0, radius+label_tag->getContentSize().height));
 }
 
-/**
- * 缩放
- */
 void AIBall::scale(float scale) {
     // postion
     position *= scale;
@@ -246,12 +242,4 @@ void AIBall::checkExplode() {
         Game::sharedGame()->AIBallArray.eraseObject(this);
         Game::sharedGame()->removeChild(this);
     }
-}
-
-/**
- * 析构函数
- */
-AIBall::~AIBall() {
-    this->unscheduleUpdate();
-    this->unscheduleAllCallbacks();
 }
