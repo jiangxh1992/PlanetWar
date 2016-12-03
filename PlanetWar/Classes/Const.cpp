@@ -9,8 +9,8 @@
 #include <Const.h>
 
 // 游戏场景边界
-const int maxWidth = 1500;
-const int maxHeight = 1000;
+const int maxWidth = 1300;
+const int maxHeight = 900;
 int maxW = maxWidth;
 int maxH = maxHeight;
 
@@ -19,7 +19,7 @@ const int designW = 568;
 const int designH = 320;
 
 // 移动间隔时间
-const float Interval = 0.004;
+const float Interval = 0.005;
 // PI
 const double PI = 3.1415926;
 // 能量常量
@@ -27,7 +27,7 @@ const int Energy = 3000;
 // 重量下限(初始重量)
 const int minWeight = 300;
 // 屏幕小球的数量上限
-const int maxBaseBallNum = 1000;
+const int maxBaseBallNum = 900;
 // AI球的数量上限
 const int maxAIBallNum = 20;
 // 最大speed

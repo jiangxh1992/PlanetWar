@@ -162,16 +162,34 @@ void AIBall::sharedUpdate(float delta) {
             Game::sharedGame()->baseNum --;
         }
     }
+    
+    // 3.检测与player的吞并
+    if(!Game::sharedGame()->getPlayer()->isVisible()) return;
+    // AIBall与player的距离的平方
+    double D2 = pow(Game::sharedGame()->getPlayer()->getPos().x -  position.x, 2) + pow(Game::sharedGame()->getPlayer()->getPos().y - position.y, 2);
+    if(D2 >= pow(radius - Game::sharedGame()->getPlayer()->radius*0.7, 2)) return; // 没有吞并
+    if(weight < Game::sharedGame()->getPlayer()->getBallWeight()) {
+        // 被player吃掉
+        Game::sharedGame()->getPlayer()->updateWeight(weight);
+        Game::sharedGame()->getPlayer()->eatAINum++;
+        Game::sharedGame()->AIBallArray.eraseObject(this);
+        Game::sharedGame()->removeChild(this);
+    }else if (weight > Game::sharedGame()->getPlayer()->getBallWeight()) {
+        updateWeight(Game::sharedGame()->getPlayer()->getBallWeight());
+        eatAINum++;
+        // 主角死亡,通知Game
+        Game::sharedGame()->playerKilled();
+    }
 
     // 回收池
     Vector<AIBall*> autoreleasepool = Vector<AIBall*>();
-    // 2.检测AIBall互相吞并
+    // 3.检测AIBall互相吞并
     for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
         AIBall *aiball = *it;
         if (weight == aiball->getBallWeight()) continue; // 排除和自身吞并
         // 距离的平方
         double distance2 = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
-        if(distance2 >= pow(radius - aiball->radius*0.8, 2)) continue; // 还没有吞并
+        if(distance2 >= pow(radius - aiball->radius*0.7, 2)) continue; // 还没有吞并
             if (weight > aiball->getBallWeight()) {
                 // 当前AIBall吞并对方
                 updateWeight(aiball->getBallWeight());
@@ -192,44 +210,15 @@ void AIBall::sharedUpdate(float delta) {
         Game::sharedGame()->removeChild(ball);
     }
     
-    // 3.检测与player的吞并
-    if(!Game::sharedGame()->getPlayer()->isVisible()) return;
-    // AIBall与player的距离的平方
-    double D2 = pow(Game::sharedGame()->getPlayer()->getPos().x -  position.x, 2) + pow(Game::sharedGame()->getPlayer()->getPos().y - position.y, 2);
-    if(D2 >= pow(radius - Game::sharedGame()->getPlayer()->radius*0.8, 2)) return; // 没有吞并
-    if(weight < Game::sharedGame()->getPlayer()->getBallWeight()) {
-        // 被player吃掉
-        Game::sharedGame()->getPlayer()->updateWeight(weight);
-        Game::sharedGame()->getPlayer()->eatAINum++;
-        Game::sharedGame()->AIBallArray.eraseObject(this);
-        Game::sharedGame()->removeChild(this);
-    }else if (weight > Game::sharedGame()->getPlayer()->getBallWeight()) {
-        updateWeight(Game::sharedGame()->getPlayer()->getBallWeight());
-        eatAINum++;
-        // 主角死亡,通知Game
-        Game::sharedGame()->playerKilled();
-    }
-    
-    // 3.检测子弹碰撞
-    for (int i =0; i < Game::sharedGame()->bulletArray.size(); i++) {
-        Point p = Game::sharedGame()->bulletArray[i].getPos();
-        float r = Game::sharedGame()->bulletArray[i].getRadius();
-        double D2 = pow(p.x - position.x, 2.0) + pow(p.y - position.y, 2.0);
-        double R2 = pow((r + radius), 2.0);
-        if (D2 < R2) {
-            // 减血
-            updateWeight(-Game::sharedGame()->bulletArray[i].getPower());
-            // 销毁子弹
-            Game::sharedGame()->bulletArray.erase(Game::sharedGame()->bulletArray.begin() + i);
-        }
-    }
-    
 }
 
 #pragma mark -工具函数
 
 void AIBall::updateWeight(int addedWeight) {
-    if (weight + addedWeight < minWeight) return;
+    if (weight + addedWeight < minWeight) {
+        weight = minWeight;
+        return;
+    };
     weight += addedWeight;
     // 半径
     radius = sqrt(weight*Game::sharedGame()->scale);

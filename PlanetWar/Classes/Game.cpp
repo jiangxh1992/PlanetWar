@@ -85,7 +85,7 @@ bool Game::init() {
     // 开启定时器
     this->schedule(schedule_selector(Game::createBaseBallTimer), 5.0);
     // 开启AI干预
-    this->schedule(schedule_selector(Game::gameObserver), 0.5);
+    this->schedule(schedule_selector(Game::gameObserver), 1.0);
     
     return true;
 }
@@ -137,7 +137,7 @@ void Game::update(float time) {
     
     // 加速功能恢复
     if (dashCount > 0) {
-        dashCount -= 0.2;
+        dashCount -= 0.3;
         dashTimer->setPercentage(dashCount);
     }
     
@@ -645,7 +645,7 @@ void Game::createBaseBallTimer(float delta) {
     
     // Demon
     if (DemonArray.size() > 4) return;
-    if (random < 0.4) {
+    if (random < 0.3) {
         createBallFactory(BALL_DEMON, 1);
     }
 }

@@ -194,7 +194,7 @@ void MenuScene::addHistoryUI() {
     // 按钮
     auto item_limited = MenuItemImage::create("btn_limited_normal.png", "btn_limited_pressed.png", CC_CALLBACK_0(MenuScene::showLimitedRecord, this));
     item_limited->setPosition(Vec2(0, 0));
-    auto item_unlimited = MenuItemImage::create("btn_unlimited_normal.png", "btn_pressed_normal.png", CC_CALLBACK_0(MenuScene::showUnLimitedRecord, this));
+    auto item_unlimited = MenuItemImage::create("btn_unlimited_normal.png", "btn_unlimited_pressed.png", CC_CALLBACK_0(MenuScene::showUnLimitedRecord, this));
     item_unlimited->setPosition(Vec2(130, 0));
     
     auto item_back = MenuItemImage::create("btn_back_normal.png", "btn_back_pressed.png", CC_CALLBACK_0(MenuScene::hideHistory, this));
@@ -254,7 +254,7 @@ void MenuScene::showUnLimitedRecord() {
     __String name = UserDefault::getInstance()->getStringForKey("unlimited_name", "unknown");
     int weight = UserDefault::getInstance()->getIntegerForKey("unlimited_weight", -1);
     int demon = UserDefault::getInstance()->getIntegerForKey("unlimited_demon", -1);
-    int baseball = UserDefault::getInstance()->getIntegerForKey("tunlimited_baseball",-1);
+    int baseball = UserDefault::getInstance()->getIntegerForKey("unlimited_baseball",-1);
     int aiball = UserDefault::getInstance()->getIntegerForKey("unlimited_aiball",-1);
     updateHistory(name, weight, baseball, aiball, demon);
 }
