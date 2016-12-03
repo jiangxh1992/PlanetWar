@@ -53,9 +53,10 @@ bool MenuScene::init() {
 }
 
 void MenuScene::update(float time) {
-    scaleCount += 0.01;
+    scaleCount += 0.02;
     menu_bg->setScale(1-sin(scaleCount)*0.4);// 背景缩放
-    item_startgame->setScale(1-sin(scaleCount)*0.2);
+    item_startgame1->setScale(1-sin(scaleCount)*0.1);
+    item_startgame2->setScale(1-sin(scaleCount)*0.1);
     item_history->setScale(1-sin(scaleCount)*0.2);
 }
 
@@ -92,13 +93,21 @@ void MenuScene::addUI() {
     addChild(menu_cloud, 20);
     
     // 开始游戏按钮
-    item_startgame = MenuItemImage::create("btn_start_normal.png", "btn_start_pressed.png", CC_CALLBACK_1(MenuScene::startGame, this));
-    item_startgame->setPosition(Vec2(0, -20));
+    item_startgame1 = MenuItemImage::create("btn_start_normal.png", "btn_start_pressed.png", CC_CALLBACK_1(MenuScene::startGameTimer, this));
+    item_startgame1->setAnchorPoint(Vec2(1, 0.5));
+    item_startgame1->setTag(1);
+    item_startgame1->setPosition(Vec2(5, -20));
+    
+    item_startgame2 = MenuItemImage::create("btn_start_normal.png", "btn_start_pressed.png", CC_CALLBACK_1(MenuScene::startGameUnlimited, this));
+    item_startgame2->setAnchorPoint(Vec2(0, 0.5));
+    item_startgame2->setTag(2);
+    item_startgame2->setPosition(Vec2(-5, -20));
+    
     // 历史记录按钮
     item_history = MenuItemImage::create("btn_history_normal.png","btn_history_pressed.png", CC_CALLBACK_1(MenuScene::openHistory, this));
     item_history->setPosition(Vec2(0, -ScreenHeight/3));
     // 按钮菜单
-    auto menu = Menu::create(item_startgame, item_history, NULL);
+    auto menu = Menu::create(item_startgame1, item_startgame2, item_history, NULL);
     menu->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
     addChild(menu,100);
     
@@ -209,22 +218,30 @@ void MenuScene::addHistoryUI() {
 /**
  * 跳转到游戏场景
  */
-void MenuScene::startGame(cocos2d::Ref* pSender) {
+void MenuScene::startGameTimer(cocos2d::Ref* pSender) {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
-    Director::getInstance()->replaceScene(TransitionFade::create(0.5, Game::createScene()));
+    Director::getInstance()->replaceScene(TransitionFade::create(0.5, Game::createScene(GAME_TIMER)));
+}
+void MenuScene::startGameUnlimited(cocos2d::Ref *pSender) {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
+    Director::getInstance()->replaceScene(TransitionFade::create(0.5, Game::createScene(GAME_UNLIMITED)));
 }
 
 /**
  * 历史记录
  */
 void MenuScene::openHistory(cocos2d::Ref *pSender) {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
     history_layer_bg->setVisible(true);
 }
 
 void MenuScene::showLimitedRecord(cocos2d::Ref *pSender) {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
 }
 void MenuScene::showUnLimitedRecord(cocos2d::Ref *pSender) {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
 }
 void MenuScene::hideHistory(cocos2d::Ref *pSender) {
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
     history_layer_bg->setVisible(false);
 }

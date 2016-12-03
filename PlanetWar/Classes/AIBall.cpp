@@ -84,16 +84,15 @@ void AIBall::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, u
     // 清空之前的绘制
     drawNode->clear();
     //启用混合
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-    glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    //glEnable(GL_BLEND);
     if (isDraw) {
         // 绘制实心圆形
         drawNode->drawDot(Vec2(0, 0), radius, color);
         drawNode->drawDot(Vec2(0, 0), radius*0.9, Color4F(1.0, 1.0, 1.0, 0.2));
         drawNode->drawCircle(Vec2(0, 0), radius, 360, radius, false, Color4F(color.r, color.g, color.b, 0.5));
         // 根据球的半径更新当前球的绘制深度，半径越大的绘制在前面覆盖更小的球
-        //drawNode->setGlobalZOrder(radius);
-        drawNode->setLocalZOrder(radius);
+        drawNode->setGlobalZOrder(radius-100000);
     }
 }
 

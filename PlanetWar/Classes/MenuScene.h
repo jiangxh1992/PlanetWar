@@ -24,7 +24,8 @@ public:
     
     // 动态UI引用
     Sprite *label_title;
-    MenuItemImage *item_startgame;
+    MenuItemImage *item_startgame1;
+    MenuItemImage *item_startgame2;
     MenuItemImage *item_history;
     Sprite *menu_bg;
     LayerColor *history_layer_bg;
@@ -35,7 +36,8 @@ public:
     void addHistoryUI();
     
     // 事件函数
-    void startGame(Ref* pSender);
+    void startGameTimer(Ref* pSender);
+    void startGameUnlimited(Ref* pSender);
     void openHistory(Ref* pSender);
     void showLimitedRecord(Ref* pSender);
     void showUnLimitedRecord(Ref* pSender);

@@ -46,8 +46,8 @@ void Demon::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, ui
     // 清空之前的绘制
     drawNode->clear();
     //启用混合
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-    glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    //glEnable(GL_BLEND);
     if (isDraw) {
         // 绘制实心圆形
         drawNode->drawDot(Vec2(0, 0), radius, color);
@@ -56,8 +56,7 @@ void Demon::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, ui
         Color4F eagecolor = Color4F(10+245*CCRANDOM_0_1(), 10+245*CCRANDOM_0_1(), 10+245*CCRANDOM_0_1(), 1.0);
         drawNode->drawCircle(Vec2(0, 0), radius*2, 360, radius*2, true, eagecolor);
         // 根据球的半径更新当前球的绘制深度，半径越大的绘制在前面覆盖更小的球
-        // drawNode->setGlobalZOrder(radius);
-        drawNode->setLocalZOrder(radius);
+        drawNode->setGlobalZOrder(radius-100000);
     }
 }
 

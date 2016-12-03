@@ -29,7 +29,7 @@ class Game : public Layer {
     /** 重写函数 **/
 public:
     // 创建类对象
-    static Scene* createScene();
+    static Scene* createScene(GAME_TYPE type);
     // 对象初始化
     virtual bool init();
     CREATE_FUNC(Game);
@@ -97,7 +97,7 @@ private:
     void scaleup(Ref* pSender);
     void scaledown(Ref* pSender);
     void playerReactive();                 // player复活
-    void reStartGame(Ref* pSender);      // 重新游戏
+    void reStartGame(Ref* pSender);        // 重新游戏
     
     // 注册屏幕触摸事件
     void addTouchListener();

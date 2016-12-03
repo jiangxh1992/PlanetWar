@@ -27,9 +27,10 @@ string Convert2String(const T &value)
 /**
  * 创建游戏场景
  */
-Scene* Game::createScene() {
+Scene* Game::createScene(GAME_TYPE type) {
     auto scene = Scene::create();
     auto layer = Game::create();
+    layer->gameType = type;
     layer->curScene = scene;
     scene->addChild(layer);
     return scene;
@@ -95,11 +96,13 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
         drawNode->drawPolygon(ball.vertexs, ball.polyNum, ball.color, 1, ball.color); // 实心
         //drawNode->drawDot(staticArray[i].position, staticArray[i].radius, staticArray[i].color);
         // 深度
-        drawNode->setGlobalZOrder(-1);
+        drawNode->setGlobalZOrder(-100000);
     }
     
     // 绘制边界
     drawNode->drawPoly(Vertexs, 4, true, Color4F(255*CCRANDOM_0_1(), 0, 0, 1.0));
+    // 深度
+    drawNode->setGlobalZOrder(-100000);
     
     // 绘制子弹
     for (int i =0; i < bulletArray.size(); i++) {
@@ -110,7 +113,9 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
         }else {
             // 绘制
             drawNode->drawDot(bulletArray[i].getPos(), bulletArray[i].getRadius(), bulletArray[i].getColor());
-            drawNode->drawDot(bulletArray[i].getPos(), bulletArray[i].getRadius(), Color4F(1.0, 1.0, 1.0, 0.2));
+            drawNode->drawDot(bulletArray[i].getPos(), bulletArray[i].getRadius(), Color4F(1.0, 1.0, 1.0, 0.8));
+            // 深度
+            drawNode->setGlobalZOrder(-100000);
             // 移动
             bulletArray[i].move();
         }
@@ -340,47 +345,26 @@ void Game::initColorArray() {
     ColorArray[8] = convert2F(Color4B(245, 173, 88, 1));
     ColorArray[9] = convert2F(Color4B(255, 70, 144, 1));
     ColorArray[10] = convert2F(Color4B(91, 212, 81, 1));
-    
-    ColorArray[11] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[12] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[13] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[14] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[15] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[16] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[17] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[18] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[19] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[20] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[21] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[22] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[23] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[24] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[25] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[26] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[27] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[28] = convert2F(Color4B(91, 212, 81, 1));
-    ColorArray[29] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[11] = convert2F(Color4B(242, 83, 80, 1));
+    ColorArray[12] = convert2F(Color4B(166, 214, 76, 1));
+    ColorArray[13] = convert2F(Color4B(237, 98, 67, 1));
+    ColorArray[14] = convert2F(Color4B(255, 136, 194, 1));
+    ColorArray[15] = convert2F(Color4B(255, 136, 136, 1));
+    ColorArray[16] = convert2F(Color4B(255, 164, 136, 1));
+    ColorArray[17] = convert2F(Color4B(255, 187, 102, 1));
+    ColorArray[18] = convert2F(Color4B(255, 221, 85, 1));
+    ColorArray[19] = convert2F(Color4B(255, 255, 119, 1));
+    ColorArray[20] = convert2F(Color4B(221, 255, 119, 1));
+    ColorArray[21] = convert2F(Color4B(187, 255, 102, 1));
+    ColorArray[22] = convert2F(Color4B(102, 255, 102, 1));
+    ColorArray[23] = convert2F(Color4B(119, 255, 204, 1));
+    ColorArray[24] = convert2F(Color4B(176, 136, 255, 1));
+    ColorArray[25] = convert2F(Color4B(210, 142, 255, 1));
+    ColorArray[26] = convert2F(Color4B(227, 119, 255, 1));
+    ColorArray[27] = convert2F(Color4B(255, 119, 255, 1));
+    ColorArray[28] = convert2F(Color4B(228, 96, 132, 1));
+    ColorArray[29] = convert2F(Color4B(153, 153, 255, 1));
     /*
-    242, 83, 80
-    166, 214, 76
-    237, 98, 67
-    255, 136, 194
-    255, 136, 136
-    255, 164, 136
-    255, 187, 102
-    255, 221, 85
-    255, 255, 119
-    221, 255, 119
-    187, 255, 102
-    102, 255, 102
-    119, 255, 204
-    119, 221, 255
-    176, 136, 255
-    210, 142, 255
-    227, 119, 255
-    255, 119, 255
-    228, 96, 132
-    153, 153, 255
     252, 210, 0
     254, 76, 64
     253, 185, 51
@@ -392,9 +376,6 @@ void Game::initColorArray() {
  * 游戏变量初始化
  */
 void Game::initData() {
-    
-    // 判断游戏模式
-    gameType = GAME_UNLIMITED;
     
     // 游戏时间
     timeCount = gameType == GAME_TIMER ? maxSeconds : 0;
@@ -428,17 +409,8 @@ void Game::addUI() {
     // 开场背景音乐
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music_game_bg.mp3", true);
     
-    //ParticleSystemQuad *particle = ParticleSystemQuad::create("particle_bg.plist");
-    //particle->setPosition(-maxW,maxH);
-    //addChild(particle);
-    
-    //particle_touch = ParticleSystemQuad::create("particle_touch.plist");
-    //particle_touch->setVisible(false);
-    //particle_touch->setPosition(Vec2::ZERO);
-    //addChild(particle_touch);
-    
     // drawnode
-    drawNode = DrawNode::create();//708090
+    drawNode = DrawNode::create();
     addChild(drawNode);
     
     // 背景层
@@ -446,95 +418,109 @@ void Game::addUI() {
     bglayer1->setIgnoreAnchorPointForPosition(false);
     bglayer1->setAnchorPoint(Vec2(0.5, 0.5));
     bglayer1->setPosition(Vec2(0, 0));
-    addChild(bglayer1, -1);
+    addChild(bglayer1, -100000);
     
     // UI层
     uilayer = LayerColor::create(Color4B(0, 0, 0, 0), ScreenWidth, ScreenHeight);
-    addChild(uilayer, 100000);
+    addChild(uilayer);
+    uilayer->setGlobalZOrder(100000);
+    // 云层
     auto menu_cloud = Sprite::create("menu_cloud.png");
     menu_cloud->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
-    uilayer->addChild(menu_cloud, 100000);
+    uilayer->addChild(menu_cloud);
     
     // left
     debuglabel = Label::create();
     debuglabel->setString("0");
     debuglabel->setAnchorPoint(Vec2(0, 1));
     debuglabel->setPosition(Vec2(5,ScreenHeight));
-    uilayer->addChild(debuglabel, 100000);
+    debuglabel->setGlobalZOrder(100000);
+    uilayer->addChild(debuglabel);
     
     label_weight = Label::create();
     label_weight->setString("weight");
     label_weight->setAnchorPoint(Vec2(0, 1));
     label_weight->setPosition(Vec2(5, ScreenHeight - debuglabel->getContentSize().height));
-    uilayer->addChild(label_weight,100000);
+    label_weight->setGlobalZOrder(100000);
+    uilayer->addChild(label_weight);
     
     label_scale = Label::create();
     label_scale->setString("scale");
     label_scale->setAnchorPoint(Vec2(0, 1));
     label_scale->setPosition(Vec2(5, ScreenHeight - label_scale->getContentSize().height*2));
-    uilayer->addChild(label_scale,100000);
+    label_scale->setGlobalZOrder(100000);
+    uilayer->addChild(label_scale);
     
     // center
     label_time = Label::create();
     label_time->setString("00:00");
     label_time->setAnchorPoint(Vec2(0.5, 1));
     label_time->setPosition(ScreenWidth/2, ScreenHeight);
-    uilayer->addChild(label_time,100000);
+    label_time->setGlobalZOrder(100000);
+    uilayer->addChild(label_time);
     
     // right
     label_ainum = Label::create();
     label_ainum->setString("ainum");
     label_ainum->setAnchorPoint(Vec2(0, 1));
     label_ainum->setPosition(Vec2(ScreenWidth/3*2,ScreenHeight));
-    uilayer->addChild(label_ainum,100000);
+    label_ainum->setGlobalZOrder(100000);
+    uilayer->addChild(label_ainum);
     
     label_basenum = Label::create();
     label_basenum->setString("basenum");
     label_basenum->setAnchorPoint(Vec2(0, 1));
     label_basenum->setPosition(Vec2(ScreenWidth/3*2,ScreenHeight - label_basenum->getContentSize().height));
-    uilayer->addChild(label_basenum,100000);
+    label_basenum->setGlobalZOrder(100000);
+    uilayer->addChild(label_basenum);
     
     label_demon = Label::create();
     label_demon->setString("demon");
     label_demon->setAnchorPoint(Vec2(0, 1));
     label_demon->setPosition(ScreenWidth/3*2,ScreenHeight - label_basenum->getContentSize().height*2);
-    uilayer->addChild(label_demon,100000);
+    label_demon->setGlobalZOrder(100000);
+    uilayer->addChild(label_demon);
     
     // 绘制屏幕中心
     auto centerLabel = Label::create();
     centerLabel->setString("+");
     centerLabel->setTextColor(Color4B(255, 255, 255, 100));
     centerLabel->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
-    uilayer->addChild(centerLabel,-1);
+    uilayer->addChild(centerLabel);
+    centerLabel->setGlobalZOrder(100000);
     
     // 按钮菜单
     // 1.返回按钮
     auto item_back = MenuItemImage::create("button_back.jpg", "button_back.jpg", CC_CALLBACK_1(Game::back, this));
     item_back->setPosition(Vec2(VisiableSize.width - item_back->getContentSize().width/2, VisiableSize.height - item_back->getContentSize().height/2));
+    //item_back->setGlobalZOrder(100000);
+    item_back->setLocalZOrder(100000);
     
     // 2.加速按钮
     auto item_dash = MenuItemImage::create("button_dash_normal.jpg", "button_dash_pressed.jpg", CC_CALLBACK_1(Game::dash, this));
     item_dash->setAnchorPoint(Vec2(1,0));
     item_dash->setPosition(Vec2(VisiableSize.width, 20));
+    item_dash->setGlobalZOrder(100000);
     // 3.发射按钮
     auto item_shoot = MenuItemImage::create("button_shoot_normal.jpg", "button_shoot_pressed.jpg", CC_CALLBACK_1(Game::shoot, this));
     item_shoot->setAnchorPoint(Vec2(1,0));
     item_shoot->setPosition(Vec2(VisiableSize.width - item_dash->getContentSize().width -10, 20));
-    
+    item_shoot->setGlobalZOrder(100000);
     // 4.缩放按钮
     auto item_scaleup = MenuItemImage::create("button_add.jpg", "button_add.jpg", CC_CALLBACK_1(Game::scaleup, this));
     item_scaleup->setAnchorPoint(Vec2(0, 0));
     item_scaleup->setPosition(Vec2(0, 0));
-    
+    item_scaleup->setGlobalZOrder(100000);
     auto item_scaledown = MenuItemImage::create("button_sub.jpg", "button_add.jpg", CC_CALLBACK_1(Game::scaledown, this));
     item_scaledown->setAnchorPoint(Vec2(0, 0));
     item_scaledown->setPosition(Vec2(0, item_scaledown->getContentSize().height));
-    
+    item_scaledown->setGlobalZOrder(100000);
     // 按钮菜单
     menu = Menu::create(item_back, item_dash, item_shoot, item_scaleup, item_scaledown, NULL);
     menu->setOpacity(200);
     menu->setPosition(Vec2::ZERO);
-    uilayer->addChild(menu,100000);
+    menu->setGlobalZOrder(100000);
+    uilayer->addChild(menu);
     
 }
 
@@ -750,7 +736,7 @@ void Game::playerReactive() {
 
 void Game::reStartGame(Ref* pSender){
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
-    Director::getInstance()->replaceScene(TransitionFade::create(0.5, Game::createScene()));
+    Director::getInstance()->replaceScene(TransitionFade::create(0.5, Game::createScene(gameType)));
 }
 
 #pragma mark -触屏事件
