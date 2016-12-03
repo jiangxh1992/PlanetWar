@@ -257,7 +257,7 @@ void Game::gameOver() {
     gameover_layer->addChild(content_layer,100001);
     
     Label *gameover = Label::create();
-    gameover->setString("YOU LOSE!");
+    gameover->setString("GAME OVER!");
     gameover->setSystemFontName(FontPlanet);
     gameover->setSystemFontSize(15);
     gameover->setAnchorPoint(Vec2(0.5, 1));
@@ -633,8 +633,8 @@ void Game::createBaseBallTimer(float delta) {
     }
     
     // Demon
-    if (DemonArray.size() > 5) return;
-    if (random < 0.1) {
+    if (DemonArray.size() > 4) return;
+    if (random < 0.4) {
         createBallFactory(BALL_DEMON, 1);
     }
 }

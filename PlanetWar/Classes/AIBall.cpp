@@ -123,17 +123,22 @@ void AIBall::thisUpdate(float delta) {
     setPosition(position);
     
     // 2.检测边界
-    if(position.x >= maxW-radius || position.x <= -(maxW-radius)) {
+    if(position.x >= maxW || position.x <= -(maxW)) {
         position -= direction * speed;
         direction.x = -direction.x;
         direction.y = CCRANDOM_0_1();
         direction.normalize();
-    }else if(position.y >= maxH-radius || position.y <= -(maxH-radius)) {
+    }else if(position.y >= maxH || position.y <= -(maxH)) {
         position -= direction * speed;
         direction.y = -direction.y;
         direction.x = CCRANDOM_0_1();
         direction.normalize();
     }
+    // 矫正
+    if(position.x > maxW) position.x = maxW-1;
+    if(position.x < -maxW) position.x = -maxW+1;
+    if(position.y > maxH) position.y = maxH-1;
+    if(position.y < -maxH) position.y = -maxH+1;
 
 }
 
