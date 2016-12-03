@@ -9,6 +9,7 @@
 #include "PlayerBall.h"
 #include "Game.h"
 USING_NS_CC;
+#define maxSpeedUp 1000
 
 PlayerBall* PlayerBall::create() {
 	PlayerBall *sprite = new PlayerBall();
@@ -53,6 +54,16 @@ void PlayerBall::update(float time) {
  * 定时更新
  */
 void PlayerBall::thisUpdate(float delta) {
+    // 加速
+    if (isSpeedUp) {
+        speedUpCount++;
+        // 加速结束
+        if (speedUpCount>maxSpeedUp) {
+            isSpeedUp = false;
+            speedUpCount = 0;
+            Game::sharedGame()->dashFinished();
+        }
+    }
     
     // 0.延迟检测
     speedInterval = 1+(double)weight/(double)minWeight/20;
@@ -119,10 +130,7 @@ void PlayerBall::sharedUpdate(float delta) {
  */
 void PlayerBall::speedUp() {
     isSpeedUp = true;
-}
-
-void PlayerBall::endSpeedUp() {
-    isSpeedUp = false;
+    speedUpCount = 0;
 }
 
 /**

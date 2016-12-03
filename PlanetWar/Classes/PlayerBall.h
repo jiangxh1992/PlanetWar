@@ -29,6 +29,7 @@ protected:
     
     // 加速
     bool isSpeedUp = false;
+    int speedUpCount = 0;
     
     // 专用更新
     virtual void thisUpdate(float delta);
@@ -37,7 +38,6 @@ protected:
 /** 对外接口 **/
 public:
     void speedUp();
-    void endSpeedUp();
     void setDir(const cocos2d::Vec2 newDir) {direction = newDir;};
 	
 };

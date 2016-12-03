@@ -56,6 +56,7 @@ private:
     int kill = 0;                     // 杀死demon数量
     GAME_TYPE gameType = GAME_TIMER;  // 游戏模式（默认倒计时模式）
     float gameLevel = 1.0;            // 游戏难度
+    float dashCount = 100;              // 加速功能恢复计时
     
     // UI
     Menu *menu;          // 按钮菜单
@@ -66,12 +67,8 @@ private:
     Label *label_basenum;
     Label *label_demon;
     Label *label_time;
-    
+    ProgressTimer *dashTimer;
     DrawNode *drawNode;  // DrawNode
-    DrawNode *drawNodebg1;
-    DrawNode *drawNodebg2;
-    
-    ParticleSystemQuad *particle_touch;
     
     
     // 工具函数
@@ -109,7 +106,7 @@ private:
     /** 对外接口 **/
 public:
     
-    Color4F ColorArray[colorNum];            // 颜色库
+    Color4F ColorArray[colorNum];      // 颜色库
     bool isGameOver = false;
     int baseNum = maxBaseBallNum;      // baseball个数
     float scale;                       // 缩放参数
@@ -130,10 +127,10 @@ public:
     PlayerBall* getPlayer()const{ return player; }
     Scene* getScene()const{return curScene;}
     
-    // 杀死demon事件
-    void demonKilled(Demon *demon);
-    // 主角死亡事件
-    void playerKilled();
+    // 外部事件通知
+    void demonKilled(Demon *demon);        // 杀死demon事件
+    void playerKilled();                   // 主角死亡事件
+    void dashFinished();                   // 加速结束
     
 };
 

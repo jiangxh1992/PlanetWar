@@ -93,15 +93,13 @@ void MenuScene::addUI() {
     addChild(menu_cloud, 20);
     
     // 开始游戏按钮
-    item_startgame1 = MenuItemImage::create("btn_start_normal.png", "btn_start_pressed.png", CC_CALLBACK_1(MenuScene::startGameTimer, this));
+    item_startgame1 = MenuItemImage::create("btn_gametimer_normal.png", "btn_gametimer_pressed.png", CC_CALLBACK_1(MenuScene::startGameTimer, this));
     item_startgame1->setAnchorPoint(Vec2(1, 0.5));
-    item_startgame1->setTag(1);
-    item_startgame1->setPosition(Vec2(5, -20));
+    item_startgame1->setPosition(Vec2(-15, -20));
     
-    item_startgame2 = MenuItemImage::create("btn_start_normal.png", "btn_start_pressed.png", CC_CALLBACK_1(MenuScene::startGameUnlimited, this));
+    item_startgame2 = MenuItemImage::create("btn_gameunlimited_normal.png", "btn_gameunlimited_pressed.png", CC_CALLBACK_1(MenuScene::startGameUnlimited, this));
     item_startgame2->setAnchorPoint(Vec2(0, 0.5));
-    item_startgame2->setTag(2);
-    item_startgame2->setPosition(Vec2(-5, -20));
+    item_startgame2->setPosition(Vec2(15, -20));
     
     // 历史记录按钮
     item_history = MenuItemImage::create("btn_history_normal.png","btn_history_pressed.png", CC_CALLBACK_1(MenuScene::openHistory, this));

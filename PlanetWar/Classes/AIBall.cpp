@@ -71,6 +71,7 @@ void AIBall::commenInit() {
     label_tag = Label::create();
     label_tag->setString("😜智多星☺️");
     label_tag->setPosition(Vec2(0, radius+label_tag->getContentSize().height));
+    label_tag->setGlobalZOrder(-100000);
     addChild(label_tag);
     // drawnode
     drawNode = DrawNode::create();
@@ -164,7 +165,7 @@ void AIBall::sharedUpdate(float delta) {
         if (weight == aiball->getBallWeight()) continue; // 排除和自身吞并
         // 距离的平方
         double distance2 = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
-        if(distance2 >= pow(radius - aiball->radius, 2)*1.2) continue; // 还没有吞并
+        if(distance2 >= pow(radius - aiball->radius*0.8, 2)) continue; // 还没有吞并
             if (weight > aiball->getBallWeight()) {
                 // 当前AIBall吞并对方
                 updateWeight(aiball->getBallWeight());
@@ -189,7 +190,7 @@ void AIBall::sharedUpdate(float delta) {
     if(!Game::sharedGame()->getPlayer()->isVisible()) return;
     // AIBall与player的距离的平方
     double D2 = pow(Game::sharedGame()->getPlayer()->getPos().x -  position.x, 2) + pow(Game::sharedGame()->getPlayer()->getPos().y - position.y, 2);
-    if(D2 >= pow(radius - Game::sharedGame()->getPlayer()->radius, 2)*1.2) return; // 没有吞并
+    if(D2 >= pow(radius - Game::sharedGame()->getPlayer()->radius*0.8, 2)) return; // 没有吞并
     if(weight < Game::sharedGame()->getPlayer()->getBallWeight()) {
         // 被player吃掉
         Game::sharedGame()->getPlayer()->updateWeight(weight);
@@ -201,6 +202,20 @@ void AIBall::sharedUpdate(float delta) {
         eatAINum++;
         // 主角死亡,通知Game
         Game::sharedGame()->playerKilled();
+    }
+    
+    // 3.检测子弹碰撞
+    for (int i =0; i < Game::sharedGame()->bulletArray.size(); i++) {
+        Point p = Game::sharedGame()->bulletArray[i].getPos();
+        float r = Game::sharedGame()->bulletArray[i].getRadius();
+        double D2 = pow(p.x - position.x, 2.0) + pow(p.y - position.y, 2.0);
+        double R2 = pow((r + radius), 2.0);
+        if (D2 < R2) {
+            // 减血
+            updateWeight(-Game::sharedGame()->bulletArray[i].getPower());
+            // 销毁子弹
+            Game::sharedGame()->bulletArray.erase(Game::sharedGame()->bulletArray.begin() + i);
+        }
     }
     
 }

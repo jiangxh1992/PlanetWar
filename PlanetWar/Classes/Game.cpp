@@ -125,6 +125,12 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
 // 安帧更新
 void Game::update(float time) {
     
+    // 加速功能恢复
+    if (dashCount > 0) {
+        dashCount -= 0.2;
+        dashTimer->setPercentage(dashCount);
+    }
+    
     // left
     debuglabel->setString("interval:"+Convert2String(player->getSpeedInterval()));
     label_weight->setString("wieght:"+Convert2String(player->getBallWeight()));
@@ -501,6 +507,12 @@ void Game::addUI() {
     item_dash->setAnchorPoint(Vec2(1,0));
     item_dash->setPosition(Vec2(VisiableSize.width, 20));
     item_dash->setGlobalZOrder(100000);
+    dashTimer = ProgressTimer::create(Sprite::create("button_dash_process.jpg"));
+    dashTimer->setAnchorPoint(Vec2(0, 0));
+    dashTimer->setPosition(Vec2(0,0));
+    dashTimer->setPercentage(dashCount);
+    item_dash->addChild(dashTimer);
+    
     // 3.发射按钮
     auto item_shoot = MenuItemImage::create("button_shoot_normal.jpg", "button_shoot_pressed.jpg", CC_CALLBACK_1(Game::shoot, this));
     item_shoot->setAnchorPoint(Vec2(1,0));
@@ -667,12 +679,10 @@ void Game::back(cocos2d::Ref* pSender) {
  * 加速
  */
 void Game::dash(cocos2d::Ref *pSender) {
+    if(dashCount > 0) return;
+    dashTimer->setPercentage(100);
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_dash.mp3");
     player->speedUp();
-    DelayTime *delay = DelayTime::create(dashTime);
-    CallFunc *fun = CallFunc::create(CC_CALLBACK_0(PlayerBall::endSpeedUp, player));
-    Sequence *action = Sequence::create(delay,fun, NULL);
-    runAction(action);
 }
 
 void Game::shoot(cocos2d::Ref *pSender) {
@@ -737,6 +747,10 @@ void Game::playerReactive() {
 void Game::reStartGame(Ref* pSender){
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
     Director::getInstance()->replaceScene(TransitionFade::create(0.5, Game::createScene(gameType)));
+}
+
+void Game::dashFinished() {
+    dashCount = 100;
 }
 
 #pragma mark -触屏事件
