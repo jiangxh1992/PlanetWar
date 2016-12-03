@@ -93,16 +93,16 @@ void MenuScene::addUI() {
     addChild(menu_cloud, 20);
     
     // 开始游戏按钮
-    item_startgame1 = MenuItemImage::create("btn_gametimer_normal.png", "btn_gametimer_pressed.png", CC_CALLBACK_1(MenuScene::startGameTimer, this));
+    item_startgame1 = MenuItemImage::create("btn_gametimer_normal.png", "btn_gametimer_pressed.png", CC_CALLBACK_0(MenuScene::startGameTimer, this));
     item_startgame1->setAnchorPoint(Vec2(1, 0.5));
     item_startgame1->setPosition(Vec2(-15, -20));
     
-    item_startgame2 = MenuItemImage::create("btn_gameunlimited_normal.png", "btn_gameunlimited_pressed.png", CC_CALLBACK_1(MenuScene::startGameUnlimited, this));
+    item_startgame2 = MenuItemImage::create("btn_gameunlimited_normal.png", "btn_gameunlimited_pressed.png", CC_CALLBACK_0(MenuScene::startGameUnlimited, this));
     item_startgame2->setAnchorPoint(Vec2(0, 0.5));
     item_startgame2->setPosition(Vec2(15, -20));
     
     // 历史记录按钮
-    item_history = MenuItemImage::create("btn_history_normal.png","btn_history_pressed.png", CC_CALLBACK_1(MenuScene::openHistory, this));
+    item_history = MenuItemImage::create("btn_history_normal.png","btn_history_pressed.png", CC_CALLBACK_0(MenuScene::openHistory, this));
     item_history->setPosition(Vec2(0, -ScreenHeight/3));
     // 按钮菜单
     auto menu = Menu::create(item_startgame1, item_startgame2, item_history, NULL);
@@ -114,13 +114,7 @@ void MenuScene::addUI() {
 }
 
 void MenuScene::addHistoryUI() {
-    // 游戏数据提取
-    string name = "名字起个啥😄";     // 名字
-    int new_weight = 500;         // 体重
-    int new_demon = 30;                             // 杀死demon数量
-    int new_base = 599;           // 吞并baseball数量
-    int new_ai =  43;              // 吞并AIBall数量
-    
+
     // 对话框层
     history_layer_bg = LayerColor::create(Color4B(0, 0, 0, 200), ScreenWidth, ScreenHeight);
     history_layer_bg->setPosition(Vec2(0, 0));
@@ -155,16 +149,16 @@ void MenuScene::addHistoryUI() {
     content_layer->setPosition(Vec2(-80, 20));
     history_layer->addChild(content_layer,101);
     
-    Label *gameover = Label::create();
-    gameover->setString("WINNER!");
-    gameover->setSystemFontName(FontPlanet);
-    gameover->setSystemFontSize(15);
-    gameover->setAnchorPoint(Vec2(0.5, 1));
-    gameover->setPosition(contentW/2, contentH-5);
-    content_layer->addChild(gameover,101);
+    label_history = Label::create();
+    label_history->setString("Timer Mode Record");
+    label_history->setSystemFontName(FontPlanet);
+    label_history->setSystemFontSize(15);
+    label_history->setAnchorPoint(Vec2(0.5, 1));
+    label_history->setPosition(contentW/2, contentH-5);
+    content_layer->addChild(label_history,101);
     
-    Label *label_name = Label::create();
-    label_name->setString("Name:"+name);
+    label_name = Label::create();
+    label_name->setString("Name:");
     label_name->setSystemFontName(FontPlanet);
     label_name->setAnchorPoint(Vec2(0, 1));
     label_name->setPosition(marginLeft, contentH-marginTop);
@@ -172,38 +166,38 @@ void MenuScene::addHistoryUI() {
     
     int labelH = label_name->getContentSize().height+3;
     
-    Label *label_weight = Label::create();
-    label_weight->setString("Weight:"+Convert2String(new_weight));
+    label_weight = Label::create();
+    label_weight->setString("Weight:"+Convert2String(0));
     label_weight->setSystemFontName(FontPlanet);
     label_weight->setAnchorPoint(Vec2(0, 1));
     label_weight->setPosition(marginLeft, contentH-marginTop-labelH);
     content_layer->addChild(label_weight,101);
-    Label *label_demon = Label::create();
-    label_demon->setString("Kill Demon:"+Convert2String(new_demon));
+    label_demon = Label::create();
+    label_demon->setString("Kill Demon:"+Convert2String(0));
     label_demon->setSystemFontName(FontPlanet);
     label_demon->setAnchorPoint(Vec2(0, 1));
     label_demon->setPosition(marginLeft, contentH-marginTop-labelH*2);
     content_layer->addChild(label_demon,101);
-    Label *label_base = Label::create();
-    label_base->setString("Eat BaseBall:"+Convert2String(new_base));
+    label_base = Label::create();
+    label_base->setString("Eat BaseBall:"+Convert2String(0));
     label_base->setSystemFontName(FontPlanet);
     label_base->setAnchorPoint(Vec2(0, 1));
     label_base->setPosition(marginLeft, contentH-marginTop-labelH*3);
     content_layer->addChild(label_base,101);
-    Label *label_ai = Label::create();
-    label_ai->setString("Eat AIBall:"+Convert2String(new_ai));
+    label_ai = Label::create();
+    label_ai->setString("Eat AIBall:"+Convert2String(0));
     label_ai->setSystemFontName(FontPlanet);
     label_ai->setAnchorPoint(Vec2(0, 1));
     label_ai->setPosition(marginLeft, contentH-marginTop-labelH*4);
     content_layer->addChild(label_ai,101);
     
     // 按钮
-    auto item_limited = MenuItemImage::create("btn_limited_normal.png", "btn_limited_pressed.png", CC_CALLBACK_1(MenuScene::showLimitedRecord, this));
+    auto item_limited = MenuItemImage::create("btn_limited_normal.png", "btn_limited_pressed.png", CC_CALLBACK_0(MenuScene::showLimitedRecord, this));
     item_limited->setPosition(Vec2(0, 0));
-    auto item_unlimited = MenuItemImage::create("btn_unlimited_normal.png", "btn_pressed_normal.png", CC_CALLBACK_1(MenuScene::showUnLimitedRecord, this));
+    auto item_unlimited = MenuItemImage::create("btn_unlimited_normal.png", "btn_pressed_normal.png", CC_CALLBACK_0(MenuScene::showUnLimitedRecord, this));
     item_unlimited->setPosition(Vec2(130, 0));
     
-    auto item_back = MenuItemImage::create("btn_back_normal.png", "btn_back_pressed.png", CC_CALLBACK_1(MenuScene::hideHistory, this));
+    auto item_back = MenuItemImage::create("btn_back_normal.png", "btn_back_pressed.png", CC_CALLBACK_0(MenuScene::hideHistory, this));
     item_back->setPosition(Vec2(-150, -10));
     
     // 按钮菜单
@@ -216,11 +210,11 @@ void MenuScene::addHistoryUI() {
 /**
  * 跳转到游戏场景
  */
-void MenuScene::startGameTimer(cocos2d::Ref* pSender) {
+void MenuScene::startGameTimer() {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
     Director::getInstance()->replaceScene(TransitionFade::create(0.5, Game::createScene(GAME_TIMER)));
 }
-void MenuScene::startGameUnlimited(cocos2d::Ref *pSender) {
+void MenuScene::startGameUnlimited() {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
     Director::getInstance()->replaceScene(TransitionFade::create(0.5, Game::createScene(GAME_UNLIMITED)));
 }
@@ -228,18 +222,43 @@ void MenuScene::startGameUnlimited(cocos2d::Ref *pSender) {
 /**
  * 历史记录
  */
-void MenuScene::openHistory(cocos2d::Ref *pSender) {
+void MenuScene::openHistory() {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
+    // 显示对话框
     history_layer_bg->setVisible(true);
+    // 默认显示计时模式成绩
+    showLimitedRecord();
 }
 
-void MenuScene::showLimitedRecord(cocos2d::Ref *pSender) {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
+void MenuScene::updateHistory(__String new_name, int new_weight, int new_baseball, int new_aiball, int new_demon) {
+    label_name->setString("Name:"+new_name._string);
+    label_weight->setString("Weight:"+Convert2String(new_weight));
+    label_base->setString("Eat BaseBall:"+Convert2String(new_baseball));
+    label_ai->setString("Eat AIBall:"+Convert2String(new_aiball));
+    label_demon->setString("Kill Demon:"+Convert2String(new_demon));
 }
-void MenuScene::showUnLimitedRecord(cocos2d::Ref *pSender) {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
+
+void MenuScene::showLimitedRecord() {
+    label_history->setString("Timer Mode Record:");
+    // 取出timer数据
+    __String name = UserDefault::getInstance()->getStringForKey("timer_name", "unknown");
+    int weight = UserDefault::getInstance()->getIntegerForKey("timer_weight", -1);
+    int demon = UserDefault::getInstance()->getIntegerForKey("timer_demon", -1);
+    int baseball = UserDefault::getInstance()->getIntegerForKey("timer_baseball",-1);
+    int aiball = UserDefault::getInstance()->getIntegerForKey("timer_aiball",-1);
+    updateHistory(name, weight, baseball, aiball, demon);
 }
-void MenuScene::hideHistory(cocos2d::Ref *pSender) {
+void MenuScene::showUnLimitedRecord() {
+    label_history->setString("Unlimited Mode Record:");
+    // 取出unlimited数据
+    __String name = UserDefault::getInstance()->getStringForKey("unlimited_name", "unknown");
+    int weight = UserDefault::getInstance()->getIntegerForKey("unlimited_weight", -1);
+    int demon = UserDefault::getInstance()->getIntegerForKey("unlimited_demon", -1);
+    int baseball = UserDefault::getInstance()->getIntegerForKey("tunlimited_baseball",-1);
+    int aiball = UserDefault::getInstance()->getIntegerForKey("unlimited_aiball",-1);
+    updateHistory(name, weight, baseball, aiball, demon);
+}
+void MenuScene::hideHistory() {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
     history_layer_bg->setVisible(false);
 }

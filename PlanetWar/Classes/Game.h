@@ -28,11 +28,12 @@ class Game : public Layer {
     
     /** 重写函数 **/
 public:
-    // 创建类对象
+    // 创建游戏场景
     static Scene* createScene(GAME_TYPE type);
+    // 创建游戏对象
+    static Game* create(GAME_TYPE type);
     // 对象初始化
     virtual bool init();
-    CREATE_FUNC(Game);
     // 安帧更新
     virtual void update(float time);
     // 图形绘制函数
@@ -86,6 +87,7 @@ private:
     void gametimer(float delta);           // 计时器
     void scaleScreen(float scale);         // 屏幕缩放(0<scale<1)
     void gameOver();                       // 游戏结束
+    void updateData(string new_name, int new_weight, int new_baseball, int new_aiball, int new_demon);// 数据持久化
     
     // 事件函数
     void back(Ref* pSender);

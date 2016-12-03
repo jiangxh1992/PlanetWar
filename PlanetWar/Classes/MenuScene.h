@@ -4,6 +4,9 @@
 //
 //  Created by Xinhou Jiang on 8/11/16.
 //
+//  数据key:
+//  1.timer_name, timer_weight, timer_baseball, timer_aiball, timer_demon
+//  2.unlimited_name,unlimited_weight, unlimited_baseball, unlimited_aiball, unlimited_demon
 //
 
 #ifndef __PlanetWar__MenuScene__ 
@@ -22,6 +25,8 @@ public:
     // 场景退出
     void onExit();
     
+    float scaleCount = 0;
+    
     // 动态UI引用
     Sprite *label_title;
     MenuItemImage *item_startgame1;
@@ -29,19 +34,27 @@ public:
     MenuItemImage *item_history;
     Sprite *menu_bg;
     LayerColor *history_layer_bg;
-    float scaleCount = 0;
+    
+    // History UI引用
+    Label *label_history;
+    Label *label_name;
+    Label *label_weight;
+    Label *label_demon;
+    Label *label_base;
+    Label *label_ai;
     
     // 添加UI
     void addUI();
     void addHistoryUI();
     
     // 事件函数
-    void startGameTimer(Ref* pSender);
-    void startGameUnlimited(Ref* pSender);
-    void openHistory(Ref* pSender);
-    void showLimitedRecord(Ref* pSender);
-    void showUnLimitedRecord(Ref* pSender);
-    void hideHistory(Ref* pSender);
+    void startGameTimer();
+    void startGameUnlimited();
+    void openHistory();
+    void showLimitedRecord();
+    void showUnLimitedRecord();
+    void hideHistory();
+    void updateHistory(__String new_name, int new_weight, int new_baseball, int new_aiball, int new_demon);
 };
 
 #endif /* defined(__PlanetWar__MenuScene__) */

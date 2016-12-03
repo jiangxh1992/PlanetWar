@@ -101,6 +101,7 @@ void AIBall::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, u
  * 安帧更新
  */
 void AIBall::update(float time) {
+    checkExplode();
     sharedUpdate(time);
 }
 
@@ -250,6 +251,17 @@ void AIBall::scale(float scale) {
 
 void AIBall::setLabel(__String label) {
     label_tag->setString(label._string);
+}
+
+void AIBall::checkExplode() {
+    if (radius > ScreenHeight/4) {
+        // 爆炸粒子
+        ParticleSystemQuad *explode = ParticleSystemQuad::create("particle_explode.plist");
+        explode->setPosition(position);
+        Game::sharedGame()->addChild(explode);
+        Game::sharedGame()->AIBallArray.eraseObject(this);
+        Game::sharedGame()->removeChild(this);
+    }
 }
 
 /**

@@ -50,6 +50,8 @@ protected:
     virtual void thisUpdate(float delta);
     // 碰撞检测
     virtual void sharedUpdate(float delta);
+    // AIball太大会自爆
+    void checkExplode();
     
 /** 对外接口 **/
 public:

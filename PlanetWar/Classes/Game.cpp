@@ -29,11 +29,21 @@ string Convert2String(const T &value)
  */
 Scene* Game::createScene(GAME_TYPE type) {
     auto scene = Scene::create();
-    auto layer = Game::create();
-    layer->gameType = type;
+    auto layer = Game::create(type);
     layer->curScene = scene;
     scene->addChild(layer);
     return scene;
+}
+
+Game* Game::create(GAME_TYPE type) {
+    Game *game = new Game;
+    game->gameType = type;
+    if (game && game->init()) {
+        game->autorelease();
+        return game;
+    }
+    CC_SAFE_DELETE(game);
+    return NULL;
 }
 
 /** 游戏场景单例 **/
@@ -220,12 +230,13 @@ void Game::gameOver() {
     // 游戏结束音效
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music_gameover.mp3", true);
     
-    // 2.游戏数据提取整理
+    // 2.游戏数据提取整理更新
     string name = player->label_tag->getString();     // 名字
     int new_weight = player->getBallWeight();         // 体重
     int new_demon = kill;                             // 杀死demon数量
-    int new_base = player->getEatBaseNum();           // 吞并baseball数量
-    int new_ai =  player->getEatAINum();              // 吞并AIBall数量
+    int new_baseball = player->getEatBaseNum();           // 吞并baseball数量
+    int new_aiball =  player->getEatAINum();              // 吞并AIBall数量
+    updateData(name, new_weight, new_baseball, new_aiball, new_demon);
     
     // 3.显示游戏结束对话框
     // 对话框层
@@ -286,13 +297,13 @@ void Game::gameOver() {
     label_demon->setPosition(marginLeft, contentH-marginTop-labelH*2);
     content_layer->addChild(label_demon,100001);
     Label *label_base = Label::create();
-    label_base->setString("Eat BaseBall:"+Convert2String(new_base));
+    label_base->setString("Eat BaseBall:"+Convert2String(new_baseball));
     label_base->setSystemFontName(FontPlanet);
     label_base->setAnchorPoint(Vec2(0, 1));
     label_base->setPosition(marginLeft, contentH-marginTop-labelH*3);
     content_layer->addChild(label_base,100001);
     Label *label_ai = Label::create();
-    label_ai->setString("Eat AIBall:"+Convert2String(new_ai));
+    label_ai->setString("Eat AIBall:"+Convert2String(new_aiball));
     label_ai->setSystemFontName(FontPlanet);
     label_ai->setAnchorPoint(Vec2(0, 1));
     label_ai->setPosition(marginLeft, contentH-marginTop-labelH*4);
@@ -384,7 +395,7 @@ void Game::initColorArray() {
 void Game::initData() {
     
     // 游戏时间
-    timeCount = gameType == GAME_TIMER ? maxSeconds : 0;
+    timeCount = (gameType == GAME_TIMER) ? maxSeconds : 0;
     // baball个数
     baseNum = maxBaseBallNum;
     
@@ -664,6 +675,39 @@ void Game::scaleScreen(float scale) {
     // 缩放player
     player->scale(scale);
     
+}
+
+void Game::updateData(string name, int new_weight, int new_baseball, int new_aiball, int new_demon) {
+    if (gameType == GAME_TIMER) {
+        // 取出旧数据
+        int weight = UserDefault::getInstance()->getIntegerForKey("timer_weight", -1);
+        int demon = UserDefault::getInstance()->getIntegerForKey("timer_demon", -1);
+        int baseball = UserDefault::getInstance()->getIntegerForKey("timer_baseball",-1);
+        int aiball = UserDefault::getInstance()->getIntegerForKey("timer_aiball",-1);
+        // 存入新记录数据
+        if (new_weight > weight) {
+            UserDefault::getInstance()->setStringForKey("timer_name", name);
+            UserDefault::getInstance()->setIntegerForKey("timer_weight", new_weight);
+            UserDefault::getInstance()->setIntegerForKey("timer_demon", new_demon);
+            UserDefault::getInstance()->setIntegerForKey("timer_baseball", new_baseball);
+            UserDefault::getInstance()->setIntegerForKey("timer_aiball", new_aiball);
+        }
+    }
+    else if (gameType == GAME_UNLIMITED) {
+        // 取出旧数据
+        int weight = UserDefault::getInstance()->getIntegerForKey("unlimited_weight", -1);
+        int demon = UserDefault::getInstance()->getIntegerForKey("unlimited_demon", -1);
+        int baseball = UserDefault::getInstance()->getIntegerForKey("unlimited_baseball",-1);
+        int aiball = UserDefault::getInstance()->getIntegerForKey("unlimited_aiball",-1);
+        // 存入新记录数据
+        if (new_weight > weight) {
+            UserDefault::getInstance()->setStringForKey("unlimited_name", name);
+            UserDefault::getInstance()->setIntegerForKey("unlimited_weight", new_weight);
+            UserDefault::getInstance()->setIntegerForKey("unlimited_demon", new_demon);
+            UserDefault::getInstance()->setIntegerForKey("unlimited_baseball", new_baseball);
+            UserDefault::getInstance()->setIntegerForKey("unlimited_aiball", new_aiball);
+        }
+    }
 }
 
 # pragma mark -事件函数
