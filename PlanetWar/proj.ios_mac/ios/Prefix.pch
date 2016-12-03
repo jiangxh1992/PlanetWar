@@ -22,3 +22,6 @@
 
 // 可见区域尺寸
 #define VisiableSize Director::getInstance()->getVisibleSize()
+
+// 字体
+#define FontPlanet "MarkerFelt-Thin"//MarkerFelt-Thin

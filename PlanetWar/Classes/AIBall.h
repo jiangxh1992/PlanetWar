@@ -44,8 +44,6 @@ protected:
     int eatAINum = 0;
     int eatBaseNum = 0;
     
-    cocos2d::Label *label_tag;
-    
     // 通用初始化
     virtual void commenInit();
     // 移动
@@ -55,6 +53,8 @@ protected:
     
 /** 对外接口 **/
 public:
+    
+    cocos2d::Label *label_tag;
     
     virtual void updateWeight(int addedWeight);
     void scaleSpeed(float scale){speed *= scale;};

@@ -76,6 +76,8 @@ bool Game::init() {
     // 开启AI干预
     this->schedule(schedule_selector(Game::gameObserver), 0.5);
     
+    gameOver();
+    
     return true;
 }
 
@@ -210,22 +212,96 @@ void Game::gameOver() {
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music_gameover.mp3", true);
     
     // 2.游戏数据提取整理
+    string name = player->label_tag->getString();     // 名字
     int new_weight = player->getBallWeight();         // 体重
     int new_demon = kill;                             // 杀死demon数量
     int new_base = baseNum;                           // 吞并baseball数量
     int new_ai =  player->getEatAINum();              // 吞并AIBall数量
     
     // 3.显示游戏结束对话框
-    LayerColor *gameover_layer = LayerColor::create(Color4B(0, 0, 0, 50), ScreenWidth, ScreenHeight);
-    gameover_layer->setPosition(Vec2(0, 0));
+    // 对话框层
+    LayerColor *gameover_layer = LayerColor::create(Color4B(0, 0, 0, 100), ScreenWidth, ScreenHeight);
+    gameover_layer->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
     uilayer->addChild(gameover_layer, 100001);
     
+    // 对话框背景
+    Sprite *dialog_box = Sprite::create("dialog_box.png");
+    dialog_box->setAnchorPoint(Vec2(0.5, 0.5));
+    dialog_box->setPosition(Vec2(0, 0));
+    gameover_layer->addChild(dialog_box,100001);
+    
+    // 卡通人物
+    Sprite *character = Sprite::create("character_lose.png");
+    character->setAnchorPoint(Vec2(1, 0.5));
+    character->setPosition(Vec2(-100, 50));
+    gameover_layer->addChild(character,100001);
+    
+    // 内容背景
+    int contentW = ScreenWidth/2-20;
+    int contentH = ScreenHeight/2-20;
+    int marginTop = 40;
+    int marginLeft = 30;
+    LayerColor *content_layer = LayerColor::create(Color4B(255, 255, 255, 100), contentW, contentH);
+    content_layer->setIgnoreAnchorPointForPosition(false);
+    content_layer->setAnchorPoint(Vec2(0, 0.5));
+    content_layer->setPosition(Vec2(-80, 20));
+    gameover_layer->addChild(content_layer,100001);
+    
     Label *gameover = Label::create();
-    gameover->setString("GAME OVER!");
-    gameover->setSystemFontSize(30);
-    gameover->setAnchorPoint(Vec2(0.5, 0.5));
-    gameover->setPosition(ScreenWidth/2, ScreenHeight/2);
-    gameover_layer->addChild(gameover);
+    gameover->setString("YOU LOSE!");
+    gameover->setSystemFontName(FontPlanet);
+    gameover->setSystemFontSize(15);
+    gameover->setAnchorPoint(Vec2(0.5, 1));
+    gameover->setPosition(contentW/2, contentH-5);
+    content_layer->addChild(gameover,100001);
+    
+    Label *label_name = Label::create();
+    label_name->setString("Name:"+name);
+    label_name->setSystemFontName(FontPlanet);
+    label_name->setAnchorPoint(Vec2(0, 1));
+    label_name->setPosition(marginLeft, contentH-marginTop);
+    content_layer->addChild(label_name,100001);
+    
+    int labelH = label_name->getContentSize().height+3;
+    
+    Label *label_weight = Label::create();
+    label_weight->setString("Weight:"+Convert2String(new_weight));
+    label_weight->setSystemFontName(FontPlanet);
+    label_weight->setAnchorPoint(Vec2(0, 1));
+    label_weight->setPosition(marginLeft, contentH-marginTop-labelH);
+    content_layer->addChild(label_weight,100001);
+    Label *label_demon = Label::create();
+    label_demon->setString("Kill Demon:"+Convert2String(new_demon));
+    label_demon->setSystemFontName(FontPlanet);
+    label_demon->setAnchorPoint(Vec2(0, 1));
+    label_demon->setPosition(marginLeft, contentH-marginTop-labelH*2);
+    content_layer->addChild(label_demon,100001);
+    Label *label_base = Label::create();
+    label_base->setString("Eat BaseBall:"+Convert2String(new_base));
+    label_base->setSystemFontName(FontPlanet);
+    label_base->setAnchorPoint(Vec2(0, 1));
+    label_base->setPosition(marginLeft, contentH-marginTop-labelH*3);
+    content_layer->addChild(label_base,100001);
+    Label *label_ai = Label::create();
+    label_ai->setString("Eat AIBall:"+Convert2String(new_ai));
+    label_ai->setSystemFontName(FontPlanet);
+    label_ai->setAnchorPoint(Vec2(0, 1));
+    label_ai->setPosition(marginLeft, contentH-marginTop-labelH*4);
+    content_layer->addChild(label_ai,100001);
+    
+    // 按钮
+    auto item_continue = MenuItemImage::create("btn_continue_normal.png", "btn_continue_pressed.png", CC_CALLBACK_1(Game::scaledown, this));
+    item_continue->setAnchorPoint(Vec2(1, 1));
+    item_continue->setPosition(Vec2(-10, 0));
+    auto item_back = MenuItemImage::create("btn_menu_normal.png", "btn_menu_pressed.png", CC_CALLBACK_1(Game::back, this));
+    item_back->setAnchorPoint(Vec2(0, 1));
+    item_back->setPosition(Vec2(10, 0));
+    
+    // 按钮菜单
+    auto menu = Menu::create(item_continue, item_back,NULL);
+    menu->setOpacity(200);
+    menu->setPosition(Vec2(0, -contentH/2));
+    gameover_layer->addChild(menu,100001);
     
 }
 
