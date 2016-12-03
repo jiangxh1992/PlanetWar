@@ -96,7 +96,8 @@ private:
     void shoot(Ref* pSender);
     void scaleup(Ref* pSender);
     void scaledown(Ref* pSender);
-    void playerReactive();
+    void playerReactive();                 // player复活
+    void reStartGame(Ref* pSender);      // 重新游戏
     
     // 注册屏幕触摸事件
     void addTouchListener();
@@ -108,7 +109,7 @@ private:
     /** 对外接口 **/
 public:
     
-    Color4F ColorArray[10];            // 颜色库
+    Color4F ColorArray[colorNum];            // 颜色库
     bool isGameOver = false;
     int baseNum = maxBaseBallNum;      // baseball个数
     float scale;                       // 缩放参数

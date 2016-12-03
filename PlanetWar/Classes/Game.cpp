@@ -76,8 +76,6 @@ bool Game::init() {
     // 开启AI干预
     this->schedule(schedule_selector(Game::gameObserver), 0.5);
     
-    gameOver();
-    
     return true;
 }
 
@@ -215,7 +213,7 @@ void Game::gameOver() {
     string name = player->label_tag->getString();     // 名字
     int new_weight = player->getBallWeight();         // 体重
     int new_demon = kill;                             // 杀死demon数量
-    int new_base = baseNum;                           // 吞并baseball数量
+    int new_base = player->getEatBaseNum();           // 吞并baseball数量
     int new_ai =  player->getEatAINum();              // 吞并AIBall数量
     
     // 3.显示游戏结束对话框
@@ -290,7 +288,7 @@ void Game::gameOver() {
     content_layer->addChild(label_ai,100001);
     
     // 按钮
-    auto item_continue = MenuItemImage::create("btn_continue_normal.png", "btn_continue_pressed.png", CC_CALLBACK_1(Game::scaledown, this));
+    auto item_continue = MenuItemImage::create("btn_continue_normal.png", "btn_continue_pressed.png", CC_CALLBACK_1(Game::reStartGame, this));
     item_continue->setAnchorPoint(Vec2(1, 1));
     item_continue->setPosition(Vec2(-10, 0));
     auto item_back = MenuItemImage::create("btn_menu_normal.png", "btn_menu_pressed.png", CC_CALLBACK_1(Game::back, this));
@@ -342,6 +340,26 @@ void Game::initColorArray() {
     ColorArray[8] = convert2F(Color4B(245, 173, 88, 1));
     ColorArray[9] = convert2F(Color4B(255, 70, 144, 1));
     ColorArray[10] = convert2F(Color4B(91, 212, 81, 1));
+    
+    ColorArray[11] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[12] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[13] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[14] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[15] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[16] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[17] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[18] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[19] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[20] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[21] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[22] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[23] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[24] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[25] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[26] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[27] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[28] = convert2F(Color4B(91, 212, 81, 1));
+    ColorArray[29] = convert2F(Color4B(91, 212, 81, 1));
     /*
     242, 83, 80
     166, 214, 76
@@ -433,6 +451,9 @@ void Game::addUI() {
     // UI层
     uilayer = LayerColor::create(Color4B(0, 0, 0, 0), ScreenWidth, ScreenHeight);
     addChild(uilayer, 100000);
+    auto menu_cloud = Sprite::create("menu_cloud.png");
+    menu_cloud->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
+    uilayer->addChild(menu_cloud, 100000);
     
     // left
     debuglabel = Label::create();
@@ -725,6 +746,11 @@ void Game::playerReactive() {
     player->updateWeight(minWeight);
     player->setVisible(true);
     player->setIsDraw(true);
+}
+
+void Game::reStartGame(Ref* pSender){
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");
+    Director::getInstance()->replaceScene(TransitionFade::create(0.5, Game::createScene()));
 }
 
 #pragma mark -触屏事件

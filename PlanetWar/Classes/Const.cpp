@@ -35,4 +35,4 @@ const int maxSpeed = 1;
 // 游戏时间
 const int maxSeconds = 5*60;
 // 颜色个数
-const int colorNum = 10;
+//const int colorNum = 30;

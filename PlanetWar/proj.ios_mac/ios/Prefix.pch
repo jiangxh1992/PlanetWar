@@ -25,3 +25,5 @@
 
 // 字体
 #define FontPlanet "MarkerFelt-Thin"//MarkerFelt-Thin
+
+#define colorNum 30
