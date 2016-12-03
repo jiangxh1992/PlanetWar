@@ -123,6 +123,31 @@ void PlayerBall::sharedUpdate(float delta) {
             Game::sharedGame()->baseNum --;
         }
     }
+    
+    // 回收池
+    Vector<AIBall*> autoreleasepool = Vector<AIBall*>();
+    // 3.检测吞并AIBall
+    for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
+        AIBall *aiball = *it;
+        if (weight < aiball->getBallWeight()) continue; // 排除比自己大的
+        // 距离的平方
+        double distance2 = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
+        // 吞并距离
+        float minD = radius-aiball->getR()*0.8;
+        if (distance2 < minD*minD) {
+            // 吞并AIBall
+            updateWeight(aiball->getBallWeight());
+            eatAINum++;
+            autoreleasepool.pushBack(aiball);
+        }
+    }
+    // 移除回收池内的死球
+    for (Vector<AIBall*>::const_iterator it = autoreleasepool.begin(); it != autoreleasepool.end(); it++) {
+        AIBall *ball = *it;
+        // 移除
+        Game::sharedGame()->AIBallArray.eraseObject(ball);
+        Game::sharedGame()->removeChild(ball);
+    }
 }
 
 /**

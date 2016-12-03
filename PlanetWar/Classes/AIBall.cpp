@@ -163,22 +163,21 @@ void AIBall::sharedUpdate(float delta) {
         }
     }
     
-    // 3.检测与player的吞并
-    if(!Game::sharedGame()->getPlayer()->isVisible()) return;
-    // AIBall与player的距离的平方
-    double D2 = pow(Game::sharedGame()->getPlayer()->getPos().x -  position.x, 2) + pow(Game::sharedGame()->getPlayer()->getPos().y - position.y, 2);
-    if(D2 >= pow(radius - Game::sharedGame()->getPlayer()->radius*0.7, 2)) return; // 没有吞并
-    if(weight < Game::sharedGame()->getPlayer()->getBallWeight()) {
-        // 被player吃掉
-        Game::sharedGame()->getPlayer()->updateWeight(weight);
-        Game::sharedGame()->getPlayer()->eatAINum++;
-        Game::sharedGame()->AIBallArray.eraseObject(this);
-        Game::sharedGame()->removeChild(this);
-    }else if (weight > Game::sharedGame()->getPlayer()->getBallWeight()) {
-        updateWeight(Game::sharedGame()->getPlayer()->getBallWeight());
-        eatAINum++;
-        // 主角死亡,通知Game
-        Game::sharedGame()->playerKilled();
+    // 3.检测吞并player
+    int playerWeight = Game::sharedGame()->getPlayer()->getBallWeight();
+    if(Game::sharedGame()->getPlayer()->isVisible() && weight > playerWeight) {
+        
+        // AIBall与player的距离的平方
+        double D2 = pow(Game::sharedGame()->getPlayer()->getPos().x -  position.x, 2) + pow(Game::sharedGame()->getPlayer()->getPos().y - position.y, 2);
+        // 吞并距离
+        float playerR = Game::sharedGame()->getPlayer()->getR();
+        float minD =  radius - playerR*0.8;
+        if (D2 < minD*minD) {
+            updateWeight(Game::sharedGame()->getPlayer()->getBallWeight());
+            eatAINum++;
+            // 主角死亡,通知Game
+            Game::sharedGame()->playerKilled();
+        }
     }
 
     // 回收池
@@ -186,21 +185,17 @@ void AIBall::sharedUpdate(float delta) {
     // 3.检测AIBall互相吞并
     for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
         AIBall *aiball = *it;
-        if (weight == aiball->getBallWeight()) continue; // 排除和自身吞并
+        if (weight <= aiball->getBallWeight()) continue; // 排除吞并自己以及比自己大的
         // 距离的平方
         double distance2 = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
-        if(distance2 >= pow(radius - aiball->radius*0.7, 2)) continue; // 还没有吞并
-            if (weight > aiball->getBallWeight()) {
-                // 当前AIBall吞并对方
-                updateWeight(aiball->getBallWeight());
-                eatAINum++;
-                autoreleasepool.pushBack(aiball);
-            }else {
-                // 对方吞并当前AIBall
-                aiball->updateWeight(weight);
-                aiball->eatAINum++;
-                autoreleasepool.pushBack(this);
-            }
+        // 吞并距离
+        float minD = radius-aiball->radius*0.8;
+        if (distance2 < minD*minD) {
+            // 当前AIBall吞并对方
+            updateWeight(aiball->getBallWeight());
+            eatAINum++;
+            autoreleasepool.pushBack(aiball);
+        }
     }
     // 移除回收池内的死球
     for (Vector<AIBall*>::const_iterator it = autoreleasepool.begin(); it != autoreleasepool.end(); it++) {
