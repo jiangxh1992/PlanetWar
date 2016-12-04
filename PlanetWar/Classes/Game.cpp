@@ -101,8 +101,8 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
         StaticBall ball = staticArray[i];
         if (!ball.isActive) continue;
         // 绘制多边形
-        //drawNode->drawPoly(ball.vertexs, ball.polyNum, true, ball.color);           // 空心
         drawNode->drawPolygon(ball.vertexs, ball.polyNum, ball.color, 1, ball.color); // 实心
+        drawNode->drawPoly(ball.vertexs, ball.polyNum, true, Color4F(1, 1, 1, 0.5+CCRANDOM_0_1()*0.5));             // 空心
         //drawNode->drawDot(staticArray[i].position, staticArray[i].radius, staticArray[i].color);
         // 深度
         drawNode->setGlobalZOrder(-100000);
