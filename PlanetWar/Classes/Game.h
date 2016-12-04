@@ -107,7 +107,7 @@ public:
     static Game* sharedGame();         // 游戏场景单例
     LayerColor *uilayer;               // UI layer
     LayerColor *bglayer1;              // 背景层1
-    LayerColor *bglayer2;              // 背景层2
+    Sprite *bglayer2;                  // 背景层2
     StaticBall *staticArray;           // staticball数组
     vector<PlayerBullet> bulletArray;  // 子弹数组
     Vector<AIBall*> AIBallArray;       // AIBall数组

@@ -62,6 +62,7 @@
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
+		D20892421DF4570D00451378 /* game_galaxy.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D20892411DF4570D00451378 /* game_galaxy.jpg */; };
 		D2092D431DEF177D001E5801 /* Const.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2092D411DEF177D001E5801 /* Const.cpp */; };
 		D2092D471DEF17B2001E5801 /* Demon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2092D451DEF17B2001E5801 /* Demon.cpp */; };
 		D22CDAF61DD1D721004AAADC /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D22CDAF41DD1D721004AAADC /* MenuScene.cpp */; };
@@ -215,6 +216,7 @@
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		D20892411DF4570D00451378 /* game_galaxy.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = game_galaxy.jpg; path = png/game_galaxy.jpg; sourceTree = "<group>"; };
 		D2092D411DEF177D001E5801 /* Const.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Const.cpp; sourceTree = "<group>"; };
 		D2092D421DEF177D001E5801 /* Const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Const.h; sourceTree = "<group>"; };
 		D2092D451DEF17B2001E5801 /* Demon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Demon.cpp; sourceTree = "<group>"; };
@@ -568,6 +570,7 @@
 		D2930AF91DF26900005A6A5B /* game */ = {
 			isa = PBXGroup;
 			children = (
+				D20892411DF4570D00451378 /* game_galaxy.jpg */,
 				D2930B081DF2BB8A005A6A5B /* button_dash_process.jpg */,
 				D2C8CDA91DF17784000A83F0 /* button_back.jpg */,
 				D2C8CD9F1DF17259000A83F0 /* button_dash_normal.jpg */,
@@ -730,6 +733,7 @@
 				D25348101DF267BE0000CB7A /* btn_back_normal.png in Resources */,
 				D2930AFD1DF28C65005A6A5B /* btn_history_pressed.png in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
+				D20892421DF4570D00451378 /* game_galaxy.jpg in Resources */,
 				D2C8CDA41DF17259000A83F0 /* button_dash_normal.jpg in Resources */,
 				D2C8CD3D1DF1628F000A83F0 /* particle_bg.plist in Resources */,
 				D2930AFC1DF28C65005A6A5B /* btn_history_normal.png in Resources */,

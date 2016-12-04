@@ -423,13 +423,17 @@ void Game::addUI() {
     addChild(drawNode);
     
     // 背景层
-    bglayer1 = LayerColor::create(Color4B(102, 102, 153, 100), maxW*3, maxH*3);
+    bglayer2 = Sprite::create("game_galaxy.jpg");
+    bglayer2->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
+    addChild(bglayer2);
+    bglayer2->setGlobalZOrder(-1000001);
+    
+    bglayer1 = LayerColor::create(Color4B(0, 0, 0, 200), maxW*3, maxH*3);//102, 102, 153
     bglayer1->setIgnoreAnchorPointForPosition(false);
     bglayer1->setAnchorPoint(Vec2(0.5, 0.5));
     bglayer1->setPosition(Vec2(0, 0));
-    addChild(bglayer1, -100000);
-    
-    addParticle("particle_bg.plist", Vec2(0, ScreenHeight));
+    addChild(bglayer1);
+    bglayer1->setGlobalZOrder(-1000000);
     
     // UI层
     uilayer = LayerColor::create(Color4B(0, 0, 0, 0), ScreenWidth, ScreenHeight);
@@ -442,6 +446,7 @@ void Game::addUI() {
     // 云层
     auto menu_cloud = Sprite::create("menu_cloud.png");
     menu_cloud->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
+    menu_cloud->setOpacity(150);
     uilayer->addChild(menu_cloud);
     
     // left

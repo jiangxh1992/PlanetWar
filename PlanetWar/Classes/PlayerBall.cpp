@@ -97,6 +97,8 @@ void PlayerBall::thisUpdate(float delta) {
     Game::sharedGame()->getScene()->getDefaultCamera()->setPosition(position);
     // uilayer跟随相机
     Game::sharedGame()->uilayer->setPosition(position - Vec2(ScreenWidth/2, ScreenHeight/2));
+    // 底层背景跟随但微迟缓偏移制作3d纵深效果
+    Game::sharedGame()->bglayer2->setPosition(position-direction*0.2);
     
     // 4.OVER_MAP -> RUN_NORMAL
     bool isNormal = position.x < maxW || position.x > -maxW || position.y < maxH || position.y > -maxH;
