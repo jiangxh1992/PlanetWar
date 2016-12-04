@@ -230,9 +230,10 @@ void MenuScene::openHistory() {
     showLimitedRecord();
 }
 
-void MenuScene::updateHistory(__String new_name, int new_weight, int new_baseball, int new_aiball, int new_demon) {
+void MenuScene::updateHistory(GAME_TYPE type, __String new_name, int new_weight, int new_baseball, int new_aiball, int new_demon) {
     label_name->setString("Name:"+new_name._string);
-    label_weight->setString("Weight:"+Convert2String(new_weight));
+    string score = type == GAME_TIMER ? "Weight:"+Convert2String(new_weight) : "Score:"+Convert2String(new_baseball + new_aiball*10 + new_demon*15);
+    label_weight->setString(score);
     label_base->setString("Eat BaseBall:"+Convert2String(new_baseball));
     label_ai->setString("Eat AIBall:"+Convert2String(new_aiball));
     label_demon->setString("Kill Demon:"+Convert2String(new_demon));
@@ -246,7 +247,7 @@ void MenuScene::showLimitedRecord() {
     int demon = UserDefault::getInstance()->getIntegerForKey("timer_demon", -1);
     int baseball = UserDefault::getInstance()->getIntegerForKey("timer_baseball",-1);
     int aiball = UserDefault::getInstance()->getIntegerForKey("timer_aiball",-1);
-    updateHistory(name, weight, baseball, aiball, demon);
+    updateHistory(GAME_TIMER, name, weight, baseball, aiball, demon);
 }
 void MenuScene::showUnLimitedRecord() {
     label_history->setString("Unlimited Mode Record:");
@@ -256,7 +257,7 @@ void MenuScene::showUnLimitedRecord() {
     int demon = UserDefault::getInstance()->getIntegerForKey("unlimited_demon", -1);
     int baseball = UserDefault::getInstance()->getIntegerForKey("unlimited_baseball",-1);
     int aiball = UserDefault::getInstance()->getIntegerForKey("unlimited_aiball",-1);
-    updateHistory(name, weight, baseball, aiball, demon);
+    updateHistory(GAME_UNLIMITED ,name, weight, baseball, aiball, demon);
 }
 void MenuScene::hideHistory() {
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_click.mp3");

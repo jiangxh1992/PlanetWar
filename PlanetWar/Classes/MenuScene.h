@@ -54,7 +54,7 @@ public:
     void showLimitedRecord();
     void showUnLimitedRecord();
     void hideHistory();
-    void updateHistory(__String new_name, int new_weight, int new_baseball, int new_aiball, int new_demon);
+    void updateHistory(GAME_TYPE type, __String new_name, int new_weight, int new_baseball, int new_aiball, int new_demon);
 };
 
 #endif /* defined(__PlanetWar__MenuScene__) */

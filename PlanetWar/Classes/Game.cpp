@@ -137,7 +137,7 @@ void Game::update(float time) {
     
     // 加速功能恢复
     if (dashCount > 0) {
-        dashCount -= 0.3;
+        dashCount -= 0.2;
         dashTimer->setPercentage(dashCount);
     }
     
@@ -236,7 +236,7 @@ void Game::gameOver() {
     int new_demon = kill;                             // 杀死demon数量
     int new_baseball = player->getEatBaseNum();           // 吞并baseball数量
     int new_aiball =  player->getEatAINum();              // 吞并AIBall数量
-    updateData(name, new_weight, new_baseball, new_aiball, new_demon);
+    bool result = updateData(name, new_weight, new_baseball, new_aiball, new_demon);
     
     // 3.显示游戏结束对话框
     // 对话框层
@@ -251,7 +251,7 @@ void Game::gameOver() {
     gameover_layer->addChild(dialog_box,100001);
     
     // 卡通人物
-    Sprite *character = Sprite::create("character_lose.png");
+    Sprite *character = Sprite::create(result ? "character_win.png" : "character_lose.png");
     character->setAnchorPoint(Vec2(1, 0.5));
     character->setPosition(Vec2(-100, 50));
     gameover_layer->addChild(character,100001);
@@ -268,7 +268,7 @@ void Game::gameOver() {
     gameover_layer->addChild(content_layer,100001);
     
     Label *gameover = Label::create();
-    gameover->setString("GAME OVER!");
+    gameover->setString(result ? "BEST RECORD!" : "GAME OVER!");
     gameover->setSystemFontName(FontPlanet);
     gameover->setSystemFontSize(15);
     gameover->setAnchorPoint(Vec2(0.5, 1));
@@ -285,7 +285,8 @@ void Game::gameOver() {
     int labelH = label_name->getContentSize().height+3;
     
     Label *label_weight = Label::create();
-    label_weight->setString("Weight:"+Convert2String(new_weight));
+    string score = gameType == GAME_TIMER ? "Weight:"+Convert2String(new_weight) : "Score:"+Convert2String(new_baseball + new_aiball*10 + new_demon*15);
+    label_weight->setString(score);
     label_weight->setSystemFontName(FontPlanet);
     label_weight->setAnchorPoint(Vec2(0, 1));
     label_weight->setPosition(marginLeft, contentH-marginTop-labelH);
@@ -676,7 +677,7 @@ void Game::scaleScreen(float scale) {
     
 }
 
-void Game::updateData(string name, int new_weight, int new_baseball, int new_aiball, int new_demon) {
+bool Game::updateData(string name, int new_weight, int new_baseball, int new_aiball, int new_demon) {
     if (gameType == GAME_TIMER) {
         // 取出旧数据
         int weight = UserDefault::getInstance()->getIntegerForKey("timer_weight", -1);
@@ -690,7 +691,9 @@ void Game::updateData(string name, int new_weight, int new_baseball, int new_aib
             UserDefault::getInstance()->setIntegerForKey("timer_demon", new_demon);
             UserDefault::getInstance()->setIntegerForKey("timer_baseball", new_baseball);
             UserDefault::getInstance()->setIntegerForKey("timer_aiball", new_aiball);
+            return true;
         }
+        return false;
     }
     else if (gameType == GAME_UNLIMITED) {
         // 取出旧数据
@@ -698,14 +701,19 @@ void Game::updateData(string name, int new_weight, int new_baseball, int new_aib
         int demon = UserDefault::getInstance()->getIntegerForKey("unlimited_demon", -1);
         int baseball = UserDefault::getInstance()->getIntegerForKey("unlimited_baseball",-1);
         int aiball = UserDefault::getInstance()->getIntegerForKey("unlimited_aiball",-1);
+        // 成绩加权
+        int power = baseball + aiball*10 + demon*15;
+        int new_power = new_baseball + new_aiball*10 + demon*15;
         // 存入新记录数据
-        if (new_weight > weight) {
+        if (new_power > power) {
             UserDefault::getInstance()->setStringForKey("unlimited_name", name);
             UserDefault::getInstance()->setIntegerForKey("unlimited_weight", new_weight);
             UserDefault::getInstance()->setIntegerForKey("unlimited_demon", new_demon);
             UserDefault::getInstance()->setIntegerForKey("unlimited_baseball", new_baseball);
             UserDefault::getInstance()->setIntegerForKey("unlimited_aiball", new_aiball);
+            return true;
         }
+        return false;
     }
 }
 
@@ -724,6 +732,7 @@ void Game::back(cocos2d::Ref* pSender) {
 void Game::dash(cocos2d::Ref *pSender) {
     if(dashCount > 0) return;
     dashTimer->setPercentage(100);
+    dashCount = 100;
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_dash.mp3");
     player->speedUp();
 }
@@ -782,7 +791,7 @@ void Game::playerKilled() {
 }
 
 void Game::playerReactive() {
-    player->updateWeight(minWeight);
+    player->updateWeight(minWeight-player->getBallWeight());// 恢复为最小体重
     player->setVisible(true);
     player->setIsDraw(true);
 }
@@ -793,7 +802,7 @@ void Game::reStartGame(Ref* pSender){
 }
 
 void Game::dashFinished() {
-    dashCount = 100;
+    //dashCount = 100;
 }
 
 #pragma mark -触屏事件
