@@ -142,13 +142,13 @@ void Game::update(float time) {
     
     // left
     debuglabel->setString("interval:"+Convert2String(player->getSpeedInterval()));
-    label_weight->setString("wieght:"+Convert2String(player->getBallWeight()));
+    label_weight->setString("weight:"+Convert2String(player->getBallWeight()));
     label_scale->setString("scale:"+Convert2String(scale));
     
     // right
-    label_ainum->setString("AIBall:"+Convert2String(player->getEatAINum())+" < "+Convert2String((int)AIBallArray.size()));
-    label_basenum->setString("BaseBall:"+Convert2String(player->getEatBaseNum())+" < "+Convert2String(baseNum));
-    label_demon->setString("Demon:"+Convert2String(kill)+" < "+Convert2String((int)DemonArray.size()));
+    label_ainum->setString("AIBall:"+Convert2String(player->getEatAINum())+" | "+Convert2String((int)AIBallArray.size()));
+    label_basenum->setString("BaseBall:"+Convert2String(player->getEatBaseNum())+" | "+Convert2String(baseNum));
+    label_demon->setString("Demon:"+Convert2String(kill)+" | "+Convert2String((int)DemonArray.size()));
     
 }
 
@@ -429,10 +429,16 @@ void Game::addUI() {
     bglayer1->setPosition(Vec2(0, 0));
     addChild(bglayer1, -100000);
     
+    addParticle("particle_bg.plist", Vec2(0, ScreenHeight));
+    
     // UI层
     uilayer = LayerColor::create(Color4B(0, 0, 0, 0), ScreenWidth, ScreenHeight);
     addChild(uilayer);
     uilayer->setGlobalZOrder(100000);
+    // 粒子
+    ParticleSystemQuad *explode = ParticleSystemQuad::create("particle_bg.plist");
+    explode->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
+    uilayer->addChild(explode);
     // 云层
     auto menu_cloud = Sprite::create("menu_cloud.png");
     menu_cloud->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
@@ -678,9 +684,9 @@ bool Game::updateData(string name, int new_weight, int new_baseball, int new_aib
     if (gameType == GAME_TIMER) {
         // 取出旧数据
         int weight = UserDefault::getInstance()->getIntegerForKey("timer_weight", -1);
-        int demon = UserDefault::getInstance()->getIntegerForKey("timer_demon", -1);
-        int baseball = UserDefault::getInstance()->getIntegerForKey("timer_baseball",-1);
-        int aiball = UserDefault::getInstance()->getIntegerForKey("timer_aiball",-1);
+        //int demon = UserDefault::getInstance()->getIntegerForKey("timer_demon", -1);
+        //int baseball = UserDefault::getInstance()->getIntegerForKey("timer_baseball",-1);
+        //int aiball = UserDefault::getInstance()->getIntegerForKey("timer_aiball",-1);
         // 存入新记录数据
         if (new_weight > weight) {
             UserDefault::getInstance()->setStringForKey("timer_name", name);
@@ -694,7 +700,7 @@ bool Game::updateData(string name, int new_weight, int new_baseball, int new_aib
     }
     else if (gameType == GAME_UNLIMITED) {
         // 取出旧数据
-        int weight = UserDefault::getInstance()->getIntegerForKey("unlimited_weight", -1);
+        //int weight = UserDefault::getInstance()->getIntegerForKey("unlimited_weight", -1);
         int demon = UserDefault::getInstance()->getIntegerForKey("unlimited_demon", -1);
         int baseball = UserDefault::getInstance()->getIntegerForKey("unlimited_baseball",-1);
         int aiball = UserDefault::getInstance()->getIntegerForKey("unlimited_aiball",-1);
