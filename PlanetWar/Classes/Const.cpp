@@ -26,11 +26,11 @@ const double PI = 3.1415926;
 const int Energy = 3000;
 // 重量下限(初始重量)
 const int minWeight = 300;
-// 屏幕小球的数量上限
+// 屏幕静止小球的数量上限
 const int maxBaseBallNum = 1000;
 // AI球的数量上限
 const int maxAIBallNum = 20;
-// 最大speed
+// 最大speed（这个实际为移动步长，不能太大，否则移动看上去会不流畅）
 const int maxSpeed = 1;
-// 游戏时间
-const int maxSeconds = 5*60;
+// TIMER模式游戏初始时间限制
+const int maxSeconds = 60;

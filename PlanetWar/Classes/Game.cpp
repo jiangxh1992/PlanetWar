@@ -7,7 +7,6 @@
 //  1.层级说明：UI层（100000），Ball层（0~100000）， 背景层（<0）
 //
 //
-#define dashTime 5 // 加速时间
 
 #include "Game.h"
 #include "BaseBall.h"
@@ -240,7 +239,7 @@ void Game::gameOver() {
     
     // 3.显示游戏结束对话框
     // 对话框层
-    LayerColor *gameover_layer = LayerColor::create(Color4B(0, 0, 0, 100), ScreenWidth, ScreenHeight);
+    LayerColor *gameover_layer = LayerColor::create(Color4B(0, 0, 0, 0), ScreenWidth, ScreenHeight);
     gameover_layer->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
     uilayer->addChild(gameover_layer, 100001);
     
@@ -327,20 +326,12 @@ void Game::gameOver() {
 }
 
 /**
- * 退出场景
- */
-void Game::onExit() {
-    // 关闭所有回调
-    this->unscheduleUpdate();
-    this->unscheduleAllCallbacks();
-    
-    Layer::onExit();
-}
-
-/**
  * 析构函数
  */
 Game::~Game(){
+    // 关闭所有回调
+    this->unscheduleUpdate();
+    this->unscheduleAllCallbacks();
     // 销毁所有对象
     this->removeAllChildren();
 }
@@ -535,13 +526,13 @@ void Game::addUI() {
     item_scaleup->setAnchorPoint(Vec2(0, 0));
     item_scaleup->setPosition(Vec2(0, 0));
     item_scaleup->setGlobalZOrder(100000);
-    auto item_scaledown = MenuItemImage::create("button_sub.jpg", "button_add.jpg", CC_CALLBACK_1(Game::scaledown, this));
+    auto item_scaledown = MenuItemImage::create("button_sub.jpg", "button_sub.jpg", CC_CALLBACK_1(Game::scaledown, this));
     item_scaledown->setAnchorPoint(Vec2(0, 0));
     item_scaledown->setPosition(Vec2(0, item_scaledown->getContentSize().height));
     item_scaledown->setGlobalZOrder(100000);
     // 按钮菜单
     menu = Menu::create(item_back, item_dash, item_shoot, item_scaleup, item_scaledown, NULL);
-    menu->setOpacity(200);
+    menu->setOpacity(150);
     menu->setPosition(Vec2::ZERO);
     menu->setGlobalZOrder(100000);
     uilayer->addChild(menu);
@@ -677,6 +668,12 @@ void Game::scaleScreen(float scale) {
     
 }
 
+void Game::addParticle(string filename, cocos2d::Vec2 position) {
+    ParticleSystemQuad *explode = ParticleSystemQuad::create(filename);
+    explode->setPosition(position);
+    addChild(explode);
+}
+
 bool Game::updateData(string name, int new_weight, int new_baseball, int new_aiball, int new_demon) {
     if (gameType == GAME_TIMER) {
         // 取出旧数据
@@ -747,11 +744,11 @@ void Game::shoot(cocos2d::Ref *pSender) {
  * 缩放
  */
 void Game::scaleup(cocos2d::Ref *pSender) {
-    scaleScreen(0.99);
+    scaleScreen(0.9);
 }
 
 void Game::scaledown(cocos2d::Ref *pSender) {
-    scaleScreen(1.01);
+    scaleScreen(1.1);
 }
 
 void Game::demonKilled(Demon *demon) {
@@ -763,9 +760,7 @@ void Game::demonKilled(Demon *demon) {
     // 音效
     CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("effect_explode.mp3");
     // 爆炸粒子
-    ParticleSystemQuad *explode = ParticleSystemQuad::create("particle_explode.plist");
-    explode->setPosition(demon->getPos());
-    addChild(explode);
+    addParticle("particle_explode.plist", demon->getPos());
     // 移除demon
     DemonArray.eraseObject(demon);
     removeChild(demon);
@@ -806,16 +801,11 @@ void Game::dashFinished() {
 }
 
 #pragma mark -触屏事件
-/**
- * 注册屏幕触摸事件
- */
+
 void Game::addTouchListener() {
-    // 开启交互
-    //this->setTouchEnabled(true);
+
     // 定义事件分发
     EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
-    // 单点触控
-    //this->setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
     
     auto oneTouch = EventListenerTouchOneByOne::create();
     // 触摸开始
@@ -831,33 +821,47 @@ void Game::addTouchListener() {
     
 }
 
-/**
- * 触摸事件
- */
 bool Game::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
+    // 触摸起点
     startPoint = touch->getLocation();
-    
-    //particle_touch->setVisible(true);
-    //particle_touch->setPosition(touch->getLocation());
+    // 触点坐标转换
+    Vec2 p = startPoint + player->getPos() - Vec2(ScreenWidth/2, ScreenHeight/2);
+    // 粒子特效
+    addParticle("particle_touch.plist", p);
     return true;
 }
 
 void Game::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
-    //particle_touch->setPosition(touch->getLocation());
     cout<<"moved"<<endl;
 }
 
 void Game::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
+    // 触摸终点
     endPoint = touch->getLocation();
+    // 触点坐标转换
+    //endPoint += player->getPos() - Vec2(ScreenWidth/2, ScreenHeight/2);
     // 更新玩家移动方向
     Vec2 newDir = endPoint - startPoint;
-    
-    if (abs(newDir.x) > 0.01f && abs(newDir.y) > 0.01f) {
+    Vec2 center = Vec2(ScreenWidth/2, ScreenHeight/2);// 屏幕坐标系中心
+    double D2 = pow(endPoint.x - center.x, 2.0) + pow(endPoint.y - center.y, 2.0);
+    double R2 = pow(player->getR(), 2.0);
+    bool isTouchPlayer = D2 < R2 ? true : false;
+    if (abs(newDir.x) > 0.01f && abs(newDir.y) > 0.01f) { // 滑动距离足够长
+        // 粒子特效
+        Vec2 p = endPoint + player->getPos() - Vec2(ScreenWidth/2, ScreenHeight/2);
+        addParticle("particle_touch.plist", p);
         newDir.normalize();
         player->setDir(newDir);
         player->setSpeedFactor(1.0);
-    }else {
-        player->setSpeedFactor(0);
+    }else if(isTouchPlayer) {
+        player->setSpeedFactor(0);//点击了player，此时应让player停止运动
+    }
+    else {
+        // 此时player朝向触点移动
+        newDir = endPoint - center;
+        newDir.normalize();
+        player->setDir(newDir);
+        player->setSpeedFactor(1.0);
     }
     
     //particle_touch->setVisible(false);

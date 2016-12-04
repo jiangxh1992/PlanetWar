@@ -16,17 +16,10 @@
 using namespace std;
 USING_NS_CC;
 
-/* 背景星星数据结构 */
-typedef struct {
-    Vec2 position;
-    float radius;
-    Color4F color;
-}STAR;
-
 
 class Game : public Layer {
     
-    /** 重写函数 **/
+/** 重写函数 **/
 public:
     // 创建游戏场景
     static Scene* createScene(GAME_TYPE type);
@@ -38,8 +31,6 @@ public:
     virtual void update(float time);
     // 图形绘制函数
     virtual void draw(Renderer*renderer, const Mat4& transform, uint32_t flags);
-    // 退出
-    void onExit();
     // 析构函数
     virtual ~Game();
     
@@ -57,7 +48,7 @@ private:
     int kill = 0;                     // 杀死demon数量
     GAME_TYPE gameType = GAME_TIMER;  // 游戏模式（默认倒计时模式）
     float gameLevel = 1.0;            // 游戏难度
-    float dashCount = 100;              // 加速功能恢复计时
+    float dashCount = 100;            // 加速功能恢复计时
     
     // UI
     Menu *menu;          // 按钮菜单
@@ -87,6 +78,7 @@ private:
     void gametimer(float delta);           // 计时器
     void scaleScreen(float scale);         // 屏幕缩放(0<scale<1)
     void gameOver();                       // 游戏结束
+    void addParticle(string filename, Vec2 position); // 添加一个短暂粒子特效
     bool updateData(string new_name, int new_weight, int new_baseball, int new_aiball, int new_demon);// 数据持久化
     
     // 事件函数

@@ -58,4 +58,11 @@ typedef enum {
     GAME_UNLIMITED // 无限模式
 }GAME_TYPE;
 
+/* 背景星星数据结构 */
+typedef struct {
+    cocos2d::Vec2 position;
+    float radius;
+    cocos2d::Color4F color;
+}STAR;
+
 #endif /* Const_h */
