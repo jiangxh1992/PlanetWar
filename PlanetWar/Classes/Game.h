@@ -78,6 +78,7 @@ private:
     void gametimer(float delta);           // 计时器
     void scaleScreen(float scale);         // 屏幕缩放(0<scale<1)
     void gameOver();                       // 游戏结束
+    void updateVertexs();                  // 更新边界顶点数组
     void addParticle(string filename, Vec2 position); // 添加一个短暂粒子特效
     bool updateData(string new_name, int new_weight, int new_baseball, int new_aiball, int new_demon);// 数据持久化
     

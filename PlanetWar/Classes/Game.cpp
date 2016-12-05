@@ -331,9 +331,8 @@ void Game::gameOver() {
  * 析构函数
  */
 Game::~Game(){
-    // 关闭所有回调
     this->unscheduleUpdate();
-    // 销毁所有对象
+    this->unscheduleAllCallbacks();
     this->removeAllChildren();
 }
 
@@ -403,12 +402,7 @@ void Game::initData() {
     DemonArray = Vector<Demon*>();
     
     // 边界顶点数组
-    int borderX = maxW;
-    int borderY = maxH;
-    Vertexs[0] = Vec2(borderX, borderY);
-    Vertexs[1] = Vec2(borderX, -borderY);
-    Vertexs[2] = Vec2(-borderX, -borderY);
-    Vertexs[3] = Vec2(-borderX, borderY);
+    updateVertexs();
 }
 
 /**
@@ -654,7 +648,6 @@ void Game::createBaseBallTimer(float delta) {
     }
 }
 
-
 /**
  * 屏幕缩放
  */
@@ -664,6 +657,7 @@ void Game::scaleScreen(float scale) {
     // 场景缩放
     maxW *= scale;
     maxH *= scale;
+    updateVertexs();
     
     // 缩放静止的球
     for (int i = 0 ; i < maxBaseBallNum ; i++) {
@@ -676,6 +670,12 @@ void Game::scaleScreen(float scale) {
         aiball->scale(scale);
     }
     
+    // 缩放demon
+    for (Vector<Demon*>::const_iterator it = DemonArray.begin(); it != DemonArray.end(); it++) {
+        Demon *demon = *it;
+        demon->scale(scale);
+    }
+    
     // 缩放player
     player->scale(scale);
     
@@ -685,6 +685,15 @@ void Game::addParticle(string filename, cocos2d::Vec2 position) {
     ParticleSystemQuad *explode = ParticleSystemQuad::create(filename);
     explode->setPosition(position);
     addChild(explode);
+}
+
+void Game::updateVertexs() {
+    int borderX = maxW;
+    int borderY = maxH;
+    Vertexs[0] = Vec2(borderX, borderY);
+    Vertexs[1] = Vec2(borderX, -borderY);
+    Vertexs[2] = Vec2(-borderX, -borderY);
+    Vertexs[3] = Vec2(-borderX, borderY);
 }
 
 bool Game::updateData(string name, int new_weight, int new_baseball, int new_aiball, int new_demon) {
