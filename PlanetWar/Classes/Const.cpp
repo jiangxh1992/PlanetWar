@@ -9,8 +9,8 @@
 #include <Const.h>
 
 // 游戏场景边界
-const int maxWidth = 1500;
-const int maxHeight = 1000;
+const int maxWidth = 1800;
+const int maxHeight = 1300;
 int maxW = maxWidth;
 int maxH = maxHeight;
 
@@ -27,9 +27,9 @@ const int Energy = 3000;
 // 重量下限(初始重量)
 const int minWeight = 300;
 // 屏幕静止小球的数量上限
-const int maxBaseBallNum = 1000;
+const int maxBaseBallNum = 1200;
 // AI球的数量上限
-const int maxAIBallNum = 20;
+const int maxAIBallNum = 30;
 // 最大speed（这个实际为移动步长，不能太大，否则移动看上去会不流畅）
 const int maxSpeed = 1;
 // TIMER模式游戏初始时间限制

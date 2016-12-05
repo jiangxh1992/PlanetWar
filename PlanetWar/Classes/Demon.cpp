@@ -40,6 +40,9 @@ bool Demon::init() {
 }
 
 void Demon::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
+    // 超出屏幕不渲染
+    Vec2 playerP = Game::sharedGame()->getPlayer()->getPos();
+    if(abs(position.x - playerP.x) > (ScreenWidth/2+radius) || abs(position.y - playerP.y) > (ScreenHeight/2+radius)) return;
     // 清空之前的绘制
     drawNode->clear();
     //启用混合
@@ -119,9 +122,6 @@ void Demon::updateWeight(int addedWeight) {
         // 通知Game
         Game::sharedGame()->demonKilled(this);
     }
-    
-    // 爆炸粒子特效
-    // 。。。
 }
 
 Demon::~Demon() {

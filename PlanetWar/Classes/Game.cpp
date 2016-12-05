@@ -100,7 +100,8 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
     for (int i = 0 ; i < maxBaseBallNum ; i++) {
         StaticBall ball = staticArray[i];
         if (!ball.isActive) continue;
-        //if(abs(ball.position.x - player->getPos().x) > ScreenWidth/2 || abs(ball.position.y - player->getPos().y) > ScreenHeight/2) continue;
+        // 超出屏幕不渲染
+        if(abs(ball.position.x - player->getPos().x) > ScreenWidth/2 || abs(ball.position.y - player->getPos().y) > ScreenHeight/2) continue;
         // 绘制多边形
         drawNode->drawPolygon(ball.vertexs, ball.polyNum, ball.color, 1, ball.color); // 实心
         drawNode->drawPoly(ball.vertexs, ball.polyNum, true, Color4F(1, 1, 1, 0.5+CCRANDOM_0_1()*0.5));             // 空心
@@ -332,7 +333,6 @@ void Game::gameOver() {
 Game::~Game(){
     // 关闭所有回调
     this->unscheduleUpdate();
-    this->unscheduleAllCallbacks();
     // 销毁所有对象
     this->removeAllChildren();
 }
@@ -649,7 +649,7 @@ void Game::createBaseBallTimer(float delta) {
     }
     
     // Demon
-    if (random < 0.2 && DemonArray.size()<4) {
+    if (random < 0.2 && DemonArray.size()<5) {
         createBallFactory(BALL_DEMON, 1);
     }
 }
@@ -876,9 +876,6 @@ void Game::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *unused_event) {
         player->setDir(newDir);
         player->setSpeedFactor(1.0);
     }
-    
-    //particle_touch->setVisible(false);
-
 }
 
 void Game::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *unused_event) {

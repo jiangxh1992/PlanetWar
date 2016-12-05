@@ -76,11 +76,11 @@ void AIBall::commenInit() {
  * 绘图
  */
 void AIBall::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
+    // 超出屏幕不渲染
+    Vec2 playerP = Game::sharedGame()->getPlayer()->getPos();
+    if(abs(position.x - playerP.x) > (ScreenWidth/2+radius) || abs(position.y - playerP.y) > (ScreenHeight/2+radius)) return;
     // 清空之前的绘制
     drawNode->clear();
-    //启用混合
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-    //glEnable(GL_BLEND);
     if (isDraw) {
         // 绘制实心圆形
         drawNode->drawDot(Vec2(0, 0), radius, color);
