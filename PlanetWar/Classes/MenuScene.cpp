@@ -90,6 +90,7 @@ void MenuScene::addUI() {
     // 云层
     auto menu_cloud = Sprite::create("menu_cloud.png");
     menu_cloud->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
+    menu_cloud->setOpacity(200);
     addChild(menu_cloud, 20);
     
     // 开始游戏按钮
