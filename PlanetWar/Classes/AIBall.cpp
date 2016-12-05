@@ -156,27 +156,10 @@ void AIBall::sharedUpdate(float delta) {
             Game::sharedGame()->baseNum --;
         }
     }
-    
-    // 3.检测吞并player
-    int playerWeight = Game::sharedGame()->getPlayer()->getBallWeight();
-    if(Game::sharedGame()->getPlayer()->isVisible() && weight > playerWeight) {
-        
-        // AIBall与player的距离的平方
-        double D2 = pow(Game::sharedGame()->getPlayer()->getPos().x -  position.x, 2) + pow(Game::sharedGame()->getPlayer()->getPos().y - position.y, 2);
-        // 吞并距离
-        float playerR = Game::sharedGame()->getPlayer()->getR();
-        float minD =  radius - playerR*0.8;
-        if (D2 < minD*minD) {
-            updateWeight(Game::sharedGame()->getPlayer()->getBallWeight());
-            eatAINum++;
-            // 主角死亡,通知Game
-            Game::sharedGame()->playerKilled();
-        }
-    }
 
     // 回收池
     Vector<AIBall*> autoreleasepool = Vector<AIBall*>();
-    // 3.检测AIBall互相吞并
+    // 2.检测AIBall互相吞并
     for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
         AIBall *aiball = *it;
         if (weight <= aiball->getBallWeight()) continue; // 排除吞并自己以及比自己大的

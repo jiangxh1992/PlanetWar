@@ -40,7 +40,7 @@ private:
     // 游戏数据
     Scene *curScene;                  // 场景引用
     PlayerBall *player;               // 玩家
-    int CurState;                     // 状态机
+    //int CurState;                   // 状态机
     Vec2 startPoint = Vec2::ZERO;     // 触摸起始点
     Vec2 endPoint = Vec2::ZERO;       // 触摸结束点
     Point Vertexs[4];                 // 边界顶点数组
@@ -114,10 +114,10 @@ public:
     Vector<Demon*> DemonArray;         // DemonBall数组
     
     // setter
-    void setState(const int state) { CurState = state; }
+    //void setState(const int state) { CurState = state; }
     
     // getter
-    int getState(){ return CurState; }
+    //int getState(){ return CurState; }
     PlayerBall* getPlayer()const{ return player; }
     Scene* getScene()const{return curScene;}
     

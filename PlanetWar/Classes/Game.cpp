@@ -4,7 +4,7 @@
 //
 //  Created by Xinhou Jiang on 8/11/16.
 //
-//  1.层级说明：UI层（100000），Ball层（0~100000）， 背景层（<0）
+//  1.层级说明：UI层（100000），Ball层（-100000~0）， 背景层（<-1000000）
 //
 //
 
@@ -84,7 +84,7 @@ bool Game::init() {
     // 开启定时器
     this->schedule(schedule_selector(Game::createBaseBallTimer), 3.0);
     // 开启AI干预
-    this->schedule(schedule_selector(Game::gameObserver), 1.0);
+    this->schedule(schedule_selector(Game::gameObserver), 1.5);
     
     return true;
 }
@@ -100,6 +100,7 @@ void Game::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uin
     for (int i = 0 ; i < maxBaseBallNum ; i++) {
         StaticBall ball = staticArray[i];
         if (!ball.isActive) continue;
+        //if(abs(ball.position.x - player->getPos().x) > ScreenWidth/2 || abs(ball.position.y - player->getPos().y) > ScreenHeight/2) continue;
         // 绘制多边形
         drawNode->drawPolygon(ball.vertexs, ball.polyNum, ball.color, 1, ball.color); // 实心
         drawNode->drawPoly(ball.vertexs, ball.polyNum, true, Color4F(1, 1, 1, 0.5+CCRANDOM_0_1()*0.5));             // 空心
@@ -167,7 +168,7 @@ void Game::gameObserver(float delta) {
         float distance = sqrt(distance2) - player->getR() - aiball->getR();
         if (distance < ScreenHeight) {
             // 降低AI灵敏度
-            if(CCRANDOM_0_1() < 0.2) break;
+            //if(CCRANDOM_0_1() < 0.2) break;
             Vec2 dir = aiball->getPos() - p;
             
             if (aiball->getBallWeight() > weight) {
@@ -185,7 +186,7 @@ void Game::gameObserver(float delta) {
     for (Vector<Demon*>::const_iterator it = DemonArray.begin(); it != DemonArray.end(); it++) {
         Demon *demon = *it;
         // 降低AI灵敏度
-        if(CCRANDOM_0_1() < 0.5) break;
+        //if(CCRANDOM_0_1() < 0.5) break;
         Vec2 newDir = player->getPos() - demon->getPos();
         if(newDir.x*newDir.x + newDir.y*newDir.y > ScreenWidth*ScreenWidth*4) continue;
         newDir.normalize();
@@ -395,7 +396,7 @@ void Game::initData() {
     scale = 1.0f;
     
     // 默认游戏状态
-    CurState = IDLE_NORMAL;
+    //CurState = IDLE_NORMAL;
     
     // 对象容器初始化
     AIBallArray = Vector<AIBall*>();
@@ -428,7 +429,7 @@ void Game::addUI() {
     addChild(bglayer2);
     bglayer2->setGlobalZOrder(-1000001);
     
-    bglayer1 = LayerColor::create(Color4B(0, 0, 0, 200), maxW*3, maxH*3);//102, 102, 153
+    bglayer1 = LayerColor::create(Color4B(0, 0, 0, 150), maxW*3, maxH*3);//102, 102, 153
     bglayer1->setIgnoreAnchorPointForPosition(false);
     bglayer1->setAnchorPoint(Vec2(0.5, 0.5));
     bglayer1->setPosition(Vec2(0, 0));
@@ -442,6 +443,7 @@ void Game::addUI() {
     // 粒子
     ParticleSystemQuad *explode = ParticleSystemQuad::create("particle_bg.plist");
     explode->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
+    explode->setGlobalZOrder(-100001);
     uilayer->addChild(explode);
     // 云层
     auto menu_cloud = Sprite::create("menu_cloud.png");
@@ -783,6 +785,7 @@ void Game::playerKilled() {
     // 隐藏
     player->setVisible(false);
     player->setSpeedFactor(0);
+    player->setIsActive(false);
     // 复活或者游戏结束
     if(gameType == GAME_TIMER) {
         // 延迟复活
@@ -798,8 +801,7 @@ void Game::playerKilled() {
 
 void Game::playerReactive() {
     player->updateWeight(minWeight-player->getBallWeight());// 恢复为最小体重
-    player->setVisible(true);
-    player->setIsDraw(true);
+    player->startProtectPlayer(); // 无敌状态
 }
 
 void Game::reStartGame(Ref* pSender){

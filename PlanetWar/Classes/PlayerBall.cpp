@@ -48,6 +48,14 @@ bool PlayerBall::init() {
  */
 void PlayerBall::update(float time) {
     sharedUpdate(time);
+    // 闪烁
+    if (switchBlink) {
+        if (isVisible()) {
+            setVisible(false);
+        }else {
+            setVisible(true);
+        }
+    }
 }
 
 /**
@@ -76,7 +84,7 @@ void PlayerBall::thisUpdate(float delta) {
     
     // 1.RUN_NORMAL -> OVER_MAP
     if (position.x > maxW || position.x < -maxW || position.y > maxH || position.y < -maxH) {
-        Game::sharedGame()->setState(OVER_MAP);
+        //Game::sharedGame()->setState(OVER_MAP);
         // 矫正
         if(position.x >= maxW) position.x = maxW;
         if(position.x <= -maxW) position.x = -maxW;
@@ -101,8 +109,8 @@ void PlayerBall::thisUpdate(float delta) {
     Game::sharedGame()->bglayer2->setPosition(position-direction*0.2);
     
     // 4.OVER_MAP -> RUN_NORMAL
-    bool isNormal = position.x < maxW || position.x > -maxW || position.y < maxH || position.y > -maxH;
-    if(isNormal) Game::sharedGame()->setState(RUN_NORMAL);
+    //bool isNormal = position.x < maxW || position.x > -maxW || position.y < maxH || position.y > -maxH;
+    //if(isNormal) Game::sharedGame()->setState(RUN_NORMAL);
 
 }
 
@@ -128,19 +136,26 @@ void PlayerBall::sharedUpdate(float delta) {
     
     // 回收池
     Vector<AIBall*> autoreleasepool = Vector<AIBall*>();
-    // 3.检测吞并AIBall
+    // 3.检测吞并AIBall以及被吞并
+    if (!isActive) return;
     for (Vector<AIBall*>::const_iterator it = Game::sharedGame()->AIBallArray.begin(); it != Game::sharedGame()->AIBallArray.end(); it++) {
         AIBall *aiball = *it;
-        if (weight < aiball->getBallWeight()) continue; // 排除比自己大的
+        //if (weight < aiball->getBallWeight()) continue; // 排除比自己大的
         // 距离的平方
         double distance2 = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
         // 吞并距离
-        float minD = radius-aiball->getR()*0.8;
-        if (distance2 < minD*minD) {
-            // 吞并AIBall
-            updateWeight(aiball->getBallWeight());
-            eatAINum++;
-            autoreleasepool.pushBack(aiball);
+        float minD = radius > aiball->getR() ? radius-aiball->getR()*0.8 : aiball->getR()-radius*0.8;
+        if (distance2 < minD*minD) {// 已经符合吞并条件
+            if (radius > aiball->getR()) { // player吞并aiball
+                updateWeight(aiball->getBallWeight());
+                eatAINum++;
+                autoreleasepool.pushBack(aiball);
+            }else { // 被aiball吞并
+                aiball->updateWeight(weight);
+                // 主角死亡,通知Game
+                Game::sharedGame()->playerKilled();
+                break;
+            }
         }
     }
     // 移除回收池内的死球
@@ -158,6 +173,25 @@ void PlayerBall::sharedUpdate(float delta) {
 void PlayerBall::speedUp() {
     isSpeedUp = true;
     speedUpCount = 0;
+}
+
+/**
+ * 无敌
+ */
+void PlayerBall::startProtectPlayer() {
+    // 闪烁
+    switchBlink = true;
+    // 延迟恢复
+    DelayTime *delay = DelayTime::create(5);
+    CallFunc *fun = CallFunc::create(CC_CALLBACK_0(PlayerBall::endProtectPlayer, this));
+    Sequence *action = Sequence::create(delay,fun, NULL);
+    runAction(action);
+}
+
+void PlayerBall::endProtectPlayer() {
+    isActive = true;
+    setVisible(true);
+    switchBlink = false;
 }
 
 PlayerBall::~PlayerBall() {
