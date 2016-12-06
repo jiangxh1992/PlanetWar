@@ -235,6 +235,7 @@ The main features and shortcoming of this game includes:
 Based on above games, we develop a new game for offline single-player competing with enemies played with artificial intelligence in iOS platform by means of game engine Cocos2d-x. Also, we add more interesting playing modes and skills to our game.
 
 <br>
+
 > ##4. Game Overview
 
 It is an entertaining and strategy game application on philosophy of survival of the fittest.
@@ -251,19 +252,20 @@ To be the very surveillance of the universe, keep poking to move, eating others 
 It is your show time to protect your village using your intelligence and skills. The history records will tell you how honorable your achievement is.
 
 <br>
+
 > ##5. Detailed Game Description
 
-### 5.1.	Background Story
+### 5.1	Background Story
 In Universe, battles never come to the end. Player is one of the bubbles in the village and willing to fight for your home. Player keeps moving to trace enemies and collect energy, player eludes quickly the bigger enemies to sustain your power, until player is powerful enough to protect the village and drive rivals away.
 
-### 5.2.	Objective
+### 5.2	Objective
 The objective is to survive from being encroached and eliminate enemies. To be powerful enough, the hero is supposed to eat smaller ones as many as possible to gain weight and get a larger size. The hero also can use bullets to defeat demons to get higher score. The player can break the history record by eating lots of asteroids and defeating as many demons as possible. To add the challenge of the game, we set two game modes – unlimited-time and timer.  
 
 In the unlimited-time mode, the player has to control the hero to eat other asteroids and defeat demons as many as possible. Meanwhile, the hero should avoid being encroached or attacked by the bigger ones, otherwise the game will be over. The final score will be calculated when the game is over and the highest score will be recorded.
 
 In the timer mode, the hero tries to eat smaller ones and defeat demons as many as possible within a period of certain time. The final score will be calculated when the limited time is up or the hero dies in halfway and the highest score will be recorded.
 
-### 5.3.	Gameplay
+### 5.3	Gameplay
 #### 5.3.1	Storyboard
 
 <p align="center">
