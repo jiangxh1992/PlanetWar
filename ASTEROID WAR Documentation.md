@@ -1,25 +1,30 @@
-# ASTEROID WAR Documentation
+#ASTEROID WAR Documentation
 
-This is the documentation of ios game ASTEROID WAR. The game is designed by Group T as the group assignment of COMP7506 Smart phone apps development, a course of Hong Kong University in 2016.
+> This is the documentation of ios game ASTEROID WAR. The game is designed by Group T as the group assignment of COMP7506 Smart phone apps development, a course of Hong Kong University in 2016.
 
-
-
-<p align="center">
-<img src="https://github.com/jiangxh1992/PlanetWar/blob/main_from_ph/Image/booting.png?raw=true">
+<center><img src="https://github.com/jiangxh1992/PlanetWar/blob/main_from_ph/Image/booting.png?raw=true">
 <br><br>
-</p>
+##Contents
 
-## Table of contents
 [TOC]
 
+##Preview
+<img src="http://img.blog.csdn.net/20161206163354334?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY29yZG92YQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" width="480">
+<img src="http://img.blog.csdn.net/20161206163856253?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY29yZG92YQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" width="480">
+<img src="http://img.blog.csdn.net/20161206163934982?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY29yZG92YQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" width="480">
+<img src="http://img.blog.csdn.net/20161206163955592?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY29yZG92YQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" width="480">
+
+</center>
+
 <br><br>
 
-## 1. Group Information
-### 1.1 Member Information
+> ##1. Group Information
+
+###1.1 Member Information
 There are four team members in this group. They are:
 
 
-| Name 	  | UID     |Contribution|
+| Name 	  | UID     ||
 |---------|---------|----------|
 | JIANG, Xinhong| 3035347990|  |
 | PAN, Hao| 3035349015| |
@@ -28,31 +33,57 @@ There are four team members in this group. They are:
 
 <br>
 
-### 1.2 Division of Labor
+###1.2 Division of Labor
 
-**[TODO:　This part I just copy from ZHOU Tingting's doc, may modify later or can be put in the above table]**
+####Commen Labor:
+- Game design;
+- Document writing;
 
--  Game Programming: JIANG Xinhong, PAN hao
--	Game Algorithms: PAN Hao, JIANG Xinhong
--	Game Design: All
--	Document: All
--	Background Research: ZHOU Tingting
--	UI Design: CHEN Yingshu, JIANG Xinhong
--	Sounds and music: JIANG Xinhong
--	Final Code Integration & Video Recording: JIANG Xinhong
--	Final Document Integration: CHEN Yingshu, ZHOU Tingting
+####Individual Labor:
 
+**Jiang Xinhou:** 
 
+- The overall game project constrction with cocos2d-x framework on Xcode iOS platform, game development technologies provider;
+- Core classes design and implementation;
+- Design model implementation;
+- Animation and game effects design and implementation;
+- Game algorithm design and implementation, renderring improvement.
 
-## 2. Demo Video
-A short video demonstrating main features of this game is uploaded to Vimeo at:
-https://vimeo.com/194161874
+**Pan Hao:**
+
+- Game algorithm design and improvement, algorithm implementation, game improvement algorithm provider;
+- Game effect design and implementation;
+- Audio effect provider; 
+- Game test.
+
+**Chen Yingshu:** 
+
+- UI designer and UI resources provider,Game color elements and theme design;
+- Partially game improvement algorithms provider;
+- Effects and animation of MenuScene design and implementation; 
+- Game background research.
+
+**Zhou Tingting:**
+
+- Data persistence implementation, user data select and reserve, 'gameover module' implementation;
+- Game interaction design and implementation, game events implementation;
+- Game test;
+- Game background research.
+
 <br>
+> ##2. Demo Video
 
-## 3. Background Research
+A short video demonstrating main features of this game is uploaded to Vimeo at:
+[https://vimeo.com/194161874](https://vimeo.com/194161874)
+<a href="https://vimeo.com/194161874">![这里写图片描述](http://img.blog.csdn.net/20161204141316397)
+<a/>
+
+<br>
+> ##3. Background Research
+
 Here list three similar games in the market – Battle of Balls, Nebulous, Agar.io.
 
-### 3.1 Battle of Balls
+###3.1 Battle of Balls
 The [Battle of Balls][game1] is a cutesy but challenging real-time casual game in which you will control a ball to eat other players' balls smaller than yours around you to become the biggest one. 
 
 * **Features**:
@@ -77,8 +108,7 @@ The [Battle of Balls][game1] is a cutesy but challenging real-time casual game i
 <i>Battle of Balls</i>
 </p>
 
-
-### 3.2 Nebulous
+###3.2 Nebulous
 In the [Nebulos][game2], you need to grow the blobs by collecting dots placed throughout the game or gobbling up smaller players. Avoid bigger players attempting to do the same. Compete with other players to become the biggest blob.
 
 * **Features**:
@@ -121,7 +151,9 @@ The main features and shortcoming of this game includes:
 
 Based on above games, we develop a new game for offline single-player competing with enemies played with artificial intelligence in iOS platform by means of game engine Cocos2d-x. Also, we add more interesting playing modes and skills to our game.
 
-## 4. Game Overview
+<br>
+> ##4. Game Overview
+
 It is an entertaining and strategy game application on philosophy of survival of the fittest.
 To be the strongest species to survive, the asteroid in universe have got to be as much bigger and stronger as possible by eating other smaller ones around it in defense of attacks from enemies.
 
@@ -135,7 +167,9 @@ To be the very surveillance of the universe, keep poking to move, eating others 
 
 It is your show time to protect your village using your intelligence and skills. The history records will tell you how honorable your achievement is.
 
-## 5. Detailed Game Description
+<br>
+> ##5. Detailed Game Description
+
 ### 5.1.	Background Story
 In Universe, battles never come to the end. Player is one of the bubbles in the village and willing to fight for your home. Player keeps moving to trace enemies and collect energy, player eludes quickly the bigger enemies to sustain your power, until player is powerful enough to protect the village and drive rivals away.
 ### 5.2.	Objective
@@ -147,8 +181,6 @@ In the timer mode, the hero tries to eat smaller ones and defeat demons as many 
 
 ### 5.3.	Gameplay
 #### 5.3.1.	Storyboard
-
-
 
 
 <p align="center">
@@ -274,12 +306,18 @@ Sounds and background music are selected in delightful and funny manner with a l
 
 Menu and history pages, and main game page apply 2 different pieces of music. Former one is more delightful while later is more competitive and funny. All buttons have the same sound effect. As for the game result pages has two sound effects applied for two results, a new best record or a normal score.
 
+<br>
+> ##6. Programming implementation
 
-## 6. Programming implementation
+### 6.1 About cocos game engine
 
-### 6.1 Cocos2dx
-Cocos2d-x is an open-source and cross platform open source free 2D game engine for mobile game development. In this app, we will use several class and methods in 
+Cocos is one of the most popular 2d game engine and the original version is cocos2d-iphone, which is specially used for iphone game development with objective-c. Cocos2d-x is a opensource and cross-platform version of that, developer can easily develop 2d game and even 3d game now with C++ or javascript and can easily plant the game to almost all the platforms like iOS, Android, WP and PC platforms(MAC, Windows, Linux etc.).The framework of the cocos2d-x game engine can be seen form the picture below, and here we develop our game on iOS platform with C++. In this app, we will use several class and methods of
 Cocos2d-x.
+![这里写图片描述](http://img.blog.csdn.net/20161205184543664)
+
+![这里写图片描述](http://img.blog.csdn.net/20161205191026419)
+
+
 ### 6.2 Layer
 In Cocos2dx, `Layer` is a subclass of  `Node` that can receive touch events and contain any `Node` as a child, including `Sprites` and other Layer objects. In this game, the inheritance of `Layer` is as follows:
 
@@ -291,7 +329,8 @@ In Cocos2dx, `Layer` is a subclass of  `Node` that can receive touch events and 
 </p>
 
 We create two layers `MenuScene` and `GameScene` that inheritate from `Layer` and use function `createScene()` to return the scenes that contain the new created layer. Take `MenuScene` as example, we create this layer as following:
-```c++
+
+```cpp
 class MenuScene : Layer {
 public:
     // 创建对象
@@ -339,7 +378,7 @@ public:
 
 Then we use function `createScene()` to return the scene that contains this layer:
 
-```c
+```cpp
 Scene* MenuScene::createScene() {
     auto scene = Scene::create();
     auto layer = MenuScene::create();
@@ -370,7 +409,7 @@ In Cocos2dx, `Sprite` is a subclass of  `Node` that can be moved, rotated, scale
 
 `Baseball` is a virtual base class of all ball instances that can move and change size including playerBall, AIBall and demon. This class contains variables including position, radius, color, weight of the target ball, a `drawNode` method and a set of getters and setters.
 
-```c
+```cpp
 class BaseBall : public Sprite {
 
 /** 重写函数 **/
@@ -409,7 +448,8 @@ public:
 * They can eat the static ball and other AI ball instances that are smaller than themselves, including the player ball that is controlled by the player.
 
 * They will move automatically and randomly. If the player ball is in their detectable area, they will chase the player ball if they are bigger than it and will get away from the player ball if they are smaller than it. This is realized by the method `gameObserver` in `Game.cpp` as follows:
-    ```c
+
+```cpp
         for (Vector<AIBall*>::const_iterator it = AIBallArray.begin(); it != AIBallArray.end(); it++) {
         AIBall *aiball = *it;
         AIBall *player = Game::sharedGame()->player;
@@ -433,7 +473,7 @@ public:
             aiball->setDirection(dir);
         }
     }
-    ```
+```
 * When the radius of a AI ball instance is larger than a quarter of the screen height, this ball will 'explode' and this object will be removed. 
 * The AI balls will be created periodically on random positions according to the maximum number of demons and the existing number of demons in the game.
 
@@ -455,7 +495,8 @@ The `Demon` is a subclass of `AIBall` and the instances of this class have the f
 * When they collide with the player ball, the weight of player ball will be lost constantly until two balls are separate. When thay collide with the AI bal, they will be eaten if the AI ball is bigger.
 * They will lose weight (reduce size) when they are 'attacked' by the bullets that are shooted from the player ball when the button of **shoot** is clicked. When their weight is reduced lower than 50, it will be killed.
 * They will move automatically and randomly. If the player ball is in thier detactable area, they will chase the player ball no matter what their size are. Similarly as the AIBall, this is realized by the method `gameObserver` in `Game.cpp` as follows:
-```c
+
+```cpp
  for (Vector<Demon*>::const_iterator it = DemonArray.begin(); it != DemonArray.end(); it++) {
         Demon *demon = *it;
         Vec2 newDir = player->getPos() - demon->getPos();
@@ -470,7 +511,8 @@ The `Demon` is a subclass of `AIBall` and the instances of this class have the f
 ### 6.4 StaticBall and Bullet
 
 Unlike the ball class above, the `StaticBall` and `bullet` are just data structure but not classes that inheritated from the Sprite since transformations on these objects are not needed. By doing this, the production of significant number of instances is avoided and these objects are created by the `drawNode` method (`drawPolygon` for `StaticBall` and `drawDot` for `bullet`). For example, the data structure of `StaticBall` is as follows:
-```c
+
+```cpp
 class StaticBall {
 public:
     bool isActive;                   // 是否存活
@@ -507,14 +549,16 @@ The `bullet` objects have the following features:
 There are a button of Scaledown and a button of Scaleup to realize the effects of zooming the camera in the game scene. These two effects are triggered when the buttons are touched and the method `scaleScreen` in `Game.cpp` is called. 
 
 The game is scaled by:
-```C
+
+```cpp
   //maxW and maxH are the width and height of the game border
   maxW *= scale;
   maxH *= scale;
 ```
 
 The ball objects (including AIBall, PlayerBall, demon and StaticBall) are scaled by scaling their positions, radius, speed (no speed for the StaticBall).
-```C
+
+```cpp
 // postion
 position *= scale;
 // speed
@@ -533,7 +577,8 @@ In our game, we determines which node is drawn behind or in front of another nod
 * Bullet: -100000
 * Uilayer and all buttons on Game Scene: 100000
 * AIBall, PlayerBall, Demon: from -100000 to 0, larger ball has larger zOrder. This is realized by the following,
-```C
+
+```cpp
 drawNode->setGlobalZOrder(radius-100000);
 ```
 
@@ -541,7 +586,8 @@ By doing this, the background will be placed so that every other objects are abo
 
 ### 6.7 Data persistence
 After a game is ended, the final weight of the player ball will be compared with the stored data of final weight and keep the game record of the game that has a larger weight. The game record data will be stored for two different game modes and the this process will be realized the `updateData` method in the `Gamp.cpp`.
-```c
+
+```cpp
 bool Game::updateData(string name, int new_weight, int new_baseball, int new_aiball, int new_demon) {
     if (gameType == GAME_TIMER) {
         // 取出旧数据
@@ -581,16 +627,15 @@ bool Game::updateData(string name, int new_weight, int new_baseball, int new_aib
         return false;
     }
 }
-
-
 ```
 
-## 7. Optimization Algorithm
+> ## 7. Optimization Algorithm
 
 ### 7.1 Rendering
 
 In this game, we will only render the objects including AI balls, demons and static balls that are within the screen to improve the fps of the game. Take the `draw` method of `AIBall` as example and code is following: 
-```c
+
+```cpp
 void AIBall::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) {
 
     // 超出屏幕不渲染 Not render balls that are out of the screen
@@ -633,7 +678,7 @@ As mentioned above, the computational complexity in collision detection can can 
 ### Color Generation
 One algorithm to generate color randomly that we have tried is to mix a random color with white (255, 255, 255) to increase the lightness of the color:
 
-```c
+```cpp
 color = Color4F(127+127*CCRANDOM_0_1(), 
 				127+127*CCRANDOM_0_1(), 
 				127+127*CCRANDOM_0_1(), 1.0);
