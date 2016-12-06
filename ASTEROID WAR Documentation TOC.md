@@ -270,8 +270,8 @@ In the unlimited-time mode, the player has to control the hero to eat other aste
 
 In the timer mode, the hero tries to eat smaller ones and defeat demons as many as possible within a period of certain time. The final score will be calculated when the limited time is up or the hero dies in halfway and the highest score will be recorded.
 
-### 5.3	Gameplay
-#### 5.3.1	Storyboard
+### 5.3 Gameplay
+#### 5.3.1 Storyboard
 
 <p align="center">
 <img src ="http://img.blog.csdn.net/20161205230555417"  width = "600" height = "300" alt="storyboard" />
@@ -722,7 +722,7 @@ bool Game::updateData(string name, int new_weight, int new_baseball, int new_aib
 ```
 
 > ## 7. Optimization Algorithm
-> 
+
 ### 7.1 Rendering
 In this game, we will only render the objects including AI balls, demons and static balls that are within the screen to improve the fps of the game. Take the `draw` method of `AIBall` as example and code is following: 
 
