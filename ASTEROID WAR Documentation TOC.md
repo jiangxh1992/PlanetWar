@@ -99,9 +99,6 @@
 
 
 > ##1. Group Information
-<blockquote>
-<h2 id="1-group-information">1. Group Information</h2>
-</blockquote>
 
 ###1.1 Member Information
 There are four team members in this group. They are:
@@ -116,7 +113,6 @@ There are four team members in this group. They are:
 
 <br>
 
-<h3 id="12-division-of-labor">1.2 Division of Labor</h3>
 
 ###1.2 Division of Labor
 
@@ -259,6 +255,7 @@ It is your show time to protect your village using your intelligence and skills.
 
 ### 5.1.	Background Story
 In Universe, battles never come to the end. Player is one of the bubbles in the village and willing to fight for your home. Player keeps moving to trace enemies and collect energy, player eludes quickly the bigger enemies to sustain your power, until player is powerful enough to protect the village and drive rivals away.
+
 ### 5.2.	Objective
 The objective is to survive from being encroached and eliminate enemies. To be powerful enough, the hero is supposed to eat smaller ones as many as possible to gain weight and get a larger size. The hero also can use bullets to defeat demons to get higher score. The player can break the history record by eating lots of asteroids and defeating as many demons as possible. To add the challenge of the game, we set two game modes – unlimited-time and timer.  
 
@@ -267,7 +264,7 @@ In the unlimited-time mode, the player has to control the hero to eat other aste
 In the timer mode, the hero tries to eat smaller ones and defeat demons as many as possible within a period of certain time. The final score will be calculated when the limited time is up or the hero dies in halfway and the highest score will be recorded.
 
 ### 5.3.	Gameplay
-#### 5.3.1.	Storyboard
+#### 5.3.1	Storyboard
 
 <p align="center">
 <img src ="http://img.blog.csdn.net/20161205230555417"  width = "600" height = "300" alt="storyboard" />
@@ -340,7 +337,7 @@ On the menu interface, the player selects the game mode and level.
 <br><br>
 </p>
 
-#### 5.3.2. Game Mode & Game Levels
+#### 5.3.2 Game Mode & Game Levels
 
 On the menu interface, the player selects the game mode and level.
 
@@ -349,10 +346,10 @@ There are two game modes -- unlimited-time mode and timer mode. Levels are set f
 In our prototype version, only game modes are taken into account. As the time passed by, the demons will be more sensitive to the hero and it will be harder to get higher score.
 
 
-#### 5.3.3. The core of Gameplay
+#### 5.3.3 The core of Gameplay
 The key point of gameplay is that the single player is supposed to annihilate as many smaller asteroids as possible and avoiding being eaten. The moving speed is inversely proportional to the weight while the size (radius) of the asteroid is proportional to the weight. The shooting and speeding up skills are essential for the player to strategically utilize in order to gain a great score in the game.
 
-#### 5.3.4. Game Difficulties
+#### 5.3.4 Game Difficulties
 Different game levels or game difficulties lies on prescribed game time (if it is limited), number of enemies (AI asteroids), sensibility of demon asteroids, aimed weight and initial weight of AI asteroids. All these factors should be taken into consideration to break a new record of the game, flexibly using skills speeding up or shooting to escape the tracing from enemies and annihilate more other asteroids.
 
 ### 5.4 Characters
@@ -395,8 +392,8 @@ Menu and history pages, and main game page apply 2 different pieces of music. Fo
 
 ### 6.1 About cocos game engine
 
-Cocos is one of the most popular 2d game engine and the original version is cocos2d-iphone, which is specially used for iphone game development with objective-c. [Cocos2d-x][cocos] is a opensource and cross-platform version of that, developer can easily develop 2d game and even 3d game now with C++ or javascript and can easily plant the game to almost all the platforms like iOS, Android, WP and PC platforms(MAC, Windows, Linux etc.).The framework of the cocos2d-x game engine can be seen form the picture below, and here we develop our game on iOS platform with C++. In this app, we will use several class and methods of
-Cocos2d-x.
+Cocos is one of the most popular 2d game engine and the original version is cocos2d-iphone, which is specially used for iphone game development with objective-c. [Cocos2d-x][cocos] is a opensource and cross-platform version of that. By using Cocos2d-x, developer can easily develop 2d game and even 3d game now with C++ or javascript and can easily plant the game to almost all the platforms like iOS, Android, WP and PC platforms(MAC, Windows, Linux etc).The framework of the cocos2d-x game engine can be seen form the picture below, and here we develop our game on iOS platform with C++. In this app, we will use several class and methods of Cocos2d-x.
+
 ![cocos1](http://img.blog.csdn.net/20161205184543664)
 ![cocos2](http://img.blog.csdn.net/20161205191026419)
 <p align="center">
@@ -478,6 +475,7 @@ We use `MenuScene` for the Menu interface and `GameScene` for the Game interface
 
 
 ### 6.3 Sprite
+
 In Cocos2dx, `Sprite` is a subclass of  `Node` that can be moved, rotated, scaled, animated, and undergo other transformations. In this game, the inheritance of `Sprite` is as follows:
 
 
