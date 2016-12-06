@@ -1,7 +1,7 @@
 ## Readme — “Asteroid War”
 
 ### How to compile and execute the project?
-Open the xcode project file from "PlanetWar/proj_ios_mac/PlanetWar.xcodeproj" and run the project directly under iOS device or simulator. iPhone devide is strongly adviced for best game experience.
+Open the xcode project file from ***"PlanetWar/proj_ios_mac/PlanetWar.xcodeproj"*** and run the project directly under iOS device or simulator. iPhone devide is strongly adviced for best game experience. The game can run on iphone devices fluently with stable **60 frames/sec**, but it can not be garanteed running on simulators or other situations.
 ![这里写图片描述](http://img.blog.csdn.net/20161205190318701)
 
 ![这里写图片描述](http://img.blog.csdn.net/20161205190335185)

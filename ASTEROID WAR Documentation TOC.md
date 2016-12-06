@@ -123,15 +123,15 @@ There are four team members in this group. They are:
 
 ####Common Labor:
 - Game design;
-- Document writing;
+- Document writing, video recording;
 
 ####Individual Labor:
 
 **Jiang Xinhou:** 
 
-- The overall game project constrction with cocos2d-x framework on Xcode iOS platform, game development technologies provider;
+- The overall game project construction with cocos2d-x framework on Xcode iOS platform, game development technologies provider;
 - Core classes design and implementation;
-- Design model implementation;
+- Design patterns design and implementation;
 - Animation and game effects design and implementation;
 - Game algorithm design and implementation, renderring improvement.
 
@@ -159,12 +159,15 @@ There are four team members in this group. They are:
 <br>
 > ##2. Demo Video and Git repository
 
-A short video demonstrating main features of this game is uploaded to Vimeo at:
+- A short video demonstrating main features of this game is uploaded to Vimeo at:
 [https://vimeo.com/194161874](https://vimeo.com/194161874)
 <a href="https://vimeo.com/194161874">![vimeo](http://img.blog.csdn.net/20161204141316397)
-<a/>
+</a>
 
-The git repository of this project is at [here][git]
+
+- The project version control on Github(commits from Nov 7, 2016 to Dec 6, 2016):
+[https://github.com/jiangxh1992/PlanetWar](https://github.com/jiangxh1992/PlanetWar)
+<img src="http://img.blog.csdn.net/20161206191505235?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY29yZG92YQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" height="480">
 
 <br>
 > ##3. Background Research
