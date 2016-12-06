@@ -14,16 +14,21 @@
 
 <h2 id="table-of-contents">Table of contents</h2>
 
-<p><div class="toc"><div class="toc">
+<p></p><div class="toc"><div class="toc">
 <ul>
 <li><a href="#asteroid-war-documentation">ASTEROID WAR Documentation</a><ul>
 <li><a href="#table-of-contents">Table of contents</a></li>
+<li><a href="#preview">Preview</a></li>
 <li><a href="#1-group-information">Group Information</a><ul>
 <li><a href="#11-member-information">1 Member Information</a></li>
-<li><a href="#12-division-of-labor">2 Division of Labor</a></li>
+<li><a href="#12-division-of-labor-1">2 Division of Labor</a><ul>
+<li><a href="#common-labor">Common Labor</a></li>
+<li><a href="#individual-labor">Individual Labor</a></li>
 </ul>
 </li>
-<li><a href="#2-demo-video">Demo Video</a></li>
+</ul>
+</li>
+<li><a href="#2-demo-video-and-git-repository">Demo Video and Git repository</a></li>
 <li><a href="#3-background-research">Background Research</a><ul>
 <li><a href="#31-battle-of-balls">1 Battle of Balls</a></li>
 <li><a href="#32-nebulous">2 Nebulous</a></li>
@@ -32,10 +37,10 @@
 </li>
 <li><a href="#4-game-overview">Game Overview</a></li>
 <li><a href="#5-detailed-game-description">Detailed Game Description</a><ul>
-<li><a href="#51-background-story">1    Background Story</a></li>
-<li><a href="#52-objective">2    Objective</a></li>
-<li><a href="#53-gameplay">3    Gameplay</a><ul>
-<li><a href="#531-storyboard">31 Storyboard</a></li>
+<li><a href="#51-background-story">1 Background Story</a></li>
+<li><a href="#52-objective">2 Objective</a></li>
+<li><a href="#53-gameplay">3 Gameplay</a><ul>
+<li><a href="#531-storyboard">31  Storyboard</a></li>
 <li><a href="#532-game-mode-game-levels">32 Game Mode  Game Levels</a></li>
 <li><a href="#533-the-core-of-gameplay">33 The core of Gameplay</a></li>
 <li><a href="#534-game-difficulties">34 Game Difficulties</a></li>
@@ -48,7 +53,7 @@
 </ul>
 </li>
 <li><a href="#6-programming-implementation">Programming implementation</a><ul>
-<li><a href="#61-cocos2dx">1 Cocos2dx</a></li>
+<li><a href="#61-about-cocos-game-engine">1 About cocos game engine</a></li>
 <li><a href="#62-layer">2 Layer</a></li>
 <li><a href="#63-sprite">3 Sprite</a><ul>
 <li><a href="#631-baseball">31 Baseball</a></li>
@@ -358,11 +363,11 @@ Different game levels or game difficulties lies on prescribed game time (if it i
 
 There are four types of characters in this game:
 
-* Hero: it moves and uses skills by swiping and clicking the buttons, controlled by the player. This is realized by class [PlayerBall] in the code.
+* Hero: it moves and uses skills by swiping and clicking the buttons, controlled by the player. This is realized by class  <a href="#633-playerball">PlayerBall</a> in the code.
 
-* Tiny static particles: they spread around the background and can be eaten by dynamic asteroids providing basic energy. This is realized by class [StaticBall] in the code.
+* Tiny static particles: they spread around the background and can be eaten by dynamic asteroids providing basic energy. This is realized by class <a href="#64-staticball-and-bullet">StaticBall</a> in the code.
 
-* Enemy asteroids controlled by artificial intelligence: AI asteroids and demon asteroids. They move automatically getting close to the nearest asteroids. There is an algorithm to calculate the moving direction and speed with conditions the asteroid weight and the distances of surrounded asteroids. There is difference between AI asteroids and demon asteroids, the player cannot directly eat the demon asteroid but can attack them by meaning of shooting tiny asteroids to them.  These are realized by class [AIBall] and [Demon] in the code.
+* Enemy asteroids controlled by artificial intelligence: AI asteroids and demon asteroids. They move automatically getting close to the nearest asteroids. There is an algorithm to calculate the moving direction and speed with conditions the asteroid weight and the distances of surrounded asteroids. There is difference between AI asteroids and demon asteroids, the player cannot directly eat the demon asteroid but can attack them by meaning of shooting tiny asteroids to them.  These are realized by class <a href="#632-aiball">AIBall</a> and <a href="#634-demon">Demon</a> in the code.
 
 ### 5.5 Controls
 In the menu page, the player can select different game levels and modes. And start a new game by clicking the “Start” button. The game history can be viewed by clicking the “History” button.
