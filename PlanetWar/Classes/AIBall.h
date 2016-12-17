@@ -52,17 +52,17 @@ public:
     
     // setter
     virtual void updateWeight(int addedWeight);
-    void scaleSpeed(float scale){speed *= scale;};
-    virtual void setLabel(__String label);
-    void setDirection(Vec2 dir){direction = dir;}
-    void setIntervalCount(float interval){intervalCount = interval>1.0 ? interval : 1.0;}
-    void setSpeedFactor(float factor){speedFactor = factor;};
+    void scaleSpeed(const float scale){speed *= scale;};
+    virtual void setLabel(const __String label);
+    void setDirection(const Vec2 dir){direction = dir;}
+    void setIntervalCount(const float interval){intervalCount = interval>1.0 ? interval : 1.0;}
+    void setSpeedFactor(const float factor){speedFactor = factor;};
     // getter
-    cocos2d::Vec2 getDirection()const{return direction;}
-    float getSpeedFactor()const{return speedFactor;}
-    float getSpeedInterval()const{return speedInterval;}
-    int getEatAINum()const{return eatAINum;};
-    int getEatBaseNum()const{return eatBaseNum;}
+    const Vec2 getDirection()const{return direction;}
+    const float getSpeedFactor()const{return speedFactor;}
+    const float getSpeedInterval()const{return speedInterval;}
+    const int getEatAINum()const{return eatAINum;};
+    const int getEatBaseNum()const{return eatBaseNum;}
     
 };
 

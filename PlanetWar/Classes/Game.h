@@ -22,9 +22,9 @@ class Game : public Layer {
 /** 重写函数 **/
 public:
     // 创建游戏场景
-    static Scene* createScene(GAME_TYPE type);
+    static Scene* createScene(const GAME_TYPE type);
     // 创建游戏对象
-    static Game* create(GAME_TYPE type);
+    static Game* create(const GAME_TYPE type);
     // 对象初始化
     virtual bool init();
     // 安帧更新
@@ -79,8 +79,8 @@ private:
     void scaleScreen(float scale);         // 屏幕缩放(0<scale<1)
     void gameOver();                       // 游戏结束
     void updateVertexs();                  // 更新边界顶点数组
-    void addParticle(string filename, Vec2 position); // 添加一个短暂粒子特效
-    bool updateData(string new_name, int new_weight, int new_baseball, int new_aiball, int new_demon);// 数据持久化
+    void addParticle(const string filename, Vec2 position); // 添加一个短暂粒子特效
+    bool updateData(const string new_name, const int new_weight, const int new_baseball, const int new_aiball, const int new_demon);// 数据持久化
     
     // 事件函数
     void back(Ref* pSender);

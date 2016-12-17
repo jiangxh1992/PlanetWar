@@ -38,10 +38,10 @@ public:
     void startProtectPlayer(); // 无敌状态
     void endProtectPlayer();
     
-    void setDir(const cocos2d::Vec2 newDir) {direction = newDir;};
-    void setIsActive(bool active){isActive = active;}
+    void setDir(const Vec2 newDir) {direction = newDir;};
+    void setIsActive(const bool active){isActive = active;}
     
-    bool getIsActive()const{return isActive;}
+    const bool getIsActive()const{return isActive;}
     
 };
 

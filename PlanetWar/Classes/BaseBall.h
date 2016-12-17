@@ -34,7 +34,7 @@ public:
     const Color4F getBallColor()const{return color;}
     
     // setter
-    void setIsDraw(bool isdraw){isDraw = isdraw;}
+    void setIsDraw(const bool isdraw){isDraw = isdraw;}
     
     // 缩放
     virtual void scale(const float scale){}
