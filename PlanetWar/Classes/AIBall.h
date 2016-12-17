@@ -58,11 +58,11 @@ public:
     void setIntervalCount(float interval){intervalCount = interval>1.0 ? interval : 1.0;}
     void setSpeedFactor(float factor){speedFactor = factor;};
     // getter
-    cocos2d::Vec2 getDirection(){return direction;}
-    float getSpeedFactor(){return speedFactor;}
-    float getSpeedInterval(){return speedInterval;}
-    int getEatAINum(){return eatAINum;};
-    int getEatBaseNum(){return eatBaseNum;}
+    cocos2d::Vec2 getDirection()const{return direction;}
+    float getSpeedFactor()const{return speedFactor;}
+    float getSpeedInterval()const{return speedInterval;}
+    int getEatAINum()const{return eatAINum;};
+    int getEatBaseNum()const{return eatBaseNum;}
     
 };
 

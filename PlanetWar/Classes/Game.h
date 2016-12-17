@@ -119,7 +119,7 @@ public:
     
     // getter
     //int getState(){ return CurState; }
-    PlayerBall* getPlayer()const{ return player; }
+    PlayerBall* getPlayer()const{return player; }
     Scene* getScene()const{return curScene;}
     
     // 外部事件通知

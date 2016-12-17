@@ -41,7 +41,7 @@ public:
     void setDir(const cocos2d::Vec2 newDir) {direction = newDir;};
     void setIsActive(bool active){isActive = active;}
     
-    bool getIsActive(){return isActive;}
+    bool getIsActive()const{return isActive;}
     
 };
 
