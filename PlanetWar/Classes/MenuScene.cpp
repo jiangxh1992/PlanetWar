@@ -63,9 +63,8 @@ void MenuScene::update(float time) {
 /**
  * 场景退出
  */
-void MenuScene::onExit() {
+MenuScene::~MenuScene() {
     this->removeAllChildren();
-    Layer::onExit();
 }
 
 #pragma mark- 工具函数
@@ -91,7 +90,7 @@ void MenuScene::addUI() {
     auto menu_cloud = Sprite::create("menu_cloud.png");
     menu_cloud->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
     menu_cloud->setOpacity(200);
-    addChild(menu_cloud, 20);
+    //addChild(menu_cloud, 20);
     
     // 开始游戏按钮
     item_startgame1 = MenuItemImage::create("btn_gametimer_normal.png", "btn_gametimer_pressed.png", CC_CALLBACK_0(MenuScene::startGameTimer, this));
@@ -244,20 +243,20 @@ void MenuScene::showLimitedRecord() {
     label_history->setString("Timer Mode Record:");
     // 取出timer数据
     __String name = UserDefault::getInstance()->getStringForKey("timer_name", "unknown");
-    int weight = UserDefault::getInstance()->getIntegerForKey("timer_weight", -1);
-    int demon = UserDefault::getInstance()->getIntegerForKey("timer_demon", -1);
-    int baseball = UserDefault::getInstance()->getIntegerForKey("timer_baseball",-1);
-    int aiball = UserDefault::getInstance()->getIntegerForKey("timer_aiball",-1);
+    int weight = UserDefault::getInstance()->getIntegerForKey("timer_weight", 0);
+    int demon = UserDefault::getInstance()->getIntegerForKey("timer_demon", 0);
+    int baseball = UserDefault::getInstance()->getIntegerForKey("timer_baseball",0);
+    int aiball = UserDefault::getInstance()->getIntegerForKey("timer_aiball",0);
     updateHistory(GAME_TIMER, name, weight, baseball, aiball, demon);
 }
 void MenuScene::showUnLimitedRecord() {
     label_history->setString("Unlimited Mode Record:");
     // 取出unlimited数据
     __String name = UserDefault::getInstance()->getStringForKey("unlimited_name", "unknown");
-    int weight = UserDefault::getInstance()->getIntegerForKey("unlimited_weight", -1);
-    int demon = UserDefault::getInstance()->getIntegerForKey("unlimited_demon", -1);
-    int baseball = UserDefault::getInstance()->getIntegerForKey("unlimited_baseball",-1);
-    int aiball = UserDefault::getInstance()->getIntegerForKey("unlimited_aiball",-1);
+    int weight = UserDefault::getInstance()->getIntegerForKey("unlimited_weight", 0);
+    int demon = UserDefault::getInstance()->getIntegerForKey("unlimited_demon", 0);
+    int baseball = UserDefault::getInstance()->getIntegerForKey("unlimited_baseball",0);
+    int aiball = UserDefault::getInstance()->getIntegerForKey("unlimited_aiball",0);
     updateHistory(GAME_UNLIMITED ,name, weight, baseball, aiball, demon);
 }
 void MenuScene::hideHistory() {

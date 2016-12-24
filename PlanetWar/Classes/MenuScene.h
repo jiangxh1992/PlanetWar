@@ -22,8 +22,8 @@ public:
     // 安帧更新
     virtual void update(float time);
     CREATE_FUNC(MenuScene);
-    // 场景退出
-    void onExit();
+    // 析构
+    virtual ~MenuScene();
     
     float scaleCount = 0;
     
