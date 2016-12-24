@@ -193,6 +193,7 @@ void Game::gameObserver(float delta) {
         newDir.normalize();
         demon->setDirection(newDir);
     }
+    
 }
 
 /**

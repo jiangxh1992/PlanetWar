@@ -107,7 +107,17 @@ void Demon::sharedUpdate(float delta) {
             Game::sharedGame()->bulletArray.erase(Game::sharedGame()->bulletArray.begin() + i);
         }
     }
-
+    
+    // 4.防止和其他demon重合
+    for (Vector<Demon*>::const_iterator it = Game::sharedGame()->DemonArray.begin(); it != Game::sharedGame()->DemonArray.end(); it++) {
+        Demon *demon = *it;
+        if (demon == this) continue;
+        Vec2 newDir = position - demon->getPos();
+        if(newDir.x*newDir.x + newDir.y*newDir.y < (radius+demon->getR())*(radius+demon->getR())) {
+            direction += newDir;
+            direction.normalize();
+        }
+    }
 }
 
 void Demon::updateWeight(int addedWeight) {
