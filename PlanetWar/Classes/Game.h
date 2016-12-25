@@ -102,6 +102,7 @@ private:
 public:
     
     Color4F ColorArray[colorNum];      // 颜色库
+    string NameArray[10];              // 名字库
     bool isGameOver = false;
     int baseNum = maxBaseBallNum;      // baseball个数
     float scale;                       // 缩放参数

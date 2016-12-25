@@ -63,7 +63,7 @@ void AIBall::commenInit() {
     
     // label
     label_tag = Label::create();
-    label_tag->setString("😜智多星☺️");
+    label_tag->setString("智多星");
     label_tag->setPosition(Vec2(0, radius+label_tag->getContentSize().height));
     label_tag->setGlobalZOrder(-100000);
     addChild(label_tag);

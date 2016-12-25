@@ -359,7 +359,7 @@ void Game::initColorArray() {
     ColorArray[12] = convert2F(Color4B(166, 214, 76, 1));
     ColorArray[13] = convert2F(Color4B(237, 98, 67, 1));
     ColorArray[14] = convert2F(Color4B(255, 136, 194, 1));
-    ColorArray[15] = convert2F(Color4B(255, 136, 136, 1));
+    ColorArray[15] = convert2F(Color4B(252, 210, 0, 1));
     ColorArray[16] = convert2F(Color4B(255, 164, 136, 1));
     ColorArray[17] = convert2F(Color4B(255, 187, 102, 1));
     ColorArray[18] = convert2F(Color4B(255, 221, 85, 1));
@@ -375,11 +375,20 @@ void Game::initColorArray() {
     ColorArray[28] = convert2F(Color4B(228, 96, 132, 1));
     ColorArray[29] = convert2F(Color4B(153, 153, 255, 1));
     /*
-    252, 210, 0
     254, 76, 64
     253, 185, 51
     0, 235, 192
     */
+    NameArray[0] = "爱吃大米的小老鼠";
+    NameArray[1] = "萌萌的橘子";
+    NameArray[2] = "叶子姑娘";
+    NameArray[3] = "深海大鲨鱼";
+    NameArray[4] = "小虾米";
+    NameArray[5] = "不要吃我";
+    NameArray[6] = "无敌小正太";
+    NameArray[7] = "深山野狼";
+    NameArray[8] = "樱桃小丸子";
+    NameArray[9] = "鼓眼睛";
 }
 
 /**
@@ -557,7 +566,7 @@ void Game::addRoles() {
     
     // 创建玩家
     player = PlayerBall::create();
-    player->setLabel("名字起个啥😁");
+    player->setLabel("WD蜂");
     player->setSpeedFactor(0);
     addChild(player);
 }
@@ -608,7 +617,8 @@ void Game::createBullet() {
 void Game::createAIBAlls(int num) {
     for (int i = 0 ; i<num ; i++) {
         auto aiball = AIBall::create();
-        
+        int index = CCRANDOM_0_1()*9;
+        aiball->setLabel(NameArray[index]);
         addChild(aiball);
         AIBallArray.pushBack(aiball);
     }
@@ -617,7 +627,7 @@ void Game::createAIBAlls(int num) {
 void Game::createDemonBalls(int num) {
     for (int i = 0; i < num ; i++) {
         auto demon = Demon::create();
-        demon->setLabel("😈恶魔😈");
+        demon->setLabel("恶魔");
         addChild(demon);
         DemonArray.pushBack(demon);
     }
