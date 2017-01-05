@@ -111,7 +111,7 @@ There are four team members in this group. They are:
 
 | Name 	  | UID     |
 |---------|---------|
-| JIANG, Xinhong| 3035347990| 
+| JIANG, Xinhou| 3035347990| 
 | PAN, Hao| 3035349015| 
 | ZHOU, Tingting| 3035348621|
 | CHEN, Yingshu| 3035349106|
