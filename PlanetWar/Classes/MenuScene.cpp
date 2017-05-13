@@ -54,10 +54,10 @@ bool MenuScene::init() {
 
 void MenuScene::update(float time) {
     scaleCount += 0.02;
-    menu_bg->setScale(1-sin(scaleCount)*0.4);// 背景缩放
-    item_startgame1->setScale(1-sin(scaleCount)*0.1);
-    item_startgame2->setScale(1-sin(scaleCount)*0.1);
-    item_history->setScale(1-sin(scaleCount)*0.2);
+    menu_bg->setScale(1.5-sin(scaleCount)*0.2);// 背景缩放
+    item_startgame1->setScale(1.5-sin(scaleCount)*0.2);
+    item_startgame2->setScale(1.5-sin(scaleCount)*0.2);
+    item_history->setScale(1.2-sin(scaleCount)*0.3);
 }
 
 /**
@@ -119,6 +119,7 @@ void MenuScene::addHistoryUI() {
     history_layer_bg = LayerColor::create(Color4B(0, 0, 0, 200), ScreenWidth, ScreenHeight);
     history_layer_bg->setPosition(Vec2(0, 0));
     addChild(history_layer_bg, 101);
+    
     Node *history_layer = Node::create();
     history_layer->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
     history_layer_bg->addChild(history_layer, 101);
@@ -143,7 +144,7 @@ void MenuScene::addHistoryUI() {
     int contentH = ScreenHeight/2-20;
     int marginTop = 40;
     int marginLeft = 30;
-    LayerColor *content_layer = LayerColor::create(Color4B(255, 255, 255, 100), contentW, contentH);
+    LayerColor *content_layer = LayerColor::create(Color4B(255, 255, 255, 0), contentW, contentH);
     content_layer->setIgnoreAnchorPointForPosition(false);
     content_layer->setAnchorPoint(Vec2(0, 0.5));
     content_layer->setPosition(Vec2(-80, 20));
@@ -154,7 +155,7 @@ void MenuScene::addHistoryUI() {
     label_history->setSystemFontName(FontPlanet);
     label_history->setSystemFontSize(15);
     label_history->setAnchorPoint(Vec2(0.5, 1));
-    label_history->setPosition(contentW/2, contentH-5);
+    label_history->setPosition(contentW/2-20, contentH-5);
     content_layer->addChild(label_history,101);
     
     label_name = Label::create();
@@ -193,9 +194,9 @@ void MenuScene::addHistoryUI() {
     
     // 按钮
     auto item_limited = MenuItemImage::create("btn_limited_normal.png", "btn_limited_pressed.png", CC_CALLBACK_0(MenuScene::showLimitedRecord, this));
-    item_limited->setPosition(Vec2(0, 0));
+    item_limited->setPosition(Vec2(-30, 0));
     auto item_unlimited = MenuItemImage::create("btn_unlimited_normal.png", "btn_unlimited_pressed.png", CC_CALLBACK_0(MenuScene::showUnLimitedRecord, this));
-    item_unlimited->setPosition(Vec2(130, 0));
+    item_unlimited->setPosition(Vec2(30, 0));
     
     auto item_back = MenuItemImage::create("btn_back_normal.png", "btn_back_pressed.png", CC_CALLBACK_0(MenuScene::hideHistory, this));
     item_back->setPosition(Vec2(-150, -10));

@@ -242,9 +242,12 @@ void Game::gameOver() {
     
     // 3.显示游戏结束对话框
     // 对话框层
-    LayerColor *gameover_layer = LayerColor::create(Color4B(0, 0, 0, 0), ScreenWidth, ScreenHeight);
+    LayerColor *gameover_layer_bg = LayerColor::create(Color4B(0, 0, 0, 200), ScreenWidth, ScreenHeight);
+    gameover_layer_bg->setPosition(Vec2(0, 0));
+    uilayer->addChild(gameover_layer_bg, 100001);
+    Node *gameover_layer = Node::create();
     gameover_layer->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
-    uilayer->addChild(gameover_layer, 100001);
+    gameover_layer_bg->addChild(gameover_layer);
     
     // 对话框背景
     Sprite *dialog_box = Sprite::create("dialog_box.png");
@@ -263,7 +266,7 @@ void Game::gameOver() {
     int contentH = ScreenHeight/2-20;
     int marginTop = 40;
     int marginLeft = 30;
-    LayerColor *content_layer = LayerColor::create(Color4B(255, 255, 255, 100), contentW, contentH);
+    LayerColor *content_layer = LayerColor::create(Color4B(255, 255, 255, 0), contentW, contentH);
     content_layer->setIgnoreAnchorPointForPosition(false);
     content_layer->setAnchorPoint(Vec2(0, 0.5));
     content_layer->setPosition(Vec2(-80, 20));
@@ -429,6 +432,7 @@ void Game::addUI() {
     
     // 背景层
     bglayer2 = Sprite::create("game_galaxy.jpg");
+    bglayer2->setScale(2.5);
     bglayer2->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
     addChild(bglayer2);
     bglayer2->setGlobalZOrder(-1000001);
@@ -453,27 +457,27 @@ void Game::addUI() {
     auto menu_cloud = Sprite::create("menu_cloud.png");
     menu_cloud->setPosition(Vec2(ScreenWidth/2, ScreenHeight/2));
     menu_cloud->setOpacity(150);
-    uilayer->addChild(menu_cloud);
+    //uilayer->addChild(menu_cloud);
     
     // left
     debuglabel = Label::create();
     debuglabel->setString("0");
     debuglabel->setAnchorPoint(Vec2(0, 1));
-    debuglabel->setPosition(Vec2(5,ScreenHeight));
+    debuglabel->setPosition(Vec2(75,ScreenHeight));
     debuglabel->setGlobalZOrder(100000);
     uilayer->addChild(debuglabel);
     
     label_weight = Label::create();
     label_weight->setString("weight");
     label_weight->setAnchorPoint(Vec2(0, 1));
-    label_weight->setPosition(Vec2(5, ScreenHeight - debuglabel->getContentSize().height));
+    label_weight->setPosition(Vec2(75, ScreenHeight - debuglabel->getContentSize().height));
     label_weight->setGlobalZOrder(100000);
     uilayer->addChild(label_weight);
     
     label_scale = Label::create();
     label_scale->setString("scale");
     label_scale->setAnchorPoint(Vec2(0, 1));
-    label_scale->setPosition(Vec2(5, ScreenHeight - label_scale->getContentSize().height*2));
+    label_scale->setPosition(Vec2(75, ScreenHeight - label_scale->getContentSize().height*2));
     label_scale->setGlobalZOrder(100000);
     uilayer->addChild(label_scale);
     
@@ -518,14 +522,14 @@ void Game::addUI() {
     // 按钮菜单
     // 1.返回按钮
     auto item_back = MenuItemImage::create("button_back.jpg", "button_back.jpg", CC_CALLBACK_1(Game::back, this));
-    item_back->setPosition(Vec2(VisiableSize.width - item_back->getContentSize().width/2, VisiableSize.height - item_back->getContentSize().height/2));
+    item_back->setPosition(Vec2(VisiableSize.width+50 - item_back->getContentSize().width/2, VisiableSize.height - item_back->getContentSize().height/2));
     //item_back->setGlobalZOrder(100000);
     item_back->setLocalZOrder(100000);
     
     // 2.加速按钮
     auto item_dash = MenuItemImage::create("button_dash_normal.jpg", "button_dash_pressed.jpg", CC_CALLBACK_1(Game::dash, this));
     item_dash->setAnchorPoint(Vec2(1,0));
-    item_dash->setPosition(Vec2(VisiableSize.width, 20));
+    item_dash->setPosition(Vec2(ScreenWidth-80, 50));
     item_dash->setGlobalZOrder(100000);
     dashTimer = ProgressTimer::create(Sprite::create("button_dash_process.jpg"));
     dashTimer->setAnchorPoint(Vec2(0, 0));
@@ -536,7 +540,7 @@ void Game::addUI() {
     // 3.发射按钮
     auto item_shoot = MenuItemImage::create("button_shoot_normal.jpg", "button_shoot_pressed.jpg", CC_CALLBACK_1(Game::shoot, this));
     item_shoot->setAnchorPoint(Vec2(1,0));
-    item_shoot->setPosition(Vec2(VisiableSize.width - item_dash->getContentSize().width -10, 20));
+    item_shoot->setPosition(Vec2(ScreenWidth - item_dash->getContentSize().width -90, 20));
     item_shoot->setGlobalZOrder(100000);
     // 4.缩放按钮
     auto item_scaleup = MenuItemImage::create("button_add.jpg", "button_add.jpg", CC_CALLBACK_1(Game::scaleup, this));
@@ -549,7 +553,7 @@ void Game::addUI() {
     item_scaledown->setGlobalZOrder(100000);
     // 按钮菜单
     menu = Menu::create(item_back, item_dash, item_shoot, item_scaleup, item_scaledown, NULL);
-    menu->setOpacity(150);
+    menu->setOpacity(200);
     menu->setPosition(Vec2::ZERO);
     menu->setGlobalZOrder(100000);
     uilayer->addChild(menu);

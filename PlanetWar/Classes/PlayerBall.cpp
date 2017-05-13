@@ -144,7 +144,7 @@ void PlayerBall::sharedUpdate(float delta) {
         // 距离的平方
         double distance2 = pow(aiball->getPos().x -  position.x, 2) + pow(aiball->getPos().y - position.y, 2);
         // 吞并距离
-        float minD = radius > aiball->getR() ? radius-aiball->getR()*0.8 : aiball->getR()-radius*0.8;
+        float minD = radius > aiball->getR() ? radius-aiball->getR()*0.6 : aiball->getR()-radius*0.6;
         if (distance2 < minD*minD) {// 已经符合吞并条件
             if (radius > aiball->getR()) { // player吞并aiball
                 updateWeight(aiball->getBallWeight());
